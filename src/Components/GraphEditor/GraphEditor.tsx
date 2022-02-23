@@ -1,13 +1,28 @@
 import React from 'react';
 import * as joint from 'jointjs'
 
+type GraphEditorProps = {
+}
+
+type GraphEditorState = {
+    currentGraph: joint.dia.Graph
+}
 
 class GraphEditor extends React.Component {
+
+
+    constructor(props: GraphEditorProps, state: GraphEditorState) {
+        super(props);
+        this.state = {
+
+        }
+    }
 
     componentDidMount() {
         let namespace = joint.shapes;
 
         let graph = new joint.dia.Graph({}, {cellNamespace: namespace});
+
 
         new joint.dia.Paper({
             // @ts-ignore
