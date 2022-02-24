@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "@rjsf/core";
 
-class AssessmentComponent extends React.Component {
+class Assessment extends React.Component {
 
     render() {
         const schema= {
@@ -30,4 +30,4 @@ class AssessmentComponent extends React.Component {
     }
 }
 
-export default AssessmentComponent;
+export default Assessment;

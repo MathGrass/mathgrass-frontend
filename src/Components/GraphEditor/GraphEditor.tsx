@@ -8,6 +8,8 @@ type GraphEditorState = {
     currentGraph: joint.dia.Graph
 }
 
+const GRAPH_CONTAINER_ID = 'mathGrassEditor';
+
 class GraphEditor extends React.Component {
 
 
@@ -26,7 +28,7 @@ class GraphEditor extends React.Component {
 
         new joint.dia.Paper({
             // @ts-ignore
-            el: document.getElementById('mathGrassEditor'),
+            el: document.getElementById(GRAPH_CONTAINER_ID),
             model: graph,
             width: 800,
             height: 400,
@@ -61,7 +63,7 @@ class GraphEditor extends React.Component {
     }
 
     render() {
-        return (<div id="mathGrassEditor">Graph</div>)
+        return (<div id={GRAPH_CONTAINER_ID}>Graph</div>)
     }
 
 
