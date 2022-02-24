@@ -31,7 +31,8 @@ class GraphEditor extends React.Component {
             width: 800,
             height: 400,
             gridSize: 1,
-            cellViewNamespace: namespace
+            cellViewNamespace: namespace,
+            restrictTranslate: true
         });
 
         let circle = new joint.shapes.standard.Circle();
