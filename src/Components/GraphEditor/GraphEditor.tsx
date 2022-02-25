@@ -30,7 +30,7 @@ class GraphEditor extends React.Component {
             // @ts-ignore
             el: document.getElementById(GRAPH_CONTAINER_ID),
             model: graph,
-            width: 800,
+            width: 1200,
             height: 400,
             gridSize: 1,
             cellViewNamespace: namespace,
@@ -39,14 +39,12 @@ class GraphEditor extends React.Component {
 
         let circle = new joint.shapes.standard.Circle();
         circle.position(100, 30);
-        circle.resize(100, 40);
+        circle.resize(40, 40);
         circle.attr({
             body: {
-                fill: 'blue'
             },
             label: {
                 text: '1',
-                fill: 'white'
             }
         });
         circle.addTo(graph);
