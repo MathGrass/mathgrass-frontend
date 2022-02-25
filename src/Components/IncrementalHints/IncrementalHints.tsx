@@ -6,22 +6,21 @@ type IncrementalHintsProps = {}
 
 type IncrementalHintsState = {}
 
-function submitRequestHint() {
 
-}
 
 class IncrementalHints extends React.Component {
-
     constructor(props: IncrementalHintsProps, state: IncrementalHintsState) {
         super(props);
         this.state = {}
+    }
+
+    submitRequestHint() : void {
     }
 
     render() {
         const schema : JSONSchema7 = {
             title: "Request Hint",
             type: "object",
-            required: ["hintLevel"],
             properties: {
                 hintLevel: {type: "number", title: "hintLevel"}
             }
@@ -33,11 +32,10 @@ class IncrementalHints extends React.Component {
             }
         };
 
-
-
         return (<Form schema={schema}
                       uiSchema={uiSchema}
-                      onSubmit={submitRequestHint}/>);
+                      onSubmit={this.submitRequestHint}
+                />);
     }
 
 
