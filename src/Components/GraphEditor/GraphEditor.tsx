@@ -22,16 +22,16 @@ class GraphEditor extends React.Component {
 
     componentDidMount() {
         let namespace = joint.shapes;
-
         let graph = new joint.dia.Graph({}, {cellNamespace: namespace});
 
+        const domContainer = document.getElementById(GRAPH_CONTAINER_ID);
 
         new joint.dia.Paper({
             // @ts-ignore
-            el: document.getElementById(GRAPH_CONTAINER_ID),
+            el: domContainer,
             model: graph,
-            width: 1200,
-            height: 400,
+            width: 800,
+            height: 500,
             gridSize: 1,
             cellViewNamespace: namespace,
             restrictTranslate: true
