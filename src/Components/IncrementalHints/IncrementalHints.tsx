@@ -1,8 +1,14 @@
 import React from 'react';
+import {JSONSchema7} from "json-schema";
+import Form from "@rjsf/core";
 
 type IncrementalHintsProps = {}
 
 type IncrementalHintsState = {}
+
+function submitRequestHint() {
+
+}
 
 class IncrementalHints extends React.Component {
 
@@ -11,15 +17,27 @@ class IncrementalHints extends React.Component {
         this.state = {}
     }
 
-    componentDidMount() {
-    }
-
     render() {
-        return (
-            <div>
-                <button type={"submit"}>Request Hint</button>
-                <div id=""></div>
-            </div>)
+        const schema : JSONSchema7 = {
+            title: "Request Hint",
+            type: "object",
+            required: ["hintLevel"],
+            properties: {
+                hintLevel: {type: "number", title: "hintLevel"}
+            }
+        };
+
+        const uiSchema =  {
+            hintLevel: {
+                "ui:widget": "hidden"
+            }
+        };
+
+
+
+        return (<Form schema={schema}
+                      uiSchema={uiSchema}
+                      onSubmit={submitRequestHint}/>);
     }
 
 
