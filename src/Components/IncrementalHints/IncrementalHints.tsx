@@ -4,13 +4,18 @@ import Form from "@rjsf/core";
 
 type IncrementalHintsProps = {}
 
-type IncrementalHintsState = {}
+type IncrementalHintsState = {
+    hintLevel : number
+}
 
 
-class IncrementalHints extends React.Component {
+class IncrementalHints extends React.Component<IncrementalHintsProps, IncrementalHintsState> {
+
     constructor(props: IncrementalHintsProps, state: IncrementalHintsState) {
         super(props);
-        this.state = {}
+        this.state = {
+            hintLevel: 0
+        };
     }
 
     submitRequestHint(): void {

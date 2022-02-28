@@ -11,13 +11,14 @@ const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 
 const EDITOR_WIDTH_SCALING_FACTOR = 0.95;
 
-class GraphEditor extends React.Component {
+class GraphEditor extends React.Component<GraphEditorProps, GraphEditorState> {
 
 
     constructor(props: GraphEditorProps, state: GraphEditorState) {
         super(props);
-        this.state = {}
+        this.state = state;
     }
+
 
     componentDidMount() {
         let namespace = joint.shapes;
