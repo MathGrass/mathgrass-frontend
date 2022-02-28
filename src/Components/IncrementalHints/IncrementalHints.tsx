@@ -16,9 +16,14 @@ class IncrementalHints extends React.Component<IncrementalHintsProps, Incrementa
         this.state = {
             hintLevel: 0
         };
+        this.submitRequestHint = this.submitRequestHint.bind(this);
     }
 
     submitRequestHint(): void {
+        const currentHintLevel : number = this.state.hintLevel;
+        this.state = {
+            hintLevel: currentHintLevel + 1
+        }
     }
 
     render() {
