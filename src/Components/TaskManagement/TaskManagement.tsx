@@ -29,6 +29,8 @@ class TaskManagement extends React.Component {
                 or..
                 <br/>
                 <a href="#">Skip this graph</a> and request a new graph for the same problem.
+                <br/>
+                You may also <a href="#">export</a> the current graph.
             </Form>);
     }
 }
