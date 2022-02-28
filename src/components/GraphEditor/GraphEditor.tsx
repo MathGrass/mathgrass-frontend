@@ -13,7 +13,6 @@ const EDITOR_WIDTH_SCALING_FACTOR = 0.95;
 
 class GraphEditor extends React.Component<GraphEditorProps, GraphEditorState> {
 
-
     constructor(props: GraphEditorProps, state: GraphEditorState) {
         super(props);
         this.state = state;

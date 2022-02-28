@@ -1,8 +1,8 @@
 import React from "react";
 import Form, {ISubmitEvent, UiSchema} from "@rjsf/core";
 import {JSONSchema7} from "json-schema";
+import {MathGrassProps} from "../../MathGrass";
 
-type AssessmentProps = {}
 
 type AssessmentState = {
     schema : JSONSchema7
@@ -10,7 +10,6 @@ type AssessmentState = {
 }
 
 function submitStudentSolution(form: ISubmitEvent<any>): void {
-    console.log(form.formData)
 }
 
 function getInitialState() : AssessmentState {
@@ -31,9 +30,9 @@ function getInitialState() : AssessmentState {
     }
 }
 
-class Assessment extends React.Component<AssessmentProps, AssessmentState> {
+class Assessment extends React.Component<MathGrassProps, AssessmentState> {
 
-    constructor(props : AssessmentProps, state : AssessmentState) {
+    constructor(props : MathGrassProps, state : AssessmentState) {
         super(props);
         this.state = getInitialState();
     }

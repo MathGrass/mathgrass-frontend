@@ -1,11 +1,15 @@
 import React from 'react';
-import GraphEditor from "./Components/GraphEditor/GraphEditor";
-import Assessment from "./Components/Assessment/Assessment";
-import IncrementalHints from "./Components/IncrementalHints/IncrementalHints";
+import GraphEditor from "./components/GraphEditor/GraphEditor";
+import Assessment from "./components/Assessment/Assessment";
+import IncrementalHints from "./components/IncrementalHints/IncrementalHints";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TaskManagement from "./Components/TaskManagement/TaskManagement";
+import TaskManagement from "./components/TaskManagement/TaskManagement";
 
-class MathGrass extends React.Component {
+export type MathGrassProps = {
+    assessmentServerUrl : string
+}
+
+class MathGrass extends React.Component<MathGrassProps> {
     render() {
         return (
             /*main container*/
@@ -19,7 +23,7 @@ class MathGrass extends React.Component {
                                 <h2>Graph</h2>
                             </div>
                             <div className="card-body">
-                                <GraphEditor/>
+                                <GraphEditor />
                             </div>
                         </div>
                     </div>
@@ -31,7 +35,7 @@ class MathGrass extends React.Component {
                                     <h2>Tasks</h2>
                                 </div>
                                 <div className="card-body">
-                                    <TaskManagement/>
+                                    <TaskManagement {...this.props}/>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +45,7 @@ class MathGrass extends React.Component {
                                     <h2>Assessment</h2>
                                 </div>
                                 <div className="card-body">
-                                    <Assessment/>
+                                    <Assessment {...this.props}/>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +55,7 @@ class MathGrass extends React.Component {
                                     <h2>Hints</h2>
                                 </div>
                                 <div className="card-body">
-                                    <IncrementalHints/>
+                                    <IncrementalHints {...this.props}/>
                                 </div>
                             </div>
                         </div>

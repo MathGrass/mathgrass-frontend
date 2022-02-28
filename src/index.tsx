@@ -5,7 +5,9 @@ import MathGrass from './MathGrass';
 
 ReactDOM.render(
     <React.StrictMode>
-        <MathGrass/>
+        <MathGrass
+            assessmentServerUrl={"http://localhost:8889"}
+        />
     </React.StrictMode>,
     document.getElementById('root')
 );
