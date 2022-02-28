@@ -5,7 +5,7 @@ import MathGrass from './MathGrass';
 
 ReactDOM.render(
     <React.StrictMode>
-        <MathGrass />
+        <MathGrass/>
     </React.StrictMode>,
     document.getElementById('root')
 );

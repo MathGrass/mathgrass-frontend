@@ -1,12 +1,12 @@
 import React from "react";
 import Form from "@rjsf/core";
-import { JSONSchema7 } from "json-schema";
+import {JSONSchema7} from "json-schema";
 
 
 class TaskManagement extends React.Component {
 
     render() {
-        const schema : JSONSchema7 = {
+        const schema: JSONSchema7 = {
             "type": "object",
             "properties": {
                 "taskType": {
@@ -21,9 +21,7 @@ class TaskManagement extends React.Component {
             }
         }
 
-        const uiSchema =  {
-
-        };
+        const uiSchema = {};
 
 
         return (

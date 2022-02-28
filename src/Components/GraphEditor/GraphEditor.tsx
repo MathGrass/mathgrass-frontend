@@ -1,8 +1,7 @@
 import React from 'react';
 import * as joint from 'jointjs'
 
-type GraphEditorProps = {
-}
+type GraphEditorProps = {}
 
 type GraphEditorState = {
     currentGraph: joint.dia.Graph
@@ -15,9 +14,7 @@ class GraphEditor extends React.Component {
 
     constructor(props: GraphEditorProps, state: GraphEditorState) {
         super(props);
-        this.state = {
-
-        }
+        this.state = {}
     }
 
     componentDidMount() {
@@ -41,8 +38,7 @@ class GraphEditor extends React.Component {
         circle.position(100, 30);
         circle.resize(40, 40);
         circle.attr({
-            body: {
-            },
+            body: {},
             label: {
                 text: '1',
             }
