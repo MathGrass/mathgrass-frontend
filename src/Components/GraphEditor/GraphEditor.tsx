@@ -9,6 +9,8 @@ type GraphEditorState = {
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 
+const EDITOR_WIDTH_SCALING_FACTOR = 0.95;
+
 class GraphEditor extends React.Component {
 
 
@@ -27,7 +29,7 @@ class GraphEditor extends React.Component {
             // @ts-ignore
             el: domContainer,
             model: graph,
-            width: 800,
+            width: EDITOR_WIDTH_SCALING_FACTOR * domContainer!.offsetWidth,
             height: 500,
             gridSize: 1,
             cellViewNamespace: namespace,
