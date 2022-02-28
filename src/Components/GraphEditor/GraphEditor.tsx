@@ -27,8 +27,7 @@ class GraphEditor extends React.Component<GraphEditorProps, GraphEditorState> {
         const domContainer = document.getElementById(GRAPH_CONTAINER_ID);
 
         new joint.dia.Paper({
-            // @ts-ignore
-            el: domContainer,
+            el: domContainer!,
             model: graph,
             width: EDITOR_WIDTH_SCALING_FACTOR * domContainer!.offsetWidth,
             height: 500,
