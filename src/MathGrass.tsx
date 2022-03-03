@@ -35,7 +35,7 @@ class MathGrass extends React.Component<MathGrassProps> {
                                     <h2>Tasks</h2>
                                 </div>
                                 <div className="card-body">
-                                    <TaskManagement {...this.props}/>
+                                    <TaskManagement />
                                 </div>
                             </div>
                         </div>
