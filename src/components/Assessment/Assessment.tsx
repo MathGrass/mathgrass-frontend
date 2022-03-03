@@ -1,20 +1,19 @@
 import React from "react";
 import Form, {ISubmitEvent, UiSchema} from "@rjsf/core";
 import {JSONSchema7} from "json-schema";
-import {MathGrassProps} from "../../MathGrass";
-
+import {useAppDispatch, useAppSelector} from "../../state/hooks";
 
 type AssessmentState = {
-    schema : JSONSchema7
+    schema: JSONSchema7
     uiSchema: UiSchema
 }
 
 function submitStudentSolution(form: ISubmitEvent<any>): void {
 }
 
-function getInitialState() : AssessmentState {
+function getInitialState(): AssessmentState {
     return {
-        schema : {
+        schema: {
             title: "Graph Assessment",
             type: "object",
             required: ["isPlanar"],
@@ -22,7 +21,7 @@ function getInitialState() : AssessmentState {
                 isPlanar: {type: "boolean", title: "Is the graph planar?"}
             }
         },
-        uiSchema : {
+        uiSchema: {
             isPlanar: {
                 "ui:widget": "radio"
             }
@@ -30,18 +29,12 @@ function getInitialState() : AssessmentState {
     }
 }
 
-class Assessment extends React.Component<MathGrassProps, AssessmentState> {
+const Assessment = (props: any, state: AssessmentState) => {
+    state = getInitialState();
+    return (<Form schema={state.schema}
+                  uiSchema={state.uiSchema}
+                  onSubmit={submitStudentSolution}/>);
 
-    constructor(props : MathGrassProps, state : AssessmentState) {
-        super(props);
-        this.state = getInitialState();
-    }
-
-    render() {
-        return (<Form schema={this.state.schema}
-                      uiSchema={this.state.uiSchema}
-                      onSubmit={submitStudentSolution}/>);
-    }
 }
 
 export default Assessment;

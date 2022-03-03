@@ -55,7 +55,7 @@ class MathGrass extends React.Component<MathGrassProps> {
                                     <h2>Hints</h2>
                                 </div>
                                 <div className="card-body">
-                                    <IncrementalHints {...this.props}/>
+                                    <IncrementalHints />
                                 </div>
                             </div>
                         </div>
