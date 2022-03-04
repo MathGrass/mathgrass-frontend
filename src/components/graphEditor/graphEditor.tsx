@@ -3,7 +3,7 @@ import * as joint from 'jointjs'
 
 type GraphEditorProps = {}
 
-type GraphEditorState = {
+export type GraphEditorState = {
     currentGraph: joint.dia.Graph
 }
 
@@ -11,9 +11,14 @@ const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 
 const EDITOR_WIDTH_SCALING_FACTOR = 0.95;
 
-const GraphEditor = () => {
+export function generateEmptyGraph() {
     let namespace = joint.shapes;
     let graph = new joint.dia.Graph({}, {cellNamespace: namespace});
+    return graph;
+}
+
+const GraphEditor = () => {
+    let graph = generateEmptyGraph();
 
     useEffect(() => {
         const domContainer = document.getElementById(GRAPH_CONTAINER_ID);
@@ -24,7 +29,7 @@ const GraphEditor = () => {
             width: EDITOR_WIDTH_SCALING_FACTOR * domContainer!.offsetWidth,
             height: 500,
             gridSize: 1,
-            cellViewNamespace: namespace,
+            cellViewNamespace: joint.shapes,
             restrictTranslate: true
         });
 
