@@ -1,12 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import taskManagementReducer, {taskManagementSlice} from "../components/TaskManagement/taskManagementReducer";
+import {taskSlice} from "../components/TaskManagement/taskManagementSlice";
 
 export const store = configureStore({
     reducer: {
-        taskManagement: taskManagementSlice.reducer
+        taskManagement: taskSlice.reducer
     },
 })
 
 export type RootState = ReturnType<typeof store.getState>
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch

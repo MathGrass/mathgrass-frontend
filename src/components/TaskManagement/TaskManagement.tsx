@@ -2,12 +2,12 @@ import React from "react";
 import Form from "@rjsf/core";
 import {JSONSchema7} from "json-schema";
 import {useAppDispatch, useAppSelector} from "../../state/hooks";
-import {taskManagementSlice} from "./taskManagementReducer";
+import taskManagementSlice, {taskSlice} from "./taskManagementSlice";
 
 
 const TaskManagement = () => {
 
-    const taskType = useAppSelector((state) => state.taskManagement.taskType)
+    const taskType = useAppSelector((state) => state.taskManagement.taskId)
     const dispatch = useAppDispatch()
 
     const schema: JSONSchema7 = {
@@ -29,9 +29,7 @@ const TaskManagement = () => {
 
 
     return (
-        <Form schema={schema} uiSchema={uiSchema} onChange={e => {
-            dispatch(taskManagementSlice.actions.requestStuff())
-        }}>
+        <Form schema={schema} uiSchema={uiSchema} onChange={() => dispatch(taskSlice.actions.increment())}>
             or..
             <br/>
             <a href="#">Skip this graph</a> and request a new graph for the same problem.
