@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import MathGrass from './MathGrass';
+import MathGrass from './mathGrass';
 import {store} from "./state/store";
 
 ReactDOM.render(

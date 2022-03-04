@@ -1,9 +1,9 @@
 import React from 'react';
-import GraphEditor from "./components/GraphEditor/GraphEditor";
-import Assessment from "./components/Assessment/Assessment";
-import IncrementalHints from "./components/IncrementalHints/IncrementalHints";
+import GraphEditor from "./components/graphEditor/graphEditor";
+import Assessment from "./components/assessment/assessment";
+import IncrementalHints from "./components/incrementalHints/incrementalHints";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import TaskManagement from "./components/TaskManagement/TaskManagement";
+import TaskManagement from "./components/taskManagement/taskManagement";
 
 export type MathGrassProps = {
     assessmentServerUrl : string

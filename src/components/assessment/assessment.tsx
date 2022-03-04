@@ -14,7 +14,7 @@ function submitStudentSolution(form: ISubmitEvent<any>): void {
 function getInitialState(): AssessmentState {
     return {
         schema: {
-            title: "Graph Assessment",
+            title: "Graph assessment",
             type: "object",
             required: ["isPlanar"],
             properties: {
