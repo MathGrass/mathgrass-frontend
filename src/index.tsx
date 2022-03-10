@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import MathGrass from './mathGrass';
-import {store} from "./state/store";
+import {store} from './state/store';
+
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <MathGrass
-                assessmentServerUrl={"http://localhost:8889"}
+                assessmentServerUrl={'http://localhost:8889'}
             />
         </Provider>
     </React.StrictMode>
