@@ -1,33 +1,33 @@
 import React from 'react';
-import {JSONSchema7} from "json-schema";
-import Form from "@rjsf/core";
+import {JSONSchema7} from 'json-schema';
+import Form from '@rjsf/core';
 
-type IncrementalHintsProps = {}
+type IncrementalHintsProps = {};
 
 type IncrementalHintsState = {
     hintLevel: number
-}
+};
 
 
 const IncrementalHints = () => {
     const schema: JSONSchema7 = {
-        title: "Request Hint",
-        type: "object",
+        title: 'Request Hint',
+        type: 'object',
         properties: {
-            hintLevel: {type: "number", title: "hintLevel"}
+            hintLevel: {type: 'number', title: 'hintLevel'}
         }
     };
 
     const uiSchema = {
         hintLevel: {
-            "ui:widget": "hidden"
+            'ui:widget': 'hidden'
         }
     };
 
     return (<Form schema={schema}
                   uiSchema={uiSchema}
     />);
-}
+};
 
 
 export default IncrementalHints;

@@ -1,29 +1,29 @@
-import React from "react";
-import Form from "@rjsf/core";
-import {JSONSchema7} from "json-schema";
-import {useAppDispatch, useAppSelector} from "../../state/hooks";
-import taskManagementSlice, {taskSlice} from "./taskManagementSlice";
+import React from 'react';
+import Form from '@rjsf/core';
+import {JSONSchema7} from 'json-schema';
+import {useAppDispatch, useAppSelector} from '../../state/hooks';
+import taskManagementSlice, {taskSlice} from './taskManagementSlice';
 
 
 const TaskManagement = () => {
 
-    const taskType = useAppSelector((state) => state.taskManagement.taskId)
-    const dispatch = useAppDispatch()
+    const taskType = useAppSelector((state) => state.taskManagement.taskId);
+    const dispatch = useAppDispatch();
 
     const schema: JSONSchema7 = {
-        "type": "object",
-        "properties": {
-            "taskType": {
-                "type": "string",
-                "title": "Select Task Type",
-                "enum": [
-                    "Planarity",
-                    "Bipartite Graphs",
-                    "Eulerian Graphs"
+        'type': 'object',
+        'properties': {
+            'taskType': {
+                'type': 'string',
+                'title': 'Select Task Type',
+                'enum': [
+                    'Planarity',
+                    'Bipartite Graphs',
+                    'Eulerian Graphs'
                 ]
             }
         }
-    }
+    };
 
     const uiSchema = {};
 
@@ -38,6 +38,6 @@ const TaskManagement = () => {
             <br />
             Task Type: {taskType}
         </Form>);
-}
+};
 
 export default TaskManagement;
