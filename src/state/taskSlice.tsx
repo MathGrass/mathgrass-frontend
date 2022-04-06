@@ -3,18 +3,27 @@ import type { RootState } from './common/store';
 import * as joint from "jointjs";
 import {JSONSchema7} from "json-schema";
 import {generateDemoGraph} from "./initialResources/demoGraph";
+import {UiSchema} from "@rjsf/core";
+import {getDemoAssessmentSchema} from "./initialResources/demoQuestionSchema";
 
 interface TaskState {
     taskType: string;
     taskId: string;
     graphPayload: any;
+    questionSchema: AssessmentSchema
+}
+
+export interface AssessmentSchema {
+    schema: JSONSchema7
+    uiSchema: UiSchema
 }
 
 function getInitialTaskState(): TaskState {
     return {
         taskType: 'randomTaskType',
         taskId: 'randomId',
-        graphPayload: undefined
+        graphPayload: undefined,
+        questionSchema: getDemoAssessmentSchema()
     };
 }
 

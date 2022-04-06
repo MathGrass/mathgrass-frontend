@@ -45,7 +45,7 @@ class MathGrass extends React.Component<MathGrassProps> {
                                     <h2>Assessment</h2>
                                 </div>
                                 <div className="card-body">
-                                    <Assessment {...this.props}/>
+                                    <Assessment />
                                 </div>
                             </div>
                         </div>
