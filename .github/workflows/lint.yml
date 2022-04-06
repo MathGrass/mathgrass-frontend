@@ -1,4 +1,4 @@
-name: Testsuite
+name: Linter
 
 on:
   push:
