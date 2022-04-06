@@ -22,8 +22,6 @@ const GraphEditor = () => {
     useEffect(() => {
         const domContainer = document.getElementById(GRAPH_CONTAINER_ID);
 
-        console.log("i just redrew");
-
         const paper : joint.dia.Paper = new joint.dia.Paper({
             el: domContainer!,
             model: graphEditorModel,

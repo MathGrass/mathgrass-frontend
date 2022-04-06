@@ -8,7 +8,8 @@ interface TaskState {
     taskType: string;
     taskId: string;
     graphPayload: any;
-    questionSchema: AssessmentSchema
+    questionSchema: AssessmentSchema;
+    hintLevel: number
 }
 
 export interface AssessmentSchema {
@@ -21,7 +22,8 @@ function getInitialTaskState(): TaskState {
         taskType: 'randomTaskType',
         taskId: 'randomId',
         graphPayload: undefined,
-        questionSchema: getDemoAssessmentSchema()
+        questionSchema: getDemoAssessmentSchema(),
+        hintLevel: 0
     };
 }
 
@@ -39,4 +41,3 @@ export const taskSlice = createSlice({
 });
 
 export const { requestNewGraph } = taskSlice.actions;
-export default taskSlice.reducer;
