@@ -1,7 +1,7 @@
 import React from 'react';
 import Form, {ISubmitEvent, UiSchema} from '@rjsf/core';
 import {JSONSchema7} from 'json-schema';
-import {useAppDispatch, useAppSelector} from '../../state/hooks';
+import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
 
 type AssessmentState = {
     schema: JSONSchema7

@@ -1,13 +1,12 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import {JSONSchema7} from 'json-schema';
-import {useAppDispatch, useAppSelector} from '../../state/hooks';
-import taskManagementSlice, {taskSlice} from './taskManagementSlice';
+import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
+import {taskSlice} from '../../state/taskSlice';
 
 
 const TaskManagement = () => {
-
-    const taskType = useAppSelector((state) => state.taskManagement.taskId);
+    const currentTaskType = useAppSelector((state) => state.taskManagement.taskType);
     const dispatch = useAppDispatch();
 
     const schema: JSONSchema7 = {
@@ -29,14 +28,14 @@ const TaskManagement = () => {
 
 
     return (
-        <Form schema={schema} uiSchema={uiSchema} onChange={() => dispatch(taskSlice.actions.increment())}>
+        <Form schema={schema} uiSchema={uiSchema}>
             or..
             <br/>
-            <a href="#">Skip this graph</a> and request a new graph for the same problem.
+            <a href="#" onClick={() => dispatch(taskSlice.actions.requestNewGraph("hi"))}>Skip this graph</a> and request a new graph for the same problem.
             <br/>
             You may also <a href="#">export</a> the current graph.
             <br />
-            Task Type: {taskType}
+            Task Type: {currentTaskType}
         </Form>);
 };
 
