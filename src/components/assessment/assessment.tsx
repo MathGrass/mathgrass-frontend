@@ -1,7 +1,6 @@
 import React from 'react';
 import Form, {ISubmitEvent, UiSchema} from '@rjsf/core';
-import {JSONSchema7} from 'json-schema';
-import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
+import {useAppSelector} from '../../state/common/hooks';
 
 function submitStudentSolution(form: ISubmitEvent<any>): void {
     //

@@ -3,11 +3,6 @@ import * as joint from 'jointjs';
 import {useAppSelector} from "../../state/common/hooks";
 import {generateDemoGraph} from "../../state/initialResources/demoGraph";
 
-
-export type GraphEditorState = {
-    currentGraph: joint.dia.Graph
-};
-
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 
 const EDITOR_WIDTH_SCALING_FACTOR = 0.95;

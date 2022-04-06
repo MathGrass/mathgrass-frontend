@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from './common/store';
 import * as joint from "jointjs";
 import {JSONSchema7} from "json-schema";
-import {generateDemoGraph} from "./initialResources/demoGraph";
 import {UiSchema} from "@rjsf/core";
 import {getDemoAssessmentSchema} from "./initialResources/demoQuestionSchema";
 
