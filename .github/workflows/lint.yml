@@ -1,10 +1,10 @@
-name: Build with Webpack
+name: Linter
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "**" ]
 
 jobs:
   build:
@@ -22,7 +22,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Build with Webpack
+      - name: Lint
         run: |
-          npm install
-          npm run build
+          npm run lint
