@@ -1,4 +1,4 @@
-import * as joint from "jointjs";
+import * as joint from 'jointjs';
 
 export function generateDemoGraph() : joint.dia.Graph {
     const namespace = joint.shapes;
