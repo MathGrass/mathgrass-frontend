@@ -31,7 +31,7 @@ const TaskManagement = () => {
         <Form schema={schema} uiSchema={uiSchema}>
             or..
             <br/>
-            <a href="#" onClick={() => dispatch(taskSlice.actions.requestNewGraph("hi"))}>Skip this graph</a> and request a new graph for the same problem.
+            <a href="#" onClick={() => dispatch(taskSlice.actions.requestNewGraph('hi'))}>Skip this graph</a> and request a new graph for the same problem.
             <br/>
             You may also <a href="#">export</a> the current graph.
             <br />

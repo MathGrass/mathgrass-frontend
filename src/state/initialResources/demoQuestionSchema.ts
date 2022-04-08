@@ -1,4 +1,4 @@
-import {AssessmentSchema} from "../taskSlice";
+import {AssessmentSchema} from '../taskSlice';
 
 export function getDemoAssessmentSchema(): AssessmentSchema {
     return {

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import * as joint from 'jointjs';
-import {useAppSelector} from "../../state/common/hooks";
-import {generateDemoGraph} from "../../state/initialResources/demoGraph";
+import {useAppSelector} from '../../state/common/hooks';
+import {generateDemoGraph} from '../../state/initialResources/demoGraph';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 
@@ -13,7 +13,7 @@ const GraphEditor = () => {
     const graphPayload = useAppSelector((state) => state.taskManagement.graphPayload);
 
     let graphEditorModel : joint.dia.Graph;
-    if(graphPayload == undefined){
+    if(graphPayload === undefined){
         graphEditorModel = generateDemoGraph();
     }else{
         graphEditorModel = new joint.dia.Graph({}, {cellNamespace: joint.shapes}).fromJSON(graphPayload);
