@@ -9,17 +9,18 @@ const TaskManagement = () => {
     const currentTaskType = useAppSelector((state) => state.taskManagement.taskType);
     const dispatch = useAppDispatch();
 
+    const availableTaskTypes = [
+        {'enum': ['planarity'], 'title' : 'Planarity'},
+        {'enum': ['bipartite'], 'title' : 'Bipartite Graphs'}
+    ];
+
     const schema: JSONSchema7 = {
         'type': 'object',
         'properties': {
             'taskType': {
                 'type': 'string',
                 'title': 'Select Task Type',
-                'enum': [
-                    'Planarity',
-                    'Bipartite Graphs',
-                    'Eulerian Graphs'
-                ]
+                'oneOf': availableTaskTypes
             }
         }
     };
@@ -31,7 +32,6 @@ const TaskManagement = () => {
         <Form schema={schema} uiSchema={uiSchema}>
             or..
             <br/>
-            <a href="#" onClick={() => dispatch(taskSlice.actions.requestNewGraph('hi'))}>Skip this graph</a> and request a new graph for the same problem.
             <br/>
             You may also <a href="#">export</a> the current graph.
             <br />
