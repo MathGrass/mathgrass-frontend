@@ -12,6 +12,7 @@ interface TaskState {
     hintLevel: number;
 }
 
+
 export interface AssessmentSchema {
     schema: JSONSchema7;
     uiSchema: UiSchema;
@@ -27,11 +28,13 @@ function getInitialTaskState(): TaskState {
     };
 }
 
-const initialState: TaskState = getInitialTaskState();
+
+
+const initialTaskState: TaskState = getInitialTaskState();
 
 export const taskSlice = createSlice({
     name: 'tasks',
-    initialState,
+    initialState: initialTaskState,
     reducers: {
         requestNewGraph: (state, action: PayloadAction<string>) => {
             state.taskId = String(Math.floor(Math.random() * 123));
@@ -40,4 +43,7 @@ export const taskSlice = createSlice({
     }
 });
 
-export const { requestNewGraph } = taskSlice.actions;
+
+/*
+export const { exportGraph } = graphSlice.actions;
+export default graphSlice.reducer;*/

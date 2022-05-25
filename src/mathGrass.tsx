@@ -9,7 +9,7 @@ export type MathGrassProps = {
     assessmentServerUrl : string
 };
 
-class MathGrass extends React.Component<MathGrassProps> {
+class MathGrass extends React.Component<MathGrassProps, any> {
     render() {
         return (
             /*main container*/

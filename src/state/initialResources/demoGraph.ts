@@ -27,3 +27,4 @@ export function generateDemoGraph() : joint.dia.Graph {
     return graph;
 }
 
+

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import {graphSlice} from '../graphSlice';
 import {taskSlice} from '../taskSlice';
 
 export const store = configureStore({
     reducer: {
-        taskManagement: taskSlice.reducer
+        taskManagement: taskSlice.reducer,
+        graphManagement: graphSlice.reducer
     },
 });
 

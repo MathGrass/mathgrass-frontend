@@ -27,13 +27,16 @@ const TaskManagement = () => {
 
     const uiSchema = {};
 
+    function asd() {
+        alert('hi');
+    }
 
     return (
         <Form schema={schema} uiSchema={uiSchema}>
             or..
             <br/>
             <br/>
-            You may also <a href="#">export</a> the current graph.
+            You may also <a href="#" onClick={asd}>export</a> the current graph.
             <br />
             Task Type: {currentTaskType}
         </Form>);
