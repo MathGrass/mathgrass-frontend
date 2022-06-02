@@ -41,17 +41,19 @@ const GraphEditor = () => {
         );
 
         // TODO - dynamic resize
-        /*window.addEventListener('resize', () => {
-            const canvas = document.getElementById(GRAPH_CONTAINER_ID);
-            paper.setDimensions(canvas!.offsetWidth, canvas!.offsetHeight);
-            // tslint:disable-next-line:no-console
-            console.log(generateDemoGraph().toJSON());
-        }, true);*/
+        window.addEventListener('resize', () => {
+            // handle resize event
+        }, true);
 
     });
 
+    const outerStyle = {
+        overflow: 'auto'
+    };
 
-    return (<div id={GRAPH_CONTAINER_ID}>Graph</div>);
+    return (<div id="outer" style={outerStyle}>
+                <div id={GRAPH_CONTAINER_ID}>Graph</div>
+            </div>);
 };
 
 export default GraphEditor;
