@@ -8,9 +8,7 @@ import {store} from './state/common/store';
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <MathGrass
-                assessmentServerUrl={'http://localhost:8889'}
-            />
+            <MathGrass />
         </Provider>
     </React.StrictMode>
     ,
