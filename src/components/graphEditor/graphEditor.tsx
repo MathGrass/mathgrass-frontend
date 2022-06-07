@@ -3,7 +3,7 @@ import * as joint from 'jointjs';
 import {useAppSelector} from '../../state/common/hooks';
 import {generateDemoGraph} from '../../state/initialResources/demoGraph';
 import {useDispatch} from 'react-redux';
-import {exportGraph} from '../../state/graphSlice';
+import {propagateGraphState} from '../../state/graphSlice';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 
@@ -21,8 +21,9 @@ const GraphEditor = () => {
     }
 
     // dispatch new state on edit
+    // TODO - which events should trigger this? as of now, state propagation is excessive
     graphEditorModel.on('all', (eventName, cell) => {
-        dispatch(exportGraph(graphEditorModel.toJSON()));
+        dispatch(propagateGraphState(graphEditorModel.toJSON()));
     });
 
 

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface GraphState {
     graphId: string;
@@ -7,7 +7,7 @@ interface GraphState {
 }
 
 
-function getInitialGraphState(): GraphState{
+function getInitialGraphState(): GraphState {
     return {
         graphId: '1',
         graphUneditedOriginal: 'todo',
@@ -21,11 +21,11 @@ export const graphSlice = createSlice({
     name: 'graph',
     initialState: initialGraphState,
     reducers: {
-        exportGraph: (state, action: PayloadAction<any>) => {
-            // alert('exported');
+        propagateGraphState: (state, action: PayloadAction<any>) => {
+            //
         }
     }
 });
 
-export const { exportGraph } = graphSlice.actions;
+export const {propagateGraphState} = graphSlice.actions;
 export default graphSlice.reducer;
