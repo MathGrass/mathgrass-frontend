@@ -3,7 +3,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 interface GraphState {
     graphId: string;
     graphUneditedOriginal: any;
-    graphEdited: any | null;
+    graphInEditor: any | null;
 }
 
 
@@ -11,7 +11,7 @@ function getInitialGraphState(): GraphState {
     return {
         graphId: '1',
         graphUneditedOriginal: 'todo',
-        graphEdited: null
+        graphInEditor: null
     };
 }
 
@@ -22,7 +22,7 @@ export const graphSlice = createSlice({
     initialState: initialGraphState,
     reducers: {
         propagateGraphState: (state, action: PayloadAction<any>) => {
-            //
+            state.graphInEditor = action.payload;
         }
     }
 });
