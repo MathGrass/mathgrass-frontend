@@ -1,16 +1,20 @@
+
 export interface MathGrassConfig {
     readonly serverUrl: string;
     readonly taskTypesQueryPath: string;
     readonly submitAssessmentPath: string;
     readonly requestHintsPath: string;
+    readonly domContainerId: string;
 }
 
-let serverUrl: string;
-
-export function setServerUrl(url: string): void {
-    serverUrl = url;
+export function getServerConfig() : MathGrassConfig  {
+    return devServerConfig;
 }
 
-export function getServerUrl(): string {
-    return serverUrl;
-}
+const devServerConfig : MathGrassConfig = {
+    serverUrl: 'http://localhost:3001/',
+    taskTypesQueryPath: 'availableTaskTypes',
+    submitAssessmentPath: 'submitAssessment',
+    requestHintsPath: 'requestHint',
+    domContainerId: 'root'
+};
