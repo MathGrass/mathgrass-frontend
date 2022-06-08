@@ -2,7 +2,7 @@ import {AssessmentSchema} from '../taskSlice';
 
 export function getDemoAssessmentSchema(): AssessmentSchema {
     return {
-        schema: {
+        assessmentSchema: {
             title: 'Graph assessment',
             type: 'object',
             required: ['isPlanar'],
@@ -10,7 +10,7 @@ export function getDemoAssessmentSchema(): AssessmentSchema {
                 isPlanar: {type: 'boolean', title: 'Is the graph planar?'}
             }
         },
-        uiSchema: {
+        assessmentUiSchema: {
             isPlanar: {
                 'ui:widget': 'radio'
             }

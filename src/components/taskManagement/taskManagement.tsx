@@ -9,12 +9,20 @@ import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 const TaskManagement = () => {
     const currentTaskType = useAppSelector((state) => state.taskManagement.taskType);
     const currentJointJsGraph = useAppSelector((state) => state.graphManagement.graphInEditor);
+    const availableTaskTypes = useAppSelector((state) => state.taskManagement.availableTasks);
     const dispatch = useAppDispatch();
 
-    const availableTaskTypes = [
+    const availableTaskTypesEnum:  JSONSchema7[] = [];
+    availableTaskTypes.forEach((s) => {
+        availableTaskTypesEnum.push({
+            'enum': [s.identifier], 'title' : s.displayName
+        });
+    });
+
+/*    const availableTaskTypesEnum = [
         {'enum': ['planarity'], 'title' : 'Planarity'},
         {'enum': ['bipartite'], 'title' : 'Bipartite Graphs'}
-    ];
+    ];*/
 
     const schema: JSONSchema7 = {
         'type': 'object',
@@ -22,7 +30,7 @@ const TaskManagement = () => {
             'taskType': {
                 'type': 'string',
                 'title': 'Select Task Type',
-                'oneOf': availableTaskTypes
+                'oneOf': availableTaskTypesEnum
             }
         }
     };

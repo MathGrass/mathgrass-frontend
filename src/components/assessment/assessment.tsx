@@ -11,8 +11,8 @@ function submitStudentSolution(form: ISubmitEvent<any>): void {
 const Assessment = () => {
     const questionSchema = useAppSelector((state) => state.taskManagement.questionSchema);
 
-    return (<Form schema={questionSchema.schema}
-                  uiSchema={questionSchema.uiSchema}
+    return (<Form schema={questionSchema.assessmentSchema}
+                  uiSchema={questionSchema.assessmentUiSchema}
                   onSubmit={submitStudentSolution}/>);
 
 };
