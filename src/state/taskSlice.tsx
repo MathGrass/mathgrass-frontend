@@ -3,6 +3,7 @@ import * as joint from 'jointjs';
 import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import {getDemoAssessmentSchema} from './initialResources/demoQuestionSchema';
+import {generateDemoGraph} from './initialResources/demoGraph';
 
 interface TaskState {
     taskType: string;
@@ -41,9 +42,10 @@ export const taskSlice = createSlice({
     name: 'tasks',
     initialState: initialTaskState,
     reducers: {
-        requestNewGraph: (state, action: PayloadAction<string>) => {
+        requestNewGraph: (state, action: PayloadAction<{ asd: string }>) => {
             state.taskId = String(Math.floor(Math.random() * 123));
-            state.graphPayload = new joint.dia.Graph({}, {cellNamespace: joint.shapes}).toJSON();
+            state.graphPayload = generateDemoGraph().toJSON();
+            // TODO: fetch a new graph with the specified type
         }
     }
 });
@@ -58,6 +60,6 @@ function getDemoTaskTypes() {
     }];
 }
 
-/*
-export const { exportGraph } = graphSlice.actions;
-export default graphSlice.reducer;*/
+
+export const { requestNewGraph } = taskSlice.actions;
+export default taskSlice.reducer;

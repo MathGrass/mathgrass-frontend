@@ -1,9 +1,10 @@
 import React from 'react';
-import Form from '@rjsf/core';
+import Form, {IChangeEvent} from '@rjsf/core';
 import {JSONSchema7} from 'json-schema';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
-import {taskSlice} from '../../state/taskSlice';
+import {requestNewGraph, taskSlice} from '../../state/taskSlice';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
+import {propagateGraphState} from '../../state/graphSlice';
 
 
 const TaskManagement = () => {
@@ -33,7 +34,10 @@ const TaskManagement = () => {
     const uiSchema = {};
 
     return (
-        <Form schema={schema} uiSchema={uiSchema}>
+        <Form schema={schema} uiSchema={uiSchema} onChange={(e: IChangeEvent) => {
+            dispatch(requestNewGraph(e.formData.taskType));
+            // TODO: notify graph slice
+        }}>
             <p>
             or...
                 <p>
