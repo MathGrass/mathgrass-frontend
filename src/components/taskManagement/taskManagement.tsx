@@ -19,11 +19,6 @@ const TaskManagement = () => {
         });
     });
 
-/*    const availableTaskTypesEnum = [
-        {'enum': ['planarity'], 'title' : 'Planarity'},
-        {'enum': ['bipartite'], 'title' : 'Bipartite Graphs'}
-    ];*/
-
     const schema: JSONSchema7 = {
         'type': 'object',
         'properties': {
