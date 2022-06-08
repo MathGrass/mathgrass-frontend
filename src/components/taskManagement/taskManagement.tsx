@@ -9,6 +9,7 @@ import {propagateGraphState} from '../../state/graphSlice';
 
 const TaskManagement = () => {
     const currentTaskType = useAppSelector((state) => state.taskManagement.taskType);
+    const originalJointJsGraph = useAppSelector((state) => state.taskManagement.graphUneditedOriginal);
     const currentJointJsGraph = useAppSelector((state) => state.graphManagement.graphInEditor);
     const availableTaskTypes = useAppSelector((state) => state.taskManagement.availableTasks);
     const dispatch = useAppDispatch();
@@ -36,7 +37,8 @@ const TaskManagement = () => {
     return (
         <Form schema={schema} uiSchema={uiSchema} onChange={(e: IChangeEvent) => {
             dispatch(requestNewGraph(e.formData.taskType));
-            // TODO: notify graph slice
+            // after having requested a new graph, the new graph must be rendered
+            dispatch(propagateGraphState(originalJointJsGraph));
         }}>
             <p>
             or...

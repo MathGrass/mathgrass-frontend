@@ -1,16 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface GraphState {
-    graphId: string;
-    graphUneditedOriginal: any;
     graphInEditor: any | null;
 }
 
 
 function getInitialGraphState(): GraphState {
     return {
-        graphId: '1',
-        graphUneditedOriginal: 'todo',
         graphInEditor: null
     };
 }

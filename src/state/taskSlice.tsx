@@ -8,7 +8,7 @@ import {generateDemoGraph} from './initialResources/demoGraph';
 interface TaskState {
     taskType: string;
     taskId: string;
-    graphPayload: any;
+    graphUneditedOriginal: any;
     questionSchema: AssessmentSchema;
     hintLevel: number;
     availableTasks: { identifier: string; displayName: string; } [];
@@ -24,7 +24,7 @@ function getInitialTaskState(): TaskState {
     return {
         taskType: 'randomTaskType',
         taskId: 'randomId',
-        graphPayload: undefined,
+        graphUneditedOriginal: undefined,
         questionSchema: getDemoAssessmentSchema(),
         hintLevel: 0,
         availableTasks: getDemoTaskTypes()
@@ -44,7 +44,7 @@ export const taskSlice = createSlice({
     reducers: {
         requestNewGraph: (state, action: PayloadAction<{ asd: string }>) => {
             state.taskId = String(Math.floor(Math.random() * 123));
-            state.graphPayload = generateDemoGraph().toJSON();
+            state.graphUneditedOriginal = generateDemoGraph().toJSON();
             // TODO: fetch a new graph with the specified type
         }
     }
