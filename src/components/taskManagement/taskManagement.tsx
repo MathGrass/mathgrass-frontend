@@ -2,15 +2,13 @@ import React from 'react';
 import Form, {IChangeEvent} from '@rjsf/core';
 import {JSONSchema7} from 'json-schema';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
-import {requestNewGraph, taskSlice} from '../../state/taskSlice';
+import {requestNewGraph, applicationState, propagateGraphState} from '../../state/applicationState';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
-import {propagateGraphState} from '../../state/graphSlice';
-
 
 const TaskManagement = () => {
     const currentTaskType = useAppSelector((state) => state.taskManagement.taskType);
     const originalJointJsGraph = useAppSelector((state) => state.taskManagement.graphUneditedOriginal);
-    const currentJointJsGraph = useAppSelector((state) => state.graphManagement.graphInEditor);
+    const currentJointJsGraph = useAppSelector((state) => state.taskManagement.graphInEditor);
     const availableTaskTypes = useAppSelector((state) => state.taskManagement.availableTasks);
     const dispatch = useAppDispatch();
 

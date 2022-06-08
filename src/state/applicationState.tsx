@@ -9,6 +9,7 @@ interface TaskState {
     taskType: string;
     taskId: string;
     graphUneditedOriginal: any;
+    graphInEditor: any;
     questionSchema: AssessmentSchema;
     hintLevel: number;
     availableTasks: { identifier: string; displayName: string; } [];
@@ -25,6 +26,7 @@ function getInitialTaskState(): TaskState {
         taskType: 'randomTaskType',
         taskId: 'randomId',
         graphUneditedOriginal: undefined,
+        graphInEditor: undefined,
         questionSchema: getDemoAssessmentSchema(),
         hintLevel: 0,
         availableTasks: getDemoTaskTypes()
@@ -38,14 +40,17 @@ export interface JSONSchemaEnumType {
 
 
 const initialTaskState: TaskState = getInitialTaskState();
-export const taskSlice = createSlice({
+export const applicationState = createSlice({
     name: 'tasks',
     initialState: initialTaskState,
     reducers: {
         requestNewGraph: (state, action: PayloadAction<{ asd: string }>) => {
             state.taskId = String(Math.floor(Math.random() * 123));
             state.graphUneditedOriginal = generateDemoGraph().toJSON();
-            // TODO: fetch a new graph with the specified type
+            state.graphInEditor = action.payload;
+        },
+        propagateGraphState: (state, action: PayloadAction<any>) => {
+            state.graphInEditor = action.payload;
         }
     }
 });
@@ -61,5 +66,5 @@ function getDemoTaskTypes() {
 }
 
 
-export const { requestNewGraph } = taskSlice.actions;
-export default taskSlice.reducer;
+export const { requestNewGraph, propagateGraphState } = applicationState.actions;
+export default applicationState.reducer;

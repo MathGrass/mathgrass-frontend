@@ -3,7 +3,7 @@ import * as joint from 'jointjs';
 import {useAppSelector} from '../../state/common/hooks';
 import {generateDemoGraph} from '../../state/initialResources/demoGraph';
 import {useDispatch} from 'react-redux';
-import {propagateGraphState} from '../../state/graphSlice';
+import {propagateGraphState} from '../../state/applicationState';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 
