@@ -32,10 +32,6 @@ const TaskManagement = () => {
 
     const uiSchema = {};
 
-    function asd() {
-        alert('hi');
-    }
-
     return (
         <Form schema={schema} uiSchema={uiSchema}>
             <p>
