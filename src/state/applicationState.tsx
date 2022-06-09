@@ -42,16 +42,24 @@ export const applicationState = createSlice({
     name: 'tasks',
     initialState: initialTaskState,
     reducers: {
-        requestNewGraph: (state, action: PayloadAction<{ asd: string }>) => {
+        requestNewGraph: (state, action: PayloadAction<string>) => {
+            // fetch new graph for the given task state
             state.taskId = String(Math.floor(Math.random() * 123));
             state.graphUneditedOriginal = generateDemoGraph().toJSON();
+            // and set graphInEditor state accordingly
             state.graphInEditor = action.payload;
         },
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
-        }
+        },
+        requestAssessment: (state, action: PayloadAction<any>) => {
+
+        },
+        requestHint: (state, action: PayloadAction<any>) => {
+
+        },
     }
 });
 
-export const { requestNewGraph, propagateGraphState } = applicationState.actions;
+export const { requestNewGraph, propagateGraphState, requestAssessment, requestHint } = applicationState.actions;
 export default applicationState.reducer;
