@@ -2,7 +2,7 @@ import {JsonFormTuple} from '../applicationState';
 
 export function getDemoAssessmentSchema(): JsonFormTuple {
     return {
-        assessmentSchema: {
+        schema: {
             title: 'Graph assessment',
             type: 'object',
             required: ['isPlanar'],
@@ -10,7 +10,7 @@ export function getDemoAssessmentSchema(): JsonFormTuple {
                 isPlanar: {type: 'boolean', title: 'Is the graph planar?'}
             }
         },
-        assessmentUiSchema: {
+        uiSchema: {
             isPlanar: {
                 'ui:widget': 'radio'
             }

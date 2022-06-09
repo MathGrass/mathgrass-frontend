@@ -4,6 +4,7 @@ import {useAppSelector} from '../../state/common/hooks';
 import {generateDemoGraph} from '../../state/initialResources/demoGraph';
 import {useDispatch} from 'react-redux';
 import {propagateGraphState} from '../../state/applicationState';
+import GraphFeedback from './graphFeedback';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 
@@ -54,6 +55,7 @@ const GraphEditor = () => {
 
     return (<div id="outer" style={outerStyle}>
                 <div id={GRAPH_CONTAINER_ID}>Graph</div>
+                <GraphFeedback/>
             </div>);
 };
 
