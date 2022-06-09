@@ -2,7 +2,7 @@ import React from 'react';
 import Form, {IChangeEvent} from '@rjsf/core';
 import {JSONSchema7} from 'json-schema';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
-import {requestNewGraph, applicationState, propagateGraphState} from '../../state/applicationState';
+import {requestNewGraph, applicationState, propagateGraphState, TaskTuple} from '../../state/applicationState';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 
 const TaskManagement = () => {
@@ -12,12 +12,7 @@ const TaskManagement = () => {
     const availableTaskTypes = useAppSelector((state) => state.taskManagement.availableTasks);
     const dispatch = useAppDispatch();
 
-    const availableTaskTypesEnum:  JSONSchema7[] = [];
-    availableTaskTypes.forEach((s) => {
-        availableTaskTypesEnum.push({
-            'enum': [s.identifier], 'title' : s.displayName
-        });
-    });
+    const availableTaskTypesEnum:  JSONSchema7[] = availableTasksToTaskTypesEnum(availableTaskTypes);
 
     const schema: JSONSchema7 = {
         'type': 'object',
@@ -46,5 +41,15 @@ const TaskManagement = () => {
             </p>
         </Form>);
 };
+
+function availableTasksToTaskTypesEnum(availableTaskTypes: TaskTuple[]): JSONSchema7[] {
+    const availableTaskTypesEnum : JSONSchema7[] = [];
+    availableTaskTypes.forEach((tt) => {
+        availableTaskTypesEnum.push({
+            'enum': [tt.identifier], 'title' : tt.displayName
+        });
+    });
+    return availableTaskTypesEnum;
+}
 
 export default TaskManagement;
