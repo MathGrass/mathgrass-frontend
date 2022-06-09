@@ -11,14 +11,18 @@ interface ApplicationState {
     taskId: string;
     graphUneditedOriginal: any;
     graphInEditor: any;
-    questionSchema: JsonFormTuple;
+    jsonFormDescription: JsonFormTuple;
     hintLevel: number;
-    availableTasks: { identifier: string; displayName: string; }[];
+    availableTasks: TaskTuple[];
+}
+
+export interface TaskTuple {
+    identifier: string; displayName: string;
 }
 
 export interface JsonFormTuple {
-    assessmentSchema: JSONSchema7;
-    assessmentUiSchema: UiSchema;
+    schema: JSONSchema7;
+    uiSchema: UiSchema;
 }
 
 function getInitialApplicationState(): ApplicationState {
@@ -27,7 +31,7 @@ function getInitialApplicationState(): ApplicationState {
         taskId: 'randomId',
         graphUneditedOriginal: undefined,
         graphInEditor: undefined,
-        questionSchema: getDemoAssessmentSchema(),
+        jsonFormDescription: getDemoAssessmentSchema(),
         hintLevel: 0,
         availableTasks: getDemoTaskTypes()
     };
