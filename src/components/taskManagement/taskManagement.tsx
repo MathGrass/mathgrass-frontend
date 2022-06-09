@@ -30,8 +30,6 @@ const TaskManagement = () => {
     return (
         <Form schema={schema} uiSchema={uiSchema} onChange={(e: IChangeEvent) => {
             dispatch(requestNewGraph(e.formData.taskType));
-            // after having requested a new graph, the new graph must be rendered
-            dispatch(propagateGraphState(originalJointJsGraph));
         }}>
             <p>
             or...
