@@ -11,14 +11,16 @@ const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 const EDITOR_WIDTH_SCALING_FACTOR = 0.95;
 
 const GraphEditor = () => {
-    const graphPayload = useAppSelector((state) => state.applicationStateManagement.graphUneditedOriginal);
+    const graphUneditedOriginal = useAppSelector((state) => state.applicationStateManagement.graphUneditedOriginal);
+    const showAssessmentFeedback: boolean = useAppSelector((state) => state.applicationStateManagement.showFeedbackSection);
+
     const dispatch = useDispatch();
 
     let graphEditorModel: joint.dia.Graph;
-    if (graphPayload === undefined) {
+    if (graphUneditedOriginal === undefined) {
         graphEditorModel = generateDemoGraph();
     } else {
-        graphEditorModel = new joint.dia.Graph({}, {cellNamespace: joint.shapes}).fromJSON(graphPayload);
+        graphEditorModel = new joint.dia.Graph({}, {cellNamespace: joint.shapes}).fromJSON(graphUneditedOriginal);
     }
 
     // dispatch new state on edit
@@ -54,9 +56,9 @@ const GraphEditor = () => {
     };
 
     return (<div id="outer" style={outerStyle}>
-                <div id={GRAPH_CONTAINER_ID}>Graph</div>
-                <GraphFeedback/>
-            </div>);
+        <div id={GRAPH_CONTAINER_ID}>Graph</div>
+        {showAssessmentFeedback ? <GraphFeedback/> : null}
+    </div>);
 };
 
 export default GraphEditor;

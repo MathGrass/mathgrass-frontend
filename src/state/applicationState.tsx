@@ -16,7 +16,8 @@ interface ApplicationState {
     availableTasks: TaskTuple[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
-    hintFeedback: string | undefined;
+    currentHintFeedback: string | undefined;
+    feedbackHistory: string [] | undefined;
 }
 
 export interface TaskTuple {
@@ -39,7 +40,8 @@ function getInitialApplicationState(): ApplicationState {
         availableTasks: getDemoTaskTypes(),
         showFeedbackSection: false,
         assessmentFeedback: undefined,
-        hintFeedback: undefined
+        currentHintFeedback: undefined,
+        feedbackHistory: undefined
     };
 }
 
@@ -63,8 +65,7 @@ export const applicationState = createSlice({
             state.assessmentFeedback = 'This is the assessment of the given task.';
         },
         requestHint: (state, action: PayloadAction<any>) => {
-            state.showFeedbackSection = true;
-            state.hintFeedback = 'This is a hint.';
+            state.currentHintFeedback = 'This is a hint.';
         },
     }
 });
