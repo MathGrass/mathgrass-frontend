@@ -3,7 +3,7 @@ import {applicationState} from '../applicationState';
 
 export const store = configureStore({
     reducer: {
-        taskManagement: applicationState.reducer,
+        applicationStateManagement: applicationState.reducer,
     },
 });
 

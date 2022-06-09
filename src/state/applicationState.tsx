@@ -14,6 +14,9 @@ interface ApplicationState {
     jsonFormDescription: JsonFormTuple;
     hintLevel: number;
     availableTasks: TaskTuple[];
+    showFeedbackSection: boolean;
+    assessmentFeedback: string | undefined;
+    hintFeedback: string | undefined;
 }
 
 export interface TaskTuple {
@@ -33,7 +36,10 @@ function getInitialApplicationState(): ApplicationState {
         graphInEditor: undefined,
         jsonFormDescription: getDemoAssessmentSchema(),
         hintLevel: 0,
-        availableTasks: getDemoTaskTypes()
+        availableTasks: getDemoTaskTypes(),
+        showFeedbackSection: false,
+        assessmentFeedback: undefined,
+        hintFeedback: undefined
     };
 }
 
@@ -53,10 +59,12 @@ export const applicationState = createSlice({
             state.graphInEditor = action.payload;
         },
         requestAssessment: (state, action: PayloadAction<any>) => {
-
+            state.showFeedbackSection = true;
+            state.assessmentFeedback = 'This is the assessment of the given task.';
         },
         requestHint: (state, action: PayloadAction<any>) => {
-
+            state.showFeedbackSection = true;
+            state.hintFeedback = 'This is a hint.';
         },
     }
 });

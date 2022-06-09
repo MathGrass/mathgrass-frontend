@@ -11,7 +11,7 @@ const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 const EDITOR_WIDTH_SCALING_FACTOR = 0.95;
 
 const GraphEditor = () => {
-    const graphPayload = useAppSelector((state) => state.taskManagement.graphUneditedOriginal);
+    const graphPayload = useAppSelector((state) => state.applicationStateManagement.graphUneditedOriginal);
     const dispatch = useDispatch();
 
     let graphEditorModel: joint.dia.Graph;

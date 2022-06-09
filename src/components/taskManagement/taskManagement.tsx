@@ -6,10 +6,10 @@ import {requestNewGraph, applicationState, propagateGraphState, TaskTuple} from 
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 
 const TaskManagement = () => {
-    const currentTaskType = useAppSelector((state) => state.taskManagement.taskType);
-    const originalJointJsGraph = useAppSelector((state) => state.taskManagement.graphUneditedOriginal);
-    const currentJointJsGraph = useAppSelector((state) => state.taskManagement.graphInEditor);
-    const availableTaskTypes = useAppSelector((state) => state.taskManagement.availableTasks);
+    const currentTaskType = useAppSelector((state) => state.applicationStateManagement.taskType);
+    const originalJointJsGraph = useAppSelector((state) => state.applicationStateManagement.graphUneditedOriginal);
+    const currentJointJsGraph = useAppSelector((state) => state.applicationStateManagement.graphInEditor);
+    const availableTaskTypes = useAppSelector((state) => state.applicationStateManagement.availableTasks);
     const dispatch = useAppDispatch();
 
     const availableTaskTypesEnum:  JSONSchema7[] = availableTasksToTaskTypesEnum(availableTaskTypes);

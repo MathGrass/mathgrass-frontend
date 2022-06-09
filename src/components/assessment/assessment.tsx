@@ -10,7 +10,7 @@ function submitStudentSolution(form: ISubmitEvent<any>): void {
 
 
 const Assessment = () => {
-    const questionSchema: JsonFormTuple = useAppSelector((state) => state.taskManagement.jsonFormDescription);
+    const questionSchema: JsonFormTuple = useAppSelector((state) => state.applicationStateManagement.jsonFormDescription);
 
     return (<Form schema={questionSchema.schema}
                   uiSchema={questionSchema.uiSchema}
