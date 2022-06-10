@@ -1,15 +1,17 @@
 import React, {useEffect} from 'react';
 import * as joint from 'jointjs';
 import {useAppSelector} from '../../state/common/hooks';
-import {generateDemoGraph} from '../../state/initialResources/demoGraph';
 import {useDispatch} from 'react-redux';
-import {propagateGraphState, requestHint, requestNewGraph} from '../../state/applicationState';
+import {propagateGraphState, requestNewGraph} from '../../state/applicationState';
 import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
-
-const EDITOR_WIDTH_SCALING_FACTOR = 0.95;
+const EDITOR_WIDTH_SCALING_FACTOR: number = 0.95;
+const EDITOR_HEIGHT: number = 600;
+const outerStyle = {
+    overflow: 'auto'
+};
 
 const GraphEditor = () => {
     const currentTaskType = useAppSelector((state) => state.applicationStateManagement.taskType);
@@ -19,9 +21,7 @@ const GraphEditor = () => {
     const dispatch = useDispatch();
 
     let graphEditorModel: joint.dia.Graph;
-    if (graphUneditedOriginal === undefined) {
-        alert('no model');
-    } else {
+    if (graphUneditedOriginal !== undefined) {
         graphEditorModel = new joint.dia.Graph({}, {cellNamespace: joint.shapes}).fromJSON(graphUneditedOriginal);
         // dispatch new state on edit
         // TODO - which events should trigger this? as of now, state propagation is excessive
@@ -37,7 +37,7 @@ const GraphEditor = () => {
                 el: domContainer!,
                 model: graphEditorModel,
                 width: EDITOR_WIDTH_SCALING_FACTOR * domContainer!.offsetWidth,
-                height: 500,
+                height: graphEditorModel ? EDITOR_HEIGHT : 0,
                 gridSize: 1,
                 cellViewNamespace: joint.shapes,
                 restrictTranslate: true
@@ -51,32 +51,31 @@ const GraphEditor = () => {
 
     });
 
-    const outerStyle = {
-        overflow: 'auto'
-    };
-
-    return (<div id="outer" style={outerStyle}>
-        <div id={GRAPH_CONTAINER_ID}>Graph</div>
-        {showAssessmentFeedback ? <GraphFeedback/> : null}
-        <div>
-            <div className="d-flex h-100">
-                <div className="align-self-start mr-auto">
-                    <button className="btn btn-danger"
-                            onClick={(event) => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the
-                        same task type
-                    </button>
-                </div>
-                <div className="align-self-center mx-auto">
-                    {}
-                </div>
-                <div className="align-self-end ml-auto">
-                    <button className="btn btn-info"
-                            onClick={(event) => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export
-                        the current graph
-                    </button>
+    return (
+        <div id="outer" style={outerStyle}>
+            <div id={GRAPH_CONTAINER_ID}>Graph</div>
+            <div>
+                {showAssessmentFeedback ? <GraphFeedback/> : null}
+            </div>
+            <div>
+                <div className="d-flex h-100">
+                    <div className="align-self-start mr-auto">
+                        <button className="btn btn-danger"
+                                onClick={() => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the
+                            same task type
+                        </button>
+                    </div>
+                    <div className="align-self-center mx-auto">
+                        {}
+                    </div>
+                    <div className="align-self-end ml-auto">
+                        <button className="btn btn-info"
+                                onClick={() => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export
+                            the current graph
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
     </div>);
 };
 
