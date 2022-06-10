@@ -1,7 +1,7 @@
 import React from 'react';
 import Form, {ISubmitEvent, UiSchema} from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
-import {JsonFormTuple, propagateGraphState, requestAssessment} from '../../state/applicationState';
+import {JsonFormTuple, requestAssessment} from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 
 
@@ -9,7 +9,11 @@ import {useDispatch} from 'react-redux';
 const Assessment = () => {
     const dispatch = useDispatch();
 
-    const questionSchema: JsonFormTuple = useAppSelector((state) => state.applicationStateManagement.jsonFormDescription);
+    const questionSchema: JsonFormTuple | undefined = useAppSelector((state) => state.applicationStateManagement.jsonFormDescription);
+
+    if(questionSchema === undefined){
+        return <div />;
+    }
 
     return (<div>
         <Form schema={questionSchema.schema}

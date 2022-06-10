@@ -11,7 +11,7 @@ interface ApplicationState {
     taskId: string;
     graphUneditedOriginal: any;
     graphInEditor: any;
-    jsonFormDescription: JsonFormTuple;
+    jsonFormDescription: JsonFormTuple | undefined;
     hintLevel: number;
     availableTasks: TaskTuple[];
     showFeedbackSection: boolean;
@@ -21,7 +21,8 @@ interface ApplicationState {
 }
 
 export interface TaskTuple {
-    identifier: string; displayName: string;
+    identifier: string;
+    displayName: string;
 }
 
 export interface JsonFormTuple {
@@ -35,7 +36,7 @@ function getInitialApplicationState(): ApplicationState {
         taskId: 'randomId',
         graphUneditedOriginal: undefined,
         graphInEditor: undefined,
-        jsonFormDescription: getDemoAssessmentSchema(),
+        jsonFormDescription: undefined,
         hintLevel: 0,
         availableTasks: getDemoTaskTypes(),
         showFeedbackSection: false,
@@ -56,6 +57,7 @@ export const applicationState = createSlice({
             state.graphUneditedOriginal = generateDemoGraph().toJSON();
             // and set graphInEditor state accordingly
             state.graphInEditor = action.payload;
+            state.jsonFormDescription = getDemoAssessmentSchema();
         },
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
@@ -67,8 +69,11 @@ export const applicationState = createSlice({
         requestHint: (state, action: PayloadAction<any>) => {
             state.currentHintFeedback = 'This is a hint.';
         },
+        resetApplication: (state, action: PayloadAction<any>) => {
+            state = getInitialApplicationState();
+        },
     }
 });
 
-export const { requestNewGraph, propagateGraphState, requestAssessment, requestHint } = applicationState.actions;
+export const {requestNewGraph, propagateGraphState, requestAssessment, requestHint} = applicationState.actions;
 export default applicationState.reducer;
