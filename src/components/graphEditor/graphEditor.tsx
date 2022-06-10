@@ -20,17 +20,15 @@ const GraphEditor = () => {
 
     let graphEditorModel: joint.dia.Graph;
     if (graphUneditedOriginal === undefined) {
-        graphEditorModel = generateDemoGraph();
+        alert('no model');
     } else {
         graphEditorModel = new joint.dia.Graph({}, {cellNamespace: joint.shapes}).fromJSON(graphUneditedOriginal);
+        // dispatch new state on edit
+        // TODO - which events should trigger this? as of now, state propagation is excessive
+        graphEditorModel.on('all', (eventName, cell) => {
+            dispatch(propagateGraphState(graphEditorModel.toJSON()));
+        });
     }
-
-    // dispatch new state on edit
-    // TODO - which events should trigger this? as of now, state propagation is excessive
-    graphEditorModel.on('all', (eventName, cell) => {
-        dispatch(propagateGraphState(graphEditorModel.toJSON()));
-    });
-
 
     useEffect(() => {
         const domContainer = document.getElementById(GRAPH_CONTAINER_ID);
@@ -63,13 +61,19 @@ const GraphEditor = () => {
         <div>
             <div className="d-flex h-100">
                 <div className="align-self-start mr-auto">
-                    <button className="btn btn-danger" onClick={(event) => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the same task type</button>
+                    <button className="btn btn-danger"
+                            onClick={(event) => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the
+                        same task type
+                    </button>
                 </div>
                 <div className="align-self-center mx-auto">
                     {}
                 </div>
                 <div className="align-self-end ml-auto">
-                    <button className="btn btn-info" onClick={(event) => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export the current graph</button>
+                    <button className="btn btn-info"
+                            onClick={(event) => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export
+                        the current graph
+                    </button>
                 </div>
             </div>
         </div>

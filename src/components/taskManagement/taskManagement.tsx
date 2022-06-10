@@ -27,6 +27,11 @@ const TaskManagement = () => {
 
     return (
         <Form schema={schema} uiSchema={uiSchema} onChange={(e: IChangeEvent) => {
+            // upon initial rendering of the form, onchange event is emitted
+            // therefore, check for set task type and act accordingly
+            if(e.formData.taskType === undefined){
+                return;
+            }
             dispatch(requestNewGraph(e.formData.taskType));
         }}>
             {/*empty child for hiding submit button*/}
