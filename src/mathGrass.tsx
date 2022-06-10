@@ -9,8 +9,7 @@ export type MathGrassProps = {
     assessmentServerUrl : string
 };
 
-class MathGrass extends React.Component<MathGrassProps> {
-    render() {
+const MathGrass = () => {
         return (
             /*main container*/
             <div className="container-fluid m-2">
@@ -66,8 +65,7 @@ class MathGrass extends React.Component<MathGrassProps> {
             </div>
 
         );
-    }
-}
+};
 
 export default MathGrass;
 

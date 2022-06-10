@@ -1,6 +1,6 @@
-import {AssessmentSchema} from '../taskSlice';
+import {JsonFormTuple} from '../applicationState';
 
-export function getDemoAssessmentSchema(): AssessmentSchema {
+export function getDemoAssessmentSchema(): JsonFormTuple {
     return {
         schema: {
             title: 'Graph assessment',

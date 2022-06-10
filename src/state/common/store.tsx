@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {taskSlice} from '../taskSlice';
+import {applicationState} from '../applicationState';
 
 export const store = configureStore({
     reducer: {
-        taskManagement: taskSlice.reducer
+        applicationStateManagement: applicationState.reducer,
     },
 });
 
