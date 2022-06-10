@@ -28,7 +28,10 @@ const TaskManagement = () => {
     return (
         <Form schema={schema} uiSchema={uiSchema} onChange={(e: IChangeEvent) => {
             dispatch(requestNewGraph(e.formData.taskType));
-        }}/>);
+        }}>
+            {/*empty child for hiding submit button*/}
+            <div>{}</div>
+        </Form>);
 };
 
 function availableTasksToTaskTypesEnum(availableTaskTypes: TaskTuple[]): JSONSchema7[] {

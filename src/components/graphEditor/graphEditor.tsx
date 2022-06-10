@@ -69,7 +69,7 @@ const GraphEditor = () => {
                     {}
                 </div>
                 <div className="align-self-end ml-auto">
-                    <button className="btn btn-info" onClick={(event) => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export the current graph.</button>
+                    <button className="btn btn-info" onClick={(event) => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export the current graph</button>
                 </div>
             </div>
         </div>
