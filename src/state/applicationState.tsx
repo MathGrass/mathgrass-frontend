@@ -2,9 +2,9 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import * as joint from 'jointjs';
 import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
-import {getDemoAssessmentSchema} from './initialResources/demoQuestionSchema';
-import {generateDemoGraph} from './initialResources/demoGraph';
-import {getDemoTaskTypes} from './initialResources/demoTaskTypes';
+import {getDemoAssessmentSchema} from './demoResources/demoQuestionSchema';
+import {generateDemoGraph} from './demoResources/demoGraph';
+import {getDemoTaskTypes} from './demoResources/demoTaskTypes';
 
 interface ApplicationState {
     taskType: string;
