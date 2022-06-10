@@ -19,7 +19,8 @@ const TaskManagement = () => {
                 'title': 'Select Task Type',
                 'oneOf': availableTaskTypesEnum
             }
-        }
+        },
+        'required': ['taskType']
     };
 
     const uiSchema = {};
