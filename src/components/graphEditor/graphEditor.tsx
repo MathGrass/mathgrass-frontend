@@ -3,7 +3,7 @@ import * as joint from 'jointjs';
 import {useAppSelector} from '../../state/common/hooks';
 import {generateDemoGraph} from '../../state/initialResources/demoGraph';
 import {useDispatch} from 'react-redux';
-import {propagateGraphState, requestHint} from '../../state/applicationState';
+import {propagateGraphState, requestHint, requestNewGraph} from '../../state/applicationState';
 import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 
@@ -12,6 +12,7 @@ const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 const EDITOR_WIDTH_SCALING_FACTOR = 0.95;
 
 const GraphEditor = () => {
+    const currentTaskType = useAppSelector((state) => state.applicationStateManagement.taskType);
     const graphUneditedOriginal = useAppSelector((state) => state.applicationStateManagement.graphUneditedOriginal);
     const showAssessmentFeedback: boolean = useAppSelector((state) => state.applicationStateManagement.showFeedbackSection);
 
@@ -62,7 +63,7 @@ const GraphEditor = () => {
         <div>
             <div className="d-flex h-100">
                 <div className="align-self-start mr-auto">
-                    <button className="btn btn-danger" onClick={(event) => dispatch(requestHint(null))}>Request a new graph for the same task type</button>
+                    <button className="btn btn-danger" onClick={(event) => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the same task type</button>
                 </div>
                 <div className="align-self-center mx-auto">
                     {}
