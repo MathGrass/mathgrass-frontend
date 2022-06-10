@@ -24,8 +24,8 @@ const GraphEditor = () => {
     if (graphUneditedOriginal !== undefined) {
         graphEditorModel = new joint.dia.Graph({}, {cellNamespace: joint.shapes}).fromJSON(graphUneditedOriginal);
         // dispatch new state on edit
-        // TODO - which events should trigger this? as of now, state propagation is excessive
-        graphEditorModel.on('all', (eventName, cell) => {
+        // which events should trigger this? as of now, state propagation is excessive
+        graphEditorModel.on('change', () => {
             dispatch(propagateGraphState(graphEditorModel.toJSON()));
         });
     }
@@ -44,12 +44,39 @@ const GraphEditor = () => {
             }
         );
 
-        // TODO - dynamic resize
         window.addEventListener('resize', () => {
             // handle resize event
         }, true);
 
     });
+
+    function GraphEditorButtons() {
+        return <div>
+            <div className="d-flex h-100">
+                <div className="align-self-start mr-auto">
+                    <button className="btn btn-danger"
+                            onClick={() => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the
+                        same task type
+                    </button>
+                </div>
+                <div className="align-self-center mx-auto">
+                    {}
+                </div>
+                <div className="align-self-end ml-auto">
+                    <button className="btn btn-info"
+                            onClick={() => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export
+                        the current graph
+                    </button>
+                </div>
+            </div>
+        </div>;
+    }
+
+    function NoTaskSelectedInfo() {
+        return <div>
+            Please select a task.
+        </div>;
+    }
 
     return (
         <div id="outer" style={outerStyle}>
@@ -57,26 +84,8 @@ const GraphEditor = () => {
             <div>
                 {showAssessmentFeedback ? <GraphFeedback/> : null}
             </div>
-            <div>
-                <div className="d-flex h-100">
-                    <div className="align-self-start mr-auto">
-                        <button className="btn btn-danger"
-                                onClick={() => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the
-                            same task type
-                        </button>
-                    </div>
-                    <div className="align-self-center mx-auto">
-                        {}
-                    </div>
-                    <div className="align-self-end ml-auto">
-                        <button className="btn btn-info"
-                                onClick={() => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export
-                            the current graph
-                        </button>
-                    </div>
-                </div>
-            </div>
-    </div>);
+            {graphUneditedOriginal ? GraphEditorButtons() : NoTaskSelectedInfo()}
+        </div>);
 };
 
 export default GraphEditor;
