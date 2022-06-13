@@ -52,6 +52,7 @@ export const applicationState = createSlice({
     initialState: initialTaskState,
     reducers: {
         requestNewGraph: (state, action: PayloadAction<string>) => {
+            state.taskType = action.payload;
             // fetch new graph for the given task state
             state.taskId = String(Math.floor(Math.random() * 123));
             state.graphUneditedOriginal = generateDemoGraph().toJSON();
