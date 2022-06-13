@@ -55,7 +55,11 @@ const GraphEditor = () => {
             <div className="d-flex h-100">
                 <div className="align-self-start mr-auto">
                     <button className="btn btn-danger"
-                            onClick={() => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the
+                            onClick={() => {
+                                if(currentTaskType !== undefined){
+                                    dispatch(requestNewGraph(currentTaskType));
+                            }
+                            }}>Request a new graph for the
                         same task type
                     </button>
                 </div>

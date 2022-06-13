@@ -6,8 +6,8 @@ import {generateDemoGraph} from './demoResources/demoGraph';
 import {getDemoTaskTypes} from './demoResources/demoTaskTypes';
 
 interface ApplicationState {
-    taskType: string;
-    taskId: string;
+    taskType: string | undefined;
+    taskId: string | undefined;
     graphUneditedOriginal: any;
     graphInEditor: any;
     jsonFormDescription: JsonFormTuple | undefined;
@@ -31,7 +31,7 @@ export interface JsonFormTuple {
 
 function getInitialApplicationState(): ApplicationState {
     return {
-        taskType: 'randomTaskType',
+        taskType: undefined,
         taskId: 'randomId',
         graphUneditedOriginal: undefined,
         graphInEditor: undefined,

@@ -18,7 +18,7 @@ const TaskManagement = () => {
                 'type': 'string',
                 'title': 'Select Task Type',
                 'oneOf': availableTaskTypesEnum,
-                'default': currentTaskType
+                ...(currentTaskType !== undefined) ? {'default': currentTaskType} : {}
             }
         },
         'required': ['taskType']
