@@ -18,7 +18,7 @@ const Assessment = () => {
     return (<div>
         <Form schema={questionSchema.schema}
               uiSchema={questionSchema.uiSchema}
-              onSubmit={(form) =>
+              onSubmit={() =>
                   dispatch(requestAssessment())}/>
     </div>);
 
