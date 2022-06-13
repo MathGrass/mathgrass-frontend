@@ -62,11 +62,11 @@ export const applicationState = createSlice({
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
         },
-        requestAssessment: (state, action: PayloadAction<any>) => {
+        requestAssessment: (state) => {
             state.showFeedbackSection = true;
             state.assessmentFeedback = 'This is the assessment of the given task.';
         },
-        requestHint: (state, action: PayloadAction<any>) => {
+        requestHint: (state) => {
             state.currentHintFeedback = 'This is a hint.';
         }
     }
