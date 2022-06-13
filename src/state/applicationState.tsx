@@ -32,7 +32,7 @@ export interface JsonFormTuple {
 function getInitialApplicationState(): ApplicationState {
     return {
         taskType: undefined,
-        taskId: 'randomId',
+        taskId: undefined,
         graphUneditedOriginal: undefined,
         graphInEditor: undefined,
         jsonFormDescription: undefined,
