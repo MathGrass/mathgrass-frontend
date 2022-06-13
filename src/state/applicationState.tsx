@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import * as joint from 'jointjs';
 import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import {getDemoAssessmentSchema} from './demoResources/demoQuestionSchema';
@@ -77,4 +76,4 @@ export const applicationState = createSlice({
 });
 
 export const {requestNewGraph, propagateGraphState, requestAssessment, requestHint} = applicationState.actions;
-export default applicationState.reducer;
+// export default applicationState.reducer;

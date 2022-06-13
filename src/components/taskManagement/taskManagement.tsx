@@ -35,9 +35,7 @@ const TaskManagement = () => {
             }else{
                 dispatch(requestNewGraph(e.formData.taskType));
             }
-        }}>
-
-        </Form>);
+        }} />);
 };
 
 function availableTasksToTaskTypesEnum(availableTaskTypes: TaskTuple[]): JSONSchema7[] {

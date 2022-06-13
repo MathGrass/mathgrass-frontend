@@ -1,5 +1,5 @@
 import React from 'react';
-import Form, {ISubmitEvent, UiSchema} from '@rjsf/core';
+import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
 import {JsonFormTuple, requestAssessment} from '../../state/applicationState';
 import {useDispatch} from 'react-redux';

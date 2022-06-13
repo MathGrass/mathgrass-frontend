@@ -7,10 +7,6 @@ import TaskManagement from './components/taskManagement/taskManagement';
 import {JsonFormTuple} from './state/applicationState';
 import {useAppSelector} from './state/common/hooks';
 
-export type MathGrassProps = {
-    assessmentServerUrl : string
-};
-
 const MathGrass = () => {
 
     const questionSchema: JsonFormTuple | undefined = useAppSelector((state) => state.applicationStateManagement.jsonFormDescription);
