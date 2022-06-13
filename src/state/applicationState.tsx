@@ -68,10 +68,7 @@ export const applicationState = createSlice({
         },
         requestHint: (state, action: PayloadAction<any>) => {
             state.currentHintFeedback = 'This is a hint.';
-        },
-        resetApplication: (state, action: PayloadAction<any>) => {
-            state = getInitialApplicationState();
-        },
+        }
     }
 });
 
