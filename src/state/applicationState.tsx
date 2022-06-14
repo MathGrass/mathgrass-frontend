@@ -3,7 +3,8 @@ import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import {getDemoAssessmentSchema} from './demoResources/demoQuestionSchema';
 import {generateDemoGraph} from './demoResources/demoGraph';
-import {getDemoTaskTypes} from './demoResources/demoTaskTypes';
+import {fetchTaskTypes} from './fetchConfig';
+import * as serverConfig from '../config/serverConfig';
 
 interface ApplicationState {
     taskType: string | undefined;
@@ -81,7 +82,7 @@ export const applicationState = createSlice({
             state.currentHintFeedback = 'This is a hint.';
         },
         setupApplication: (state) => {
-            state.availableTasks = getDemoTaskTypes();
+            state.availableTasks = fetchTaskTypes(serverConfig.getTaskTypesUrl());
         }
     }
 });
