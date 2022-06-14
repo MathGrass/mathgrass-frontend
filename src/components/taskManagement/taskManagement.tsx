@@ -26,16 +26,23 @@ const TaskManagement = () => {
 
     const uiSchema = {};
 
-    return (
-        <Form schema={schema} uiSchema={uiSchema} onSubmit={(e: IChangeEvent) => {
+    function renderTaskSelectionForm() {
+        return <Form schema={schema} uiSchema={uiSchema} onSubmit={(e: IChangeEvent) => {
             // upon initial rendering of the form, onchange event is emitted
             // therefore, check for set task type and act accordingly
-            if(e.formData.taskType === undefined){
+            if (e.formData.taskType === undefined) {
                 return;
-            }else{
+            } else {
                 dispatch(requestNewGraph(e.formData.taskType));
             }
-        }} />);
+        }}/>;
+    }
+
+    return (
+        <>
+            {availableTaskTypes.length !== 0 ? renderTaskSelectionForm() : 'None available. Please check your internet connections or server settings.'}
+        </>
+        );
 };
 
 function availableTasksToTaskTypesEnum(availableTaskTypes: TaskTuple[]): JSONSchema7[] {

@@ -3,7 +3,7 @@ import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import {getDemoAssessmentSchema} from './demoResources/demoQuestionSchema';
 import {generateDemoGraph} from './demoResources/demoGraph';
-import {getDemoTaskTypes} from './demoResources/demoTaskTypes';
+import {fetchAvailableTaskTypes} from './externalStateProvider';
 
 interface ApplicationState {
     taskType: string | undefined;
@@ -37,7 +37,7 @@ function getInitialApplicationState(): ApplicationState {
         graphInEditor: undefined,
         jsonFormDescription: undefined,
         hintLevel: 0,
-        availableTasks: getDemoTaskTypes(),
+        availableTasks: fetchAvailableTaskTypes(),
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         currentHintFeedback: undefined,
@@ -72,5 +72,5 @@ export const applicationState = createSlice({
     }
 });
 
-export const {requestNewGraph, propagateGraphState, requestAssessment, requestHint} = applicationState.actions;
+export const {requestNewGraph, propagateGraphState, requestAssessment, requestHint } = applicationState.actions;
 // export default applicationState.reducer;
