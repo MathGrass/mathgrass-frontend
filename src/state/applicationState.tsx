@@ -3,7 +3,7 @@ import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import {getDemoAssessmentSchema} from './demoResources/demoQuestionSchema';
 import {generateDemoGraph} from './demoResources/demoGraph';
-import {fetchAvailableTaskTypes} from './externalStateProvider';
+import {getDemoTaskTypes} from './demoResources/demoTaskTypes';
 
 interface ApplicationState {
     taskType: string | undefined;
@@ -16,7 +16,7 @@ interface ApplicationState {
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
     currentHintFeedback: string | undefined;
-    feedbackHistory: string [] | undefined;
+    feedbackHistory: string [];
 }
 
 export interface TaskTuple {
@@ -37,11 +37,11 @@ function getInitialApplicationState(): ApplicationState {
         graphInEditor: undefined,
         jsonFormDescription: undefined,
         hintLevel: 0,
-        availableTasks: fetchAvailableTaskTypes(),
+        availableTasks: [],
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         currentHintFeedback: undefined,
-        feedbackHistory: undefined
+        feedbackHistory: [] as string[]
     };
 }
 
@@ -58,6 +58,12 @@ export const applicationState = createSlice({
             // and set graphInEditor state accordingly
             state.graphInEditor = action.payload;
             state.jsonFormDescription = getDemoAssessmentSchema();
+            // reset UI
+            state.showFeedbackSection = false;
+            // reset hints
+            state.hintLevel = 0;
+            state.currentHintFeedback = undefined;
+            state.feedbackHistory = [] as string [];
         },
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
@@ -67,10 +73,18 @@ export const applicationState = createSlice({
             state.assessmentFeedback = 'This is the assessment of the given task.';
         },
         requestHint: (state) => {
+            // Push old current hint to hint history
+            if(state.currentHintFeedback !== undefined){
+                state.feedbackHistory.push(state.currentHintFeedback);
+            }
+            // request new hint and set it accordingly
             state.currentHintFeedback = 'This is a hint.';
+        },
+        setupApplication: (state) => {
+            state.availableTasks = getDemoTaskTypes();
         }
     }
 });
 
-export const {requestNewGraph, propagateGraphState, requestAssessment, requestHint } = applicationState.actions;
+export const {requestNewGraph, propagateGraphState, requestAssessment, requestHint, setupApplication } = applicationState.actions;
 // export default applicationState.reducer;

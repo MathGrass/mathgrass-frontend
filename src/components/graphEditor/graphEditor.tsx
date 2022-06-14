@@ -59,7 +59,7 @@ const GraphEditor = () => {
 
     function GraphEditorButtons() {
         return <div>
-            <div className="d-flex h-100">
+            <div className="d-flex h-100 p-2 m-2">
                 <div className="align-self-start mr-auto">
                     <button className="btn btn-danger"
                             onClick={() => {
@@ -91,8 +91,8 @@ const GraphEditor = () => {
 
     return (
         <div id="outer" style={outerStyle}>
-            <div id={GRAPH_CONTAINER_ID}>Graph</div>
-            <div>
+            <div id={GRAPH_CONTAINER_ID}/>
+            <div className="d-flex h-100 p-2 m-2">
                 {showAssessmentFeedback ? <GraphFeedback/> : null}
             </div>
             {graphUneditedOriginal ? GraphEditorButtons() : NoTaskSelectedInfo()}
