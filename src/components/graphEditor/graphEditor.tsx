@@ -32,16 +32,24 @@ const GraphEditor = () => {
     useEffect(() => {
         const domContainer = document.getElementById(GRAPH_CONTAINER_ID);
 
+        const paperWidth : number = domContainer!.offsetWidth;
+        const paperHeight: number = graphEditorModel ? EDITOR_HEIGHT : 0;
+
         const paper: joint.dia.Paper = new joint.dia.Paper({
                 el: domContainer!,
                 model: graphEditorModel,
-                width: domContainer!.offsetWidth,
-                height: graphEditorModel ? EDITOR_HEIGHT : 0,
+                width: paperWidth,
+                height: paperHeight,
                 gridSize: 1,
                 cellViewNamespace: joint.shapes,
                 restrictTranslate: true
             }
         );
+
+        paper.fitToContent({
+            minHeight: paperHeight,
+            minWidth: paperWidth
+        });
 
         window.addEventListener('resize', () => {
             // handle resize event
