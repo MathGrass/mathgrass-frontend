@@ -16,7 +16,7 @@ interface ApplicationState {
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
     currentHintFeedback: string | undefined;
-    feedbackHistory: string [] | undefined;
+    feedbackHistory: string [];
 }
 
 export interface TaskTuple {
@@ -41,7 +41,7 @@ function getInitialApplicationState(): ApplicationState {
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         currentHintFeedback: undefined,
-        feedbackHistory: undefined
+        feedbackHistory: [] as string[]
     };
 }
 
@@ -58,6 +58,12 @@ export const applicationState = createSlice({
             // and set graphInEditor state accordingly
             state.graphInEditor = action.payload;
             state.jsonFormDescription = getDemoAssessmentSchema();
+            // reset UI
+            state.showFeedbackSection = false;
+            // reset hints
+            state.hintLevel = 0;
+            state.currentHintFeedback = undefined;
+            state.feedbackHistory = [] as string [];
         },
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
@@ -67,6 +73,11 @@ export const applicationState = createSlice({
             state.assessmentFeedback = 'This is the assessment of the given task.';
         },
         requestHint: (state) => {
+            // Push old current hint to hint history
+            if(state.currentHintFeedback !== undefined){
+                state.feedbackHistory.push(state.currentHintFeedback);
+            }
+            // request new hint and set it accordingly
             state.currentHintFeedback = 'This is a hint.';
         },
         setupApplication: (state) => {

@@ -14,6 +14,7 @@ const MathGrass = () => {
 
 
     const dispatch = useDispatch();
+    // this is only run once for the initial setup
     useEffect(() => {
         dispatch(setupApplication());
     }, []);
