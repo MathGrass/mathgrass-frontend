@@ -7,7 +7,6 @@ import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
-const EDITOR_WIDTH_SCALING_FACTOR: number = 0.95;
 const EDITOR_HEIGHT: number = 600;
 const outerStyle = {
     overflow: 'auto'
@@ -33,16 +32,24 @@ const GraphEditor = () => {
     useEffect(() => {
         const domContainer = document.getElementById(GRAPH_CONTAINER_ID);
 
+        const paperWidth : number = domContainer!.offsetWidth;
+        const paperHeight: number = graphEditorModel ? EDITOR_HEIGHT : 0;
+
         const paper: joint.dia.Paper = new joint.dia.Paper({
                 el: domContainer!,
                 model: graphEditorModel,
-                width: EDITOR_WIDTH_SCALING_FACTOR * domContainer!.offsetWidth,
-                height: graphEditorModel ? EDITOR_HEIGHT : 0,
+                width: paperWidth,
+                height: paperHeight,
                 gridSize: 1,
                 cellViewNamespace: joint.shapes,
                 restrictTranslate: true
             }
         );
+
+        paper.fitToContent({
+            minHeight: paperHeight,
+            minWidth: paperWidth
+        });
 
         window.addEventListener('resize', () => {
             // handle resize event
@@ -55,7 +62,11 @@ const GraphEditor = () => {
             <div className="d-flex h-100">
                 <div className="align-self-start mr-auto">
                     <button className="btn btn-danger"
-                            onClick={() => dispatch(requestNewGraph(currentTaskType))}>Request a new graph for the
+                            onClick={() => {
+                                if(currentTaskType !== undefined){
+                                    dispatch(requestNewGraph(currentTaskType));
+                            }
+                            }}>Request a new graph for the
                         same task type
                     </button>
                 </div>

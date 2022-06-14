@@ -2,11 +2,11 @@ import React from 'react';
 import Form, {IChangeEvent} from '@rjsf/core';
 import {JSONSchema7} from 'json-schema';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
-import {requestNewGraph, applicationState, propagateGraphState, TaskTuple} from '../../state/applicationState';
+import {requestNewGraph, TaskTuple} from '../../state/applicationState';
 
 const TaskManagement = () => {
-    const currentTaskType = useAppSelector((state) => state.applicationStateManagement.taskType);
     const availableTaskTypes = useAppSelector((state) => state.applicationStateManagement.availableTasks);
+    const currentTaskType = useAppSelector((state) => state.applicationStateManagement.taskType);
     const dispatch = useAppDispatch();
 
     const availableTaskTypesEnum:  JSONSchema7[] = availableTasksToTaskTypesEnum(availableTaskTypes);
@@ -17,7 +17,8 @@ const TaskManagement = () => {
             'taskType': {
                 'type': 'string',
                 'title': 'Select Task Type',
-                'oneOf': availableTaskTypesEnum
+                'oneOf': availableTaskTypesEnum,
+                ...(currentTaskType !== undefined) ? {'default': currentTaskType} : {}
             }
         },
         'required': ['taskType']
@@ -25,18 +26,23 @@ const TaskManagement = () => {
 
     const uiSchema = {};
 
-    return (
-        <Form schema={schema} uiSchema={uiSchema} onChange={(e: IChangeEvent) => {
+    function renderTaskSelectionForm() {
+        return <Form schema={schema} uiSchema={uiSchema} onSubmit={(e: IChangeEvent) => {
             // upon initial rendering of the form, onchange event is emitted
             // therefore, check for set task type and act accordingly
-            if(e.formData.taskType === undefined){
+            if (e.formData.taskType === undefined) {
                 return;
+            } else {
+                dispatch(requestNewGraph(e.formData.taskType));
             }
-            dispatch(requestNewGraph(e.formData.taskType));
-        }}>
-            {/*empty child for hiding submit button*/}
-            <div>{}</div>
-        </Form>);
+        }}/>;
+    }
+
+    return (
+        <>
+            {availableTaskTypes.length !== 0 ? renderTaskSelectionForm() : 'None available. Please check your internet connections or server settings.'}
+        </>
+        );
 };
 
 function availableTasksToTaskTypesEnum(availableTaskTypes: TaskTuple[]): JSONSchema7[] {
