@@ -1,15 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import GraphEditor from './components/graphEditor/graphEditor';
 import Assessment from './components/assessment/assessment';
 import IncrementalHints from './components/incrementalHints/incrementalHints';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TaskManagement from './components/taskManagement/taskManagement';
-import {JsonFormTuple} from './state/applicationState';
+import {JsonFormTuple, setupApplication} from './state/applicationState';
 import {useAppSelector} from './state/common/hooks';
+import {useDispatch} from 'react-redux';
 
 const MathGrass = () => {
 
     const questionSchema: JsonFormTuple | undefined = useAppSelector((state) => state.applicationStateManagement.jsonFormDescription);
+
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(setupApplication());
+    }, []);
 
 
     return (

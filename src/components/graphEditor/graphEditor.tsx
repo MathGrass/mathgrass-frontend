@@ -91,7 +91,7 @@ const GraphEditor = () => {
 
     return (
         <div id="outer" style={outerStyle}>
-            <div id={GRAPH_CONTAINER_ID}>Graph</div>
+            <div id={GRAPH_CONTAINER_ID}/>
             <div>
                 {showAssessmentFeedback ? <GraphFeedback/> : null}
             </div>
