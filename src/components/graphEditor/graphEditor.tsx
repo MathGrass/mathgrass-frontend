@@ -7,7 +7,6 @@ import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
-const EDITOR_WIDTH_SCALING_FACTOR: number = 0.95;
 const EDITOR_HEIGHT: number = 600;
 const outerStyle = {
     overflow: 'auto'
@@ -36,7 +35,7 @@ const GraphEditor = () => {
         const paper: joint.dia.Paper = new joint.dia.Paper({
                 el: domContainer!,
                 model: graphEditorModel,
-                width: EDITOR_WIDTH_SCALING_FACTOR * domContainer!.offsetWidth,
+                width: domContainer!.offsetWidth,
                 height: graphEditorModel ? EDITOR_HEIGHT : 0,
                 gridSize: 1,
                 cellViewNamespace: joint.shapes,
