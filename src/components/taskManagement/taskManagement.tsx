@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
 import {requestNewGraph, TaskTuple} from '../../state/applicationState';
 
 const TaskManagement = () => {
-    const availableTaskTypes = useAppSelector((state) => state.applicationStateManagement.availableTasks);
+    const availableTaskTypes = useAppSelector((state) => state.applicationStateManagement.availableTaskTypes);
     const currentTaskType = useAppSelector((state) => state.applicationStateManagement.taskType);
     const dispatch = useAppDispatch();
 
