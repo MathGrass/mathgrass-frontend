@@ -79,9 +79,6 @@ export const applicationState = createSlice({
             }
             // request new hint and set it accordingly
             state.currentHintFeedback = 'This is a hint.';
-        },
-        setupApplication: (state) => {
-            // do stuff
         }
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskTypes.fulfilled, (state, action) => {
@@ -114,11 +111,18 @@ export const fetchTaskTypes = createAsyncThunk('api/fetchTaskTypes', async () =>
         });
 });
 
+export const fetchHint = createAsyncThunk('api/fetchHint', async () => {
+  //
+});
+
+export const fetchAssessment = createAsyncThunk('api/fetchHint', async () => {
+    //
+});
+
 export const {
     requestNewGraph,
     propagateGraphState,
     requestAssessment,
-    requestHint,
-    setupApplication
+    requestHint
 } = applicationState.actions;
 // export default applicationState.reducer;
