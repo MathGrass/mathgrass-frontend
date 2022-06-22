@@ -83,9 +83,15 @@ export const applicationState = createSlice({
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskTypes.fulfilled, (state, action) => {
             // check whether action is void or not
-            if(action instanceof Object && action.payload !== undefined){
+            if(action.payload !== undefined){
                 state.availableTaskTypes = action.payload as TaskTuple[];
             }
+        });
+        builder.addCase(fetchHint.fulfilled, (state, action) => {
+            //
+        });
+        builder.addCase(fetchAssessment.fulfilled, (state, action) => {
+            //
         });
     }
 });
@@ -105,7 +111,7 @@ export const fetchTaskTypes = createAsyncThunk('api/fetchTaskTypes', async () =>
             });
             return result;
         })
-        .catch((error) => {
+        .catch(() => {
             return undefined;
         });
 });
@@ -114,7 +120,7 @@ export const fetchHint = createAsyncThunk('api/fetchHint', async () => {
   //
 });
 
-export const fetchAssessment = createAsyncThunk('api/fetchHint', async () => {
+export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () => {
     //
 });
 
