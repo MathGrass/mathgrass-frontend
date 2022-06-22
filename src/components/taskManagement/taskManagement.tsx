@@ -40,18 +40,22 @@ const TaskManagement = () => {
 
     return (
         <>
-            {availableTaskTypes.length !== 0 ? renderTaskSelectionForm() : 'None available. Please check your internet connections or server settings.'}
+            {availableTaskTypes.length !== 0 ? renderTaskSelectionForm() : 'Could not fetch any data or parse the response. Please check your internet connections or server settings.'}
         </>
         );
 };
 
 function availableTasksToTaskTypesEnum(availableTaskTypes: TaskTuple[]): JSONSchema7[] {
     const availableTaskTypesEnum : JSONSchema7[] = [];
-    availableTaskTypes.forEach((tt) => {
-        availableTaskTypesEnum.push({
-            'enum': [tt.identifier], 'title' : tt.displayName
+
+    if(availableTaskTypes !== undefined){
+        availableTaskTypes.forEach((tt) => {
+            availableTaskTypesEnum.push({
+                'enum': [tt.identifier], 'title' : tt.displayName
+            });
         });
-    });
+    }
+
     return availableTaskTypesEnum;
 }
 

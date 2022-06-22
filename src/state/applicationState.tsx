@@ -83,7 +83,7 @@ export const applicationState = createSlice({
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskTypes.fulfilled, (state, action) => {
             // check whether action is void or not
-            if(action instanceof Object){
+            if(action instanceof Object && action.payload !== undefined){
                 state.availableTaskTypes = action.payload as TaskTuple[];
             }
         });
@@ -106,8 +106,7 @@ export const fetchTaskTypes = createAsyncThunk('api/fetchTaskTypes', async () =>
             return result;
         })
         .catch((error) => {
-            // TODO - better error handling
-            alert('error fetching');
+            return undefined;
         });
 });
 
