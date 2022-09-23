@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import * as joint from 'jointjs';
 import {useAppSelector} from '../../state/common/hooks';
 import {useDispatch} from 'react-redux';
-import {propagateGraphState, requestNewGraph} from '../../state/applicationState';
+import {propagateGraphState, requestTask} from '../../state/applicationState';
 import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 
@@ -64,10 +64,9 @@ const GraphEditor = () => {
                     <button className="btn btn-danger"
                             onClick={() => {
                                 if(currentTaskType !== undefined){
-                                    dispatch(requestNewGraph(currentTaskType));
+                                    dispatch(requestTask(currentTaskType));
                             }
-                            }}>Request a new graph for the
-                        same task type
+                            }}>Request a new task
                     </button>
                 </div>
                 <div className="align-self-center mx-auto">
