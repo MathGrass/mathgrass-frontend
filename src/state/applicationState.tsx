@@ -4,24 +4,29 @@ import {UiSchema} from '@rjsf/core';
 import {getDemoAssessmentSchema} from './demoResources/demoQuestionSchema';
 import {generateDemoGraph} from './demoResources/demoGraph';
 import * as serverConfig from '../config/serverConfig';
+import {AbstractGraph, Edge, Vertex} from './model/abstractGraphModel';
+import {forEach} from 'react-bootstrap/ElementChildren';
 
 interface ApplicationState {
     taskType: string | undefined;
     taskId: string | undefined;
+    currentAbstractGraph: AbstractGraph | undefined;
     graphUneditedOriginal: any;
     graphInEditor: any;
     jsonFormDescription: JsonFormTuple | undefined;
     hintLevel: number;
-    availableTaskTypes: TaskTuple[];
+    currentTask: Task | null;
+    availableTasks: Task[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
     currentHintFeedback: string | undefined;
     feedbackHistory: string [];
 }
 
-export interface TaskTuple {
+export interface Task {
     identifier: string;
     displayName: string;
+    graph: AbstractGraph | null;
 }
 
 export interface JsonFormTuple {
@@ -37,11 +42,13 @@ function getInitialApplicationState(): ApplicationState {
         graphInEditor: undefined,
         jsonFormDescription: undefined,
         hintLevel: 0,
-        availableTaskTypes: [],
+        currentTask: null,
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         currentHintFeedback: undefined,
-        feedbackHistory: [] as string[]
+        feedbackHistory: [] as string[],
+        currentAbstractGraph: undefined,
+        availableTasks: [] as Task[]
     };
 }
 
@@ -50,7 +57,7 @@ export const applicationState = createSlice({
     name: 'tasks',
     initialState: initialTaskState,
     reducers: {
-        requestNewGraph: (state, action: PayloadAction<string>) => {
+        requestTask: (state, action: PayloadAction<string>) => {
             state.taskType = action.payload;
             // fetch new graph for the given task state
             state.taskId = String(Math.floor(Math.random() * 123));
@@ -81,46 +88,103 @@ export const applicationState = createSlice({
             state.currentHintFeedback = 'This is a hint.';
         }
     }, extraReducers: (builder) => {
-        builder.addCase(fetchTaskTypes.fulfilled, (state, action) => {
+        builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
-            if(action instanceof Object){
-                state.availableTaskTypes = action.payload as TaskTuple[];
+            if (action.payload !== undefined) {
+                // Handle fetch by id logic
+                // state.availableTasks = action.payload as number[];
+            }
+        });
+        builder.addCase(fetchHint.fulfilled, (state, action) => {
+            //
+        });
+        builder.addCase(fetchAssessment.fulfilled, (state, action) => {
+            //
+        });
+        builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
+            // check whether action is void or not
+            if (action.payload !== undefined) {
+                state.availableTasks = action.payload;
             }
         });
     }
 });
 
 // create async thunk for fetching task types. Can be dispatched like a regular reducer. Results are processed in extraReducers
-export const fetchTaskTypes = createAsyncThunk('api/fetchTaskTypes', async () => {
-    return fetch(serverConfig.getTaskTypesUrl())
+export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: number) => {
+    const taskByIdUrl = serverConfig.getTaskByIdUrl(id);
+    return fetch(taskByIdUrl)
+        .then((response) => response.json())
+        .then((obj) => {
+            const result: Task[] = [];
+            // extract vertices
+            const vertices: Vertex[] = [];
+            obj.graph.vertices.forEach((v: any) => {
+                const vertex: Vertex = {
+                    id: v.id,
+                    x: v.x,
+                    y: v.y,
+                    label: v.label
+                };
+                vertices.push(vertex);
+            });
+
+
+            // extract edges
+            const edges: Edge[] = [];
+            obj.graph.edges.forEach((e: any) => {
+                const edge: Edge = {
+                    from: e.from,
+                    to: e.to
+                };
+                edges.push(edge);
+            });
+
+            const task: Task = {
+                identifier: obj.identifier,
+                displayName: obj.displayName,
+                graph: {
+                    vertices,
+                    edges
+                }
+            };
+            result.push(task);
+            return result;
+        })
+        .catch(() => {
+            return undefined;
+        });
+});
+
+export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', async () => {
+    return fetch(serverConfig.getAllTasksUrl())
         .then((response) => response.json())
         .then((json) => {
-            const result: TaskTuple[] = [];
-            json.forEach((obj: any) => {
-                const taskType: TaskTuple = {
-                    identifier: obj.identifier,
-                    displayName: obj.displayName
-                };
-                result.push(taskType);
+            const result: Task[] = [];
+            json.forEach((e: any) => {
+                result.push({
+                    graph: null,
+                    displayName: e.displayName,
+                    identifier: e.id,
+                });
             });
             return result;
         })
-        .catch((error) => {
-            // TODO - better error handling
-            alert('error fetching');
+        .catch(() => {
+            return undefined;
         });
 });
 
 export const fetchHint = createAsyncThunk('api/fetchHint', async () => {
-  //
+    //
 });
 
-export const fetchAssessment = createAsyncThunk('api/fetchHint', async () => {
+export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () => {
     //
 });
 
 export const {
-    requestNewGraph,
+    requestTask,
     propagateGraphState,
     requestAssessment,
     requestHint

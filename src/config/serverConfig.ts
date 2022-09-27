@@ -1,23 +1,29 @@
 export interface MathGrassConfig {
     readonly serverUrl: string;
-    readonly taskTypesQueryPath: string;
+    readonly getAllTasks: string;
     readonly submitAssessmentPath: string;
     readonly requestHintsPath: string;
     readonly domContainerId: string;
+    readonly getTaskByIdUrl: string;
 }
 
-export function getTaskTypesUrl() : string  {
-    return devServerConfig.serverUrl + devServerConfig.taskTypesQueryPath;
+export function getAllTasksUrl() : string  {
+    return devServerConfig.serverUrl + devServerConfig.getAllTasks;
 }
 
 export function getServerConfig() : MathGrassConfig {
     return devServerConfig;
 }
 
+export function getTaskByIdUrl(id: number): string{
+    return devServerConfig.serverUrl + devServerConfig.getTaskByIdUrl + '/' + id;
+}
+
 // TODO - fetch from external config or app constructor
 const devServerConfig : MathGrassConfig = {
     serverUrl: 'http://localhost:8080/',
-    taskTypesQueryPath: 'availableTaskTypes',
+    getAllTasks: 'tasks',
+    getTaskByIdUrl: 'task',
     submitAssessmentPath: 'submitAssessment',
     requestHintsPath: 'requestHint',
     domContainerId: 'root'
