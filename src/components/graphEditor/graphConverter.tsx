@@ -8,7 +8,7 @@ export function abstractGraphToJointJsGraph(abstractGraph: AbstractGraph, graphW
 
     abstractGraph.vertices.forEach((vertex) => {
         const circle= new joint.shapes.standard.Circle();
-        circle.position(vertex.x / 100 * graphWidth, vertex.x / 100 * graphHeight);
+        circle.position(vertex.x / 100 * graphWidth, vertex.y / 100 * graphHeight);
         circle.resize(40, 40);
         circle.attr({
             body: {},
