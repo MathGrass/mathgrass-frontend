@@ -174,7 +174,8 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
 });
 
 export const fetchHint = createAsyncThunk('api/fetchHint', async () => {
-    //
+
+
 });
 
 export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () => {
