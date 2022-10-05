@@ -5,7 +5,6 @@ import {JsonFormTuple, Question, requestAssessment} from '../../state/applicatio
 import {useDispatch} from 'react-redux';
 
 
-
 const Assessment = () => {
     const dispatch = useDispatch();
 

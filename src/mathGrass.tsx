@@ -4,7 +4,7 @@ import Assessment from './components/assessment/assessment';
 import IncrementalHints from './components/incrementalHints/incrementalHints';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TaskManagement from './components/taskManagement/taskManagement';
-import {fetchAvailableTasks, fetchTaskById, JsonFormTuple, Task} from './state/applicationState';
+import {fetchAvailableTasks, Task} from './state/applicationState';
 import {useAppSelector} from './state/common/hooks';
 import {useDispatch} from 'react-redux';
 

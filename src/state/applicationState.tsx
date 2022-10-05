@@ -1,11 +1,8 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
-import {getDemoAssessmentSchema} from './demoResources/demoQuestionSchema';
-import {generateDemoGraph} from './demoResources/demoGraph';
 import * as serverConfig from '../config/serverConfig';
 import {AbstractGraph, Edge, Vertex} from './model/abstractGraphModel';
-import {forEach} from 'react-bootstrap/ElementChildren';
 
 interface ApplicationState {
     taskType: string | undefined;
@@ -63,21 +60,6 @@ export const applicationState = createSlice({
     name: 'tasks',
     initialState: initialTaskState,
     reducers: {
-        requestTask: (state, action: PayloadAction<string>) => {
-            state.taskType = action.payload;
-            // fetch new graph for the given task state
-            state.taskId = String(Math.floor(Math.random() * 123));
-            state.graphUneditedOriginal = generateDemoGraph().toJSON();
-            // and set graphInEditor state accordingly
-            state.graphInEditor = action.payload;
-            state.jsonFormDescription = getDemoAssessmentSchema();
-            // reset UI
-            state.showFeedbackSection = false;
-            // reset hints
-            state.hintLevel = 0;
-            state.currentHintFeedback = undefined;
-            state.feedbackHistory = [] as string [];
-        },
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
         },
@@ -200,7 +182,6 @@ export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () 
 });
 
 export const {
-    requestTask,
     propagateGraphState,
     requestAssessment,
     requestHint
