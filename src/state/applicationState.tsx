@@ -91,6 +91,7 @@ export const applicationState = createSlice({
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
             if (action.payload !== undefined) {
+                state.currentTask = action.payload as Task;
                 // Handle fetch by id logic
                 // state.availableTasks = action.payload as number[];
             }
@@ -116,7 +117,6 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
     return fetch(taskByIdUrl)
         .then((response) => response.json())
         .then((obj) => {
-            const result: Task[] = [];
             // extract vertices
             const vertices: Vertex[] = [];
             obj.graph.vertices.forEach((v: any) => {
@@ -148,8 +148,7 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
                     edges
                 }
             };
-            result.push(task);
-            return result;
+            return task;
         })
         .catch(() => {
             return undefined;

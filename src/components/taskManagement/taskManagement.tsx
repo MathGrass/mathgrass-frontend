@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
 import {fetchTaskById, requestTask, Task} from '../../state/applicationState';
 
 const TaskManagement = () => {
-    const currentTask = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const currentTask: Task = useAppSelector((state) => state.applicationStateManagement.currentTask) as Task;
     const availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);
     const dispatch = useAppDispatch();
 
@@ -22,7 +22,9 @@ const TaskManagement = () => {
         return <Form schema={schema} uiSchema={uiSchema} onSubmit={(e: IChangeEvent) => {
             // upon initial rendering of the form, onchange event is emitted
             // therefore, check for set task type and act accordingly
-            if (typeof(e.formData) === 'number') {
+            if (e.formData === undefined) {
+                return;
+            }else {
                 dispatch(fetchTaskById(e.formData));
             }
         }}/>;

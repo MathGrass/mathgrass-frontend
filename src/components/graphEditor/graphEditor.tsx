@@ -2,9 +2,10 @@ import React, {useEffect} from 'react';
 import * as joint from 'jointjs';
 import {useAppSelector} from '../../state/common/hooks';
 import {useDispatch} from 'react-redux';
-import {propagateGraphState, requestTask} from '../../state/applicationState';
+import {propagateGraphState, requestTask, Task} from '../../state/applicationState';
 import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
+import {abstractGraphToJointJsGraph} from './graphConverter';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 const EDITOR_HEIGHT: number = 600;
@@ -13,20 +14,20 @@ const outerStyle = {
 };
 
 const GraphEditor = () => {
-    const currentTaskType = useAppSelector((state) => state.applicationStateManagement.taskType);
+    const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
     const graphUneditedOriginal = useAppSelector((state) => state.applicationStateManagement.graphUneditedOriginal);
     const showAssessmentFeedback: boolean = useAppSelector((state) => state.applicationStateManagement.showFeedbackSection);
 
     const dispatch = useDispatch();
 
     let graphEditorModel: joint.dia.Graph;
-    if (graphUneditedOriginal !== undefined) {
-        graphEditorModel = new joint.dia.Graph({}, {cellNamespace: joint.shapes}).fromJSON(graphUneditedOriginal);
+    if (currentTask !== null && currentTask.graph !== null) {
+        graphEditorModel = abstractGraphToJointJsGraph(currentTask.graph, 100, 100);
         // dispatch new state on edit
         // which events should trigger this? as of now, state propagation is excessive
-        graphEditorModel.on('change', () => {
+       /* graphEditorModel.on('change', () => {
             dispatch(propagateGraphState(graphEditorModel.toJSON()));
-        });
+        });*/
     }
 
     useEffect(() => {
@@ -61,13 +62,13 @@ const GraphEditor = () => {
         return <div>
             <div className="d-flex h-100 p-2 m-2">
                 <div className="align-self-start mr-auto">
-                    <button className="btn btn-danger"
+                    {/*<button className="btn btn-danger"
                             onClick={() => {
                                 if(currentTaskType !== undefined){
                                     dispatch(requestTask(currentTaskType));
                             }
                             }}>Request a new task
-                    </button>
+                    </button>*/}
                 </div>
                 <div className="align-self-center mx-auto">
                     {}
