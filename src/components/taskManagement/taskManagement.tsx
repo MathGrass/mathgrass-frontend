@@ -39,14 +39,6 @@ const TaskManagement = () => {
 function availableTasksToTaskTypesEnum(availableTaskTypes: Task[]): JSONSchema7[] {
     const availableTaskTypesEnum: JSONSchema7[] = [];
 
-    /*    {
-            "type": "number",
-            "title": "one",
-            "enum": [
-            1
-            ]
-        }*/
-
     if (availableTaskTypes !== undefined) {
         availableTaskTypes.forEach((tt) => {
             availableTaskTypesEnum.push({

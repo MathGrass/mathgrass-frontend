@@ -27,6 +27,12 @@ export interface Task {
     identifier: string;
     displayName: string;
     graph: AbstractGraph | null;
+    questions: Question[] | null;
+}
+
+export interface Question {
+    question: string;
+    possibleAnswer: string[];
 }
 
 export interface JsonFormTuple {
@@ -140,13 +146,23 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
                 edges.push(edge);
             });
 
+            const questions: Question[] = [];
+
+            obj.questions.forEach((q: any) => {
+                questions.push({
+                    question: q.question,
+                    possibleAnswer: q.possibleAnswers
+                });
+            });
+
             const task: Task = {
                 identifier: obj.identifier,
                 displayName: obj.displayName,
                 graph: {
                     vertices,
                     edges
-                }
+                },
+                questions
             };
             return task;
         })
@@ -165,6 +181,7 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
                     graph: null,
                     displayName: e.displayName,
                     identifier: e.id,
+                    questions: null
                 });
             });
             return result;
