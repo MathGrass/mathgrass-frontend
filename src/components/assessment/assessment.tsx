@@ -47,18 +47,12 @@ function transformQuestionsToSchema(questions: Question[] | null | undefined ): 
             required: requiredQuestions,
             properties: {
                 isX: {type: 'boolean', title: 'Does the graph have property X?'},
-                isY: {type: 'boolean', title: 'Does the graph have property Y?'},
-                isZ: {type: 'boolean', title: 'Does the graph have property Z?'}
+                isY: {type: 'number', title: 'How many XYZ?'},
+                isZ: {type: 'string', title: 'Freetext question?'}
             }
         },
         uiSchema: {
             isX: {
-                'ui:widget': 'radio'
-            },
-            isY: {
-                'ui:widget': 'radio'
-            },
-            isZ: {
                 'ui:widget': 'radio'
             }
         }
