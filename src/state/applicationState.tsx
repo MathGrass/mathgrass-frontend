@@ -21,7 +21,7 @@ interface ApplicationState {
 }
 
 export interface Task {
-    identifier: string;
+    taskId: number;
     displayName: string;
     graph: AbstractGraph | null;
     questions: Question[] | null;
@@ -57,17 +57,13 @@ function getInitialApplicationState(): ApplicationState {
 
 const initialTaskState: ApplicationState = getInitialApplicationState();
 export const applicationState = createSlice({
-    name: 'tasks',
-    initialState: initialTaskState,
-    reducers: {
+    name: 'tasks', initialState: initialTaskState, reducers: {
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
-        },
-        requestAssessment: (state) => {
+        }, requestAssessment: (state) => {
             state.showFeedbackSection = true;
             state.assessmentFeedback = 'This is the assessment of the given task.';
-        },
-        requestHint: (state) => {
+        }, requestHint: (state) => {
             // Push old current hint to hint history
             if (state.currentHintFeedback !== undefined) {
                 state.feedbackHistory.push(state.currentHintFeedback);
@@ -109,10 +105,7 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
             const vertices: Vertex[] = [];
             obj.graph.vertices.forEach((v: any) => {
                 const vertex: Vertex = {
-                    id: v.id,
-                    x: v.x,
-                    y: v.y,
-                    label: v.label
+                    id: v.id, x: v.x, y: v.y, label: v.label
                 };
                 vertices.push(vertex);
             });
@@ -122,8 +115,7 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
             const edges: Edge[] = [];
             obj.graph.edges.forEach((e: any) => {
                 const edge: Edge = {
-                    from: e.from,
-                    to: e.to
+                    from: e.from, to: e.to
                 };
                 edges.push(edge);
             });
@@ -132,19 +124,14 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
 
             obj.questions.forEach((q: any) => {
                 questions.push({
-                    question: q.question,
-                    possibleAnswer: q.possibleAnswers
+                    question: q.question, possibleAnswer: q.possibleAnswers
                 });
             });
 
             const task: Task = {
-                identifier: obj.identifier,
-                displayName: obj.displayName,
-                graph: {
-                    vertices,
-                    edges
-                },
-                questions
+                taskId: obj.identifier, displayName: obj.displayName, graph: {
+                    vertices, edges
+                }, questions
             };
             return task;
         })
@@ -160,10 +147,7 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
             const result: Task[] = [];
             json.forEach((e: any) => {
                 result.push({
-                    graph: null,
-                    displayName: e.displayName,
-                    identifier: e.id,
-                    questions: null
+                    graph: null, displayName: e.displayName, taskId: e.id, questions: null
                 });
             });
             return result;
@@ -173,9 +157,12 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
         });
 });
 
-export const fetchHint = createAsyncThunk('api/fetchHint', async () => {
-
-
+export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
+    taskId: number, hintLevel: number
+}) => {
+    return fetch(serverConfig.getNextHint(params.taskId, params.hintLevel)).then((response) => response.json()).then((json) => {
+        // handle logic
+    });
 });
 
 export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () => {
@@ -183,8 +170,6 @@ export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () 
 });
 
 export const {
-    propagateGraphState,
-    requestAssessment,
-    requestHint
+    propagateGraphState, requestAssessment, requestHint
 } = applicationState.actions;
 // export default applicationState.reducer;

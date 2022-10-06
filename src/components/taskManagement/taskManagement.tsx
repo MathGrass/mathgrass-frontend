@@ -45,7 +45,7 @@ function availableTasksToTaskTypesEnum(availableTaskTypes: Task[]): JSONSchema7[
                 'type': 'number',
                 'title': tt.displayName,
                 'enum': [
-                    tt.identifier
+                    tt.taskId
                 ]
             });
         });
