@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
-import {JsonFormTuple, Question, requestAssessment} from '../../state/applicationState';
+import {fetchAssessment, JsonFormTuple, Question} from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 
 
@@ -20,7 +20,7 @@ const Assessment = () => {
         <Form schema={questionSchema.schema}
               uiSchema={questionSchema.uiSchema}
               onSubmit={() =>
-                  dispatch(requestAssessment())}/>
+                  dispatch(fetchAssessment())}/>
     </div>);
 
 };

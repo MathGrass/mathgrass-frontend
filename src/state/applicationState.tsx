@@ -5,18 +5,12 @@ import * as serverConfig from '../config/serverConfig';
 import {AbstractGraph, Edge, Vertex} from './model/abstractGraphModel';
 
 interface ApplicationState {
-    taskType: string | undefined;
-    taskId: string | undefined;
-    currentAbstractGraph: AbstractGraph | undefined;
-    graphUneditedOriginal: any;
     graphInEditor: any;
-    jsonFormDescription: JsonFormTuple | undefined;
     hintLevel: number;
     currentTask: Task | null;
     availableTasks: Task[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
-    currentHintFeedback: string | undefined;
     feedbackHistory: string [];
 }
 
@@ -39,18 +33,12 @@ export interface JsonFormTuple {
 
 function getInitialApplicationState(): ApplicationState {
     return {
-        taskType: undefined,
-        taskId: undefined,
-        graphUneditedOriginal: undefined,
         graphInEditor: undefined,
-        jsonFormDescription: undefined,
         hintLevel: 0,
         currentTask: null,
         showFeedbackSection: false,
         assessmentFeedback: undefined,
-        currentHintFeedback: undefined,
         feedbackHistory: [] as string[],
-        currentAbstractGraph: undefined,
         availableTasks: [] as Task[]
     };
 }
@@ -60,16 +48,6 @@ export const applicationState = createSlice({
     name: 'tasks', initialState: initialTaskState, reducers: {
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
-        }, requestAssessment: (state) => {
-            state.showFeedbackSection = true;
-            state.assessmentFeedback = 'This is the assessment of the given task.';
-        }, requestHint: (state) => {
-            // Push old current hint to hint history
-            if (state.currentHintFeedback !== undefined) {
-                state.feedbackHistory.push(state.currentHintFeedback);
-            }
-            // request new hint and set it accordingly
-            state.currentHintFeedback = 'This is a hint.';
         }
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
@@ -170,6 +148,6 @@ export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () 
 });
 
 export const {
-    propagateGraphState, requestAssessment, requestHint
+    propagateGraphState
 } = applicationState.actions;
 // export default applicationState.reducer;
