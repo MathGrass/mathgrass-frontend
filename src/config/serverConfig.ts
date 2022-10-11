@@ -1,4 +1,5 @@
 export interface MathGrassConfig {
+    readonly getNextHint: string;
     readonly serverUrl: string;
     readonly getAllTasks: string;
     readonly submitAssessmentPath: string;
@@ -19,6 +20,10 @@ export function getTaskByIdUrl(id: number): string{
     return devServerConfig.serverUrl + devServerConfig.getTaskByIdUrl + '/' + id;
 }
 
+export function getNextHint(taskId: number, hintLevel: number): string {
+    return devServerConfig.serverUrl + devServerConfig.getNextHint + '/' + taskId + '/' + hintLevel;
+}
+
 // TODO - fetch from external config or app constructor
 const devServerConfig : MathGrassConfig = {
     serverUrl: 'http://localhost:8080/',
@@ -26,5 +31,6 @@ const devServerConfig : MathGrassConfig = {
     getTaskByIdUrl: 'task',
     submitAssessmentPath: 'submitAssessment',
     requestHintsPath: 'requestHint',
-    domContainerId: 'root'
+    domContainerId: 'root',
+    getNextHint: 'hint'
 };

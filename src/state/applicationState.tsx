@@ -1,32 +1,29 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
-import {getDemoAssessmentSchema} from './demoResources/demoQuestionSchema';
-import {generateDemoGraph} from './demoResources/demoGraph';
 import * as serverConfig from '../config/serverConfig';
 import {AbstractGraph, Edge, Vertex} from './model/abstractGraphModel';
-import {forEach} from 'react-bootstrap/ElementChildren';
 
 interface ApplicationState {
-    taskType: string | undefined;
-    taskId: string | undefined;
-    currentAbstractGraph: AbstractGraph | undefined;
-    graphUneditedOriginal: any;
     graphInEditor: any;
-    jsonFormDescription: JsonFormTuple | undefined;
     hintLevel: number;
     currentTask: Task | null;
     availableTasks: Task[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
-    currentHintFeedback: string | undefined;
     feedbackHistory: string [];
 }
 
 export interface Task {
-    identifier: string;
+    taskId: number;
     displayName: string;
     graph: AbstractGraph | null;
+    questions: Question[] | null;
+}
+
+export interface Question {
+    question: string;
+    possibleAnswer: string[];
 }
 
 export interface JsonFormTuple {
@@ -36,61 +33,27 @@ export interface JsonFormTuple {
 
 function getInitialApplicationState(): ApplicationState {
     return {
-        taskType: undefined,
-        taskId: undefined,
-        graphUneditedOriginal: undefined,
         graphInEditor: undefined,
-        jsonFormDescription: undefined,
         hintLevel: 0,
         currentTask: null,
         showFeedbackSection: false,
         assessmentFeedback: undefined,
-        currentHintFeedback: undefined,
         feedbackHistory: [] as string[],
-        currentAbstractGraph: undefined,
         availableTasks: [] as Task[]
     };
 }
 
 const initialTaskState: ApplicationState = getInitialApplicationState();
 export const applicationState = createSlice({
-    name: 'tasks',
-    initialState: initialTaskState,
-    reducers: {
-        requestTask: (state, action: PayloadAction<string>) => {
-            state.taskType = action.payload;
-            // fetch new graph for the given task state
-            state.taskId = String(Math.floor(Math.random() * 123));
-            state.graphUneditedOriginal = generateDemoGraph().toJSON();
-            // and set graphInEditor state accordingly
-            state.graphInEditor = action.payload;
-            state.jsonFormDescription = getDemoAssessmentSchema();
-            // reset UI
-            state.showFeedbackSection = false;
-            // reset hints
-            state.hintLevel = 0;
-            state.currentHintFeedback = undefined;
-            state.feedbackHistory = [] as string [];
-        },
+    name: 'tasks', initialState: initialTaskState, reducers: {
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
-        },
-        requestAssessment: (state) => {
-            state.showFeedbackSection = true;
-            state.assessmentFeedback = 'This is the assessment of the given task.';
-        },
-        requestHint: (state) => {
-            // Push old current hint to hint history
-            if (state.currentHintFeedback !== undefined) {
-                state.feedbackHistory.push(state.currentHintFeedback);
-            }
-            // request new hint and set it accordingly
-            state.currentHintFeedback = 'This is a hint.';
         }
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
             if (action.payload !== undefined) {
+                state.currentTask = action.payload as Task;
                 // Handle fetch by id logic
                 // state.availableTasks = action.payload as number[];
             }
@@ -116,15 +79,11 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
     return fetch(taskByIdUrl)
         .then((response) => response.json())
         .then((obj) => {
-            const result: Task[] = [];
             // extract vertices
             const vertices: Vertex[] = [];
             obj.graph.vertices.forEach((v: any) => {
                 const vertex: Vertex = {
-                    id: v.id,
-                    x: v.x,
-                    y: v.y,
-                    label: v.label
+                    id: v.id, x: v.x, y: v.y, label: v.label
                 };
                 vertices.push(vertex);
             });
@@ -134,22 +93,25 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
             const edges: Edge[] = [];
             obj.graph.edges.forEach((e: any) => {
                 const edge: Edge = {
-                    from: e.from,
-                    to: e.to
+                    from: e.from, to: e.to
                 };
                 edges.push(edge);
             });
 
+            const questions: Question[] = [];
+
+            obj.questions.forEach((q: any) => {
+                questions.push({
+                    question: q.question, possibleAnswer: q.possibleAnswers
+                });
+            });
+
             const task: Task = {
-                identifier: obj.identifier,
-                displayName: obj.displayName,
-                graph: {
-                    vertices,
-                    edges
-                }
+                taskId: obj.identifier, displayName: obj.displayName, graph: {
+                    vertices, edges
+                }, questions
             };
-            result.push(task);
-            return result;
+            return task;
         })
         .catch(() => {
             return undefined;
@@ -163,9 +125,7 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
             const result: Task[] = [];
             json.forEach((e: any) => {
                 result.push({
-                    graph: null,
-                    displayName: e.displayName,
-                    identifier: e.id,
+                    graph: null, displayName: e.displayName, taskId: e.id, questions: null
                 });
             });
             return result;
@@ -175,8 +135,12 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
         });
 });
 
-export const fetchHint = createAsyncThunk('api/fetchHint', async () => {
-    //
+export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
+    taskId: number, hintLevel: number
+}) => {
+    return fetch(serverConfig.getNextHint(params.taskId, params.hintLevel)).then((response) => response.json()).then((json) => {
+        // handle logic
+    });
 });
 
 export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () => {
@@ -184,9 +148,6 @@ export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () 
 });
 
 export const {
-    requestTask,
-    propagateGraphState,
-    requestAssessment,
-    requestHint
+    propagateGraphState
 } = applicationState.actions;
 // export default applicationState.reducer;
