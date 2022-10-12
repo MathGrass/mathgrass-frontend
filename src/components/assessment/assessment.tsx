@@ -3,6 +3,7 @@ import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
 import {fetchAssessment, JsonFormTuple, Question} from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
+import {JSONSchema7} from 'json-schema';
 
 
 const Assessment = () => {
@@ -12,8 +13,8 @@ const Assessment = () => {
 
     const questionSchema: JsonFormTuple | null = transformQuestionsToSchema(questions);
 
-    if(questionSchema === null){
-        return <div />;
+    if (questionSchema === null) {
+        return <div/>;
     }
 
     return (<div>
@@ -26,8 +27,8 @@ const Assessment = () => {
 };
 
 
-function transformQuestionsToSchema(questions: Question[] | null | undefined ): JsonFormTuple | null {
-    if(questions === null || questions === undefined){
+function transformQuestionsToSchema(questions: Question[] | null | undefined): JsonFormTuple | null {
+    if (questions === null || questions === undefined) {
         return null;
     }
 
@@ -38,24 +39,23 @@ function transformQuestionsToSchema(questions: Question[] | null | undefined ): 
         questionIndex++;
     });
 
-    const requiredQuestions: string[] = Array.from(questionMap.keys());
+    const questionObject: any = {};
+
+    questionMap.forEach((value, key) => {
+            questionObject[key] = {
+                type: 'string',
+                title: value.question
+            } as JSONSchema7;
+        }
+    );
 
     return {
         schema: {
             title: 'Graph assessment',
             type: 'object',
-            required: requiredQuestions,
-            properties: {
-                isX: {type: 'boolean', title: 'Does the graph have property X?'},
-                isY: {type: 'number', title: 'How many XYZ?'},
-                isZ: {type: 'string', title: 'Freetext question?'}
-            }
+            properties: questionObject
         },
-        uiSchema: {
-            isX: {
-                'ui:widget': 'radio'
-            }
-        }
+        uiSchema: {}
     };
 }
 
