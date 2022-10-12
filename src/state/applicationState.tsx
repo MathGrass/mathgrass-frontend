@@ -93,17 +93,15 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
             const edges: Edge[] = [];
             obj.graph.edges.forEach((e: any) => {
                 const edge: Edge = {
-                    from: e.from, to: e.to
+                    from: e.firstVertex.id, to: e.secondVertex.id
                 };
                 edges.push(edge);
             });
 
             const questions: Question[] = [];
 
-            obj.questions.forEach((q: any) => {
-                questions.push({
-                    question: q.question, possibleAnswer: q.possibleAnswers
-                });
+            questions.push({
+                question: obj.question, possibleAnswer: []
             });
 
             const task: Task = {
