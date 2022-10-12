@@ -6,13 +6,16 @@ import {fetchTaskById, Task} from '../../state/applicationState';
 
 const TaskManagement = () => {
     const availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);
+    const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
+
     const dispatch = useAppDispatch();
 
     const availableTaskTypesEnum: JSONSchema7[] = availableTasksToTaskTypesEnum(availableTasks);
 
     const schema: JSONSchema7 = {
         'type': 'number',
-        'anyOf': availableTaskTypesEnum
+        'anyOf': availableTaskTypesEnum,
+        ... (currentTask !== null ? {'default' : currentTask.taskId} : {} )
     };
 
     const uiSchema = {};

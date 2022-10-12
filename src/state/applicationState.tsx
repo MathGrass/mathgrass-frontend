@@ -105,7 +105,7 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
             });
 
             const task: Task = {
-                taskId: obj.identifier, displayName: obj.displayName, graph: {
+                taskId: obj.id, displayName: obj.label, graph: {
                     vertices, edges
                 }, questions
             };
