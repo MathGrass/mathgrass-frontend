@@ -125,7 +125,7 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
             const result: Task[] = [];
             json.forEach((e: any) => {
                 result.push({
-                    graph: null, displayName: e.displayName, taskId: e.id, questions: null
+                    graph: null, displayName: e.label, taskId: e.id, questions: null
                 });
             });
             return result;

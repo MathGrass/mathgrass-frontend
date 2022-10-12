@@ -27,7 +27,7 @@ export function getNextHint(taskId: number, hintLevel: number): string {
 // TODO - fetch from external config or app constructor
 const devServerConfig : MathGrassConfig = {
     serverUrl: 'http://localhost:8080/',
-    getAllTasks: 'tasks',
+    getAllTasks: 'task',
     getTaskByIdUrl: 'task',
     submitAssessmentPath: 'submitAssessment',
     requestHintsPath: 'requestHint',
