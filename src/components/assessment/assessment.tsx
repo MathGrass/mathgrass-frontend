@@ -1,15 +1,15 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
-import {fetchAssessment, JsonFormTuple, Question} from '../../state/applicationState';
+import {fetchAssessment, JsonFormTuple, Question, Task} from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 import {JSONSchema7} from 'json-schema';
 
 
 const Assessment = () => {
     const dispatch = useDispatch();
-
-    const questions: Question[] | null | undefined = useAppSelector((state) => state.applicationStateManagement.currentTask?.questions);
+    const currentTask: Task | null  = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const questions: Question[] | null | undefined = currentTask?.questions;
 
     const questionSchema: JsonFormTuple | null = transformQuestionsToSchema(questions);
 
@@ -20,8 +20,15 @@ const Assessment = () => {
     return (<div>
         <Form schema={questionSchema.schema}
               uiSchema={questionSchema.uiSchema}
-              onSubmit={() =>
-                  dispatch(fetchAssessment())}/>
+              onSubmit={() => {
+                  if(currentTask) {
+                      dispatch(fetchAssessment({
+                          taskId: currentTask.taskId,
+                          answer: 'answer'
+                      }));
+                  }
+              }
+                  }/>
     </div>);
 
 };

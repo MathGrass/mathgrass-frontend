@@ -24,12 +24,16 @@ export function getNextHint(taskId: number, hintLevel: number): string {
     return devServerConfig.serverUrl + devServerConfig.getNextHint + '/' + taskId + '/' + hintLevel;
 }
 
+export function getAssessmentUrl(taskId: number): string {
+    return devServerConfig.serverUrl + devServerConfig.submitAssessmentPath + '/' + taskId;
+}
+
 // TODO - fetch from external config or app constructor
 const devServerConfig : MathGrassConfig = {
     serverUrl: 'http://localhost:8080/',
     getAllTasks: 'task',
     getTaskByIdUrl: 'task',
-    submitAssessmentPath: 'submitAssessment',
+    submitAssessmentPath: 'evaluator/runTask',
     requestHintsPath: 'requestHint',
     domContainerId: 'root',
     getNextHint: 'hint'

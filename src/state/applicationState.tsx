@@ -141,8 +141,19 @@ export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     });
 });
 
-export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async () => {
-    //
+export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (params: {
+    taskId: number, answer: string
+}) => {
+    return fetch(serverConfig.getAssessmentUrl(params.taskId), {
+        method: 'POST',
+        body: JSON.stringify({
+            answer: params.answer
+        })
+    }).then((response) => response.json()).then((json) => {
+        console.log(json);
+    }).catch( () => {
+        //
+    });
 });
 
 export const {
