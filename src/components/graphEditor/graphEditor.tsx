@@ -41,6 +41,19 @@ const GraphEditor = () => {
                 }
             );
 
+            // Prototyping for selection
+            const colorDefault = '#333333';
+            const colorMarked = '#ff8800';
+            paper.on('element:pointerdblclick', (elementView) => {
+                const newColor = elementView.model.attr('body/stroke') === colorDefault ? colorMarked : colorDefault;
+                elementView.model.attr('body/stroke', newColor);
+            });
+
+            paper.on('link:pointerdblclick', (linkView) => {
+                const newColor = linkView.model.attr('body/stroke') === colorDefault ? colorMarked : colorDefault;
+                linkView.model.attr('body/stroke', newColor);
+            });
+
             paper.fitToContent({
                 minHeight: paperHeight,
                 minWidth: paperWidth
