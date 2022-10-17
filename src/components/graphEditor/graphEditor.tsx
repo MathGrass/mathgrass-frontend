@@ -50,8 +50,8 @@ const GraphEditor = () => {
             });
 
             paper.on('link:pointerdblclick', (linkView) => {
-                const newColor = linkView.model.attr('body/stroke') === colorDefault ? colorMarked : colorDefault;
-                linkView.model.attr('body/stroke', newColor);
+                const newColor = linkView.model.attr('line/stroke') === colorDefault ? colorMarked : colorDefault;
+                linkView.model.attr('line/stroke', newColor);
             });
 
             paper.fitToContent({
