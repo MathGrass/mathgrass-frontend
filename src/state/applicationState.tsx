@@ -146,15 +146,23 @@ export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (pa
 }) => {
     return fetch(serverConfig.getAssessmentUrl(params.taskId), {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
-            answer: params.answer
+            'answer': params.answer
         })
     }).then((response) => response.json()).then((json) => {
-        console.log(json);
+        const resultId: number = json;
+        return fetch(serverConfig.getAssessmentLongPollingUrl(resultId)).then( (result) => result.json()).then( (assessmentJson) => {
+            return assessmentJson;
+        });
     }).catch( () => {
         //
     });
 });
+
+
 
 export const {
     propagateGraphState
