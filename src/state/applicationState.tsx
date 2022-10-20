@@ -18,7 +18,7 @@ export interface Task {
     taskId: number;
     displayName: string;
     graph: AbstractGraph | null;
-    questions: Question[] | null;
+    question: Question | null;
 }
 
 export interface Question {
@@ -101,26 +101,27 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
 
             const questions: Question[] = [];
 
-            let questionString : string;
+            let questionString: string;
             let isDynamicQuestionFromResult: boolean;
-            if(obj.question == null){
+            if (obj.question == null) {
                 questionString = obj.template.question;
                 isDynamicQuestionFromResult = true;
-            }else{
+            } else {
                 questionString = obj.question;
                 isDynamicQuestionFromResult = false;
             }
 
-            questions.push({
-                question: questionString,
-                possibleAnswer: [],
-                isDynamicQuestion: isDynamicQuestionFromResult
-            });
+            const question: Question = {
+                question: questionString, possibleAnswer: [], isDynamicQuestion: isDynamicQuestionFromResult
+            };
 
             const task: Task = {
-                taskId: obj.id, displayName: obj.label, graph: {
+                taskId: obj.id,
+                displayName: obj.label,
+                graph: {
                     vertices, edges
-                }, questions
+                },
+                question: question
             };
             return task;
         })
@@ -136,7 +137,7 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
             const result: Task[] = [];
             json.forEach((e: any) => {
                 result.push({
-                    graph: null, displayName: e.label, taskId: e.id, questions: null
+                    graph: null, displayName: e.label, taskId: e.id, question: null
                 });
             });
             return result;
@@ -157,20 +158,18 @@ export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
 export const fetchDynamicAssessment = createAsyncThunk('api/fetchDynamicAssessment', async (params: {
     taskId: number, answer: string
 }) => {
-    return fetch(serverConfig.getAssessmentUrl(params.taskId), {
-        method: 'POST',
-        headers: {
+    return fetch(serverConfig.getDynamicAssessmentUrl(params.taskId), {
+        method: 'POST', headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+        }, body: JSON.stringify({
             'answer': params.answer
         })
     }).then((response) => response.json()).then((json) => {
         const resultId: number = json;
-        return fetch(serverConfig.getAssessmentLongPollingUrl(resultId)).then( (result) => result.json()).then( (assessmentJson) => {
+        return fetch(serverConfig.getAssessmentLongPollingUrl(resultId)).then((result) => result.json()).then((assessmentJson) => {
             return assessmentJson;
         });
-    }).catch( () => {
+    }).catch(() => {
         //
     });
 });
@@ -178,9 +177,18 @@ export const fetchDynamicAssessment = createAsyncThunk('api/fetchDynamicAssessme
 export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment', async (params: {
     taskId: number, answer: string
 }) => {
-    //
+    return fetch(serverConfig.getStaticAssessmentUrl(params.taskId), {
+        method: 'POST', headers: {
+            'Content-Type': 'application/json'
+        }, body: JSON.stringify({
+            'answer': params.answer
+        })
+    }).then((response) => response.json()).then((json) => {
+        // TODO
+    }).catch(() => {
+        //
+    });
 });
-
 
 
 export const {

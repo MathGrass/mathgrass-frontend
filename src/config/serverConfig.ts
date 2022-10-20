@@ -2,7 +2,8 @@ export interface MathGrassConfig {
     readonly getNextHint: string;
     readonly serverUrl: string;
     readonly getAllTasks: string;
-    readonly submitAssessmentPath: string;
+    readonly submitDynamicAssessmentPath: string;
+    readonly submitStaticAssessmentPath: string;
     readonly requestHintsPath: string;
     readonly domContainerId: string;
     readonly getTaskByIdUrl: string;
@@ -26,24 +27,26 @@ export function getNextHint(taskId: number, hintLevel: number): string {
     return devServerConfig.serverUrl + devServerConfig.getNextHint + '/' + taskId + '/' + hintLevel;
 }
 
-export function getAssessmentUrl(taskId: number): string {
-    return devServerConfig.serverUrl + devServerConfig.submitAssessmentPath + '/' + taskId;
+export function getDynamicAssessmentUrl(taskId: number): string {
+    return devServerConfig.serverUrl + devServerConfig.submitDynamicAssessmentPath + '/' + taskId;
+}
+
+export function getStaticAssessmentUrl(taskId: number): string {
+    return devServerConfig.serverUrl + devServerConfig.submitStaticAssessmentPath + '/' + taskId;
 }
 
 export function getAssessmentLongPollingUrl(resultId: number): string {
     return devServerConfig.serverUrl + devServerConfig.taskResultLongPollingUrl + '/' + resultId;
 }
 
-export function getAssessmentPath(resultId: number): string {
-    return devServerConfig.serverUrl + devServerConfig.getAssessmentPath + '/' + resultId;
-}
 
 // TODO - fetch from external config or app constructor
 const devServerConfig : MathGrassConfig = {
     serverUrl: 'http://localhost:8080/',
     getAllTasks: 'task',
     getTaskByIdUrl: 'task',
-    submitAssessmentPath: 'evaluator/runTask',
+    submitDynamicAssessmentPath: 'evaluator/runTask',
+    submitStaticAssessmentPath: 'evaluator/staticEvaluation',
     getAssessmentPath: 'evaluator/taskResult',
     requestHintsPath: 'requestHint',
     domContainerId: 'root',
