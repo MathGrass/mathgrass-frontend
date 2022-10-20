@@ -9,7 +9,6 @@ import {
     Task
 } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
-import {JSONSchema7} from 'json-schema';
 
 
 const Assessment = () => {
@@ -17,7 +16,7 @@ const Assessment = () => {
     const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
     const question: Question | null | undefined = currentTask?.question;
 
-    const questionSchema: JsonFormTuple | null = transformQuestionsToSchema(question);
+    const questionSchema: JsonFormTuple | null = transformQuestionToSchema(question);
 
     if (questionSchema === null) {
         return <div/>;
@@ -26,17 +25,18 @@ const Assessment = () => {
     return (<div>
         <Form schema={questionSchema.schema}
               uiSchema={questionSchema.uiSchema}
-              onSubmit={() => {
+              onSubmit={(e) => {
+                  const submittedAnswer: string = e.formData as string;
                   if (currentTask && currentTask.question) {
-                      if(currentTask.question.isDynamicQuestion){
+                      if (currentTask.question.isDynamicQuestion) {
                           dispatch(fetchDynamicAssessment({
                               taskId: currentTask.taskId,
-                              answer: 'answer'
+                              answer: submittedAnswer
                           }));
-                      }else{
+                      } else {
                           dispatch(fetchStaticAssessment({
                               taskId: currentTask.taskId,
-                              answer: 'answer'
+                              answer: submittedAnswer
                           }));
                       }
                   }
@@ -46,32 +46,15 @@ const Assessment = () => {
 
 };
 
-
-function transformQuestionsToSchema(question: Question | null | undefined): JsonFormTuple | null {
+function transformQuestionToSchema(question: Question | null | undefined): JsonFormTuple | null {
     if (question === null || question === undefined) {
         return null;
     }
 
-    let questionIndex: number = 0;
-    const questionMap: Map<string, Question> = new Map();
-    questionMap.set(questionIndex.toString(), question);
-    questionIndex++;
-
-    const questionObject: any = {};
-
-    questionMap.forEach((value, key) => {
-            questionObject[key] = {
-                type: 'string',
-                title: value.question
-            } as JSONSchema7;
-        }
-    );
-
     return {
         schema: {
-            title: 'Graph assessment',
-            type: 'object',
-            properties: questionObject
+            title: question.question,
+            type: 'string'
         },
         uiSchema: {}
     };
