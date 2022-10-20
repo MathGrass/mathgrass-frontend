@@ -57,6 +57,7 @@ export const applicationState = createSlice({
             // check whether action is void or not
             if (action.payload !== undefined) {
                 state.currentTask = action.payload as Task;
+                state.currentAssessmentResponse = null;
                 // Handle fetch by id logic
                 // state.availableTasks = action.payload as number[];
             }
@@ -65,7 +66,10 @@ export const applicationState = createSlice({
             //
         });
         builder.addCase(fetchDynamicAssessment.fulfilled, (state, action) => {
-            //
+            // check whether action is void or not
+            if (action.payload !== undefined) {
+                state.currentAssessmentResponse = action.payload.answerTrue as boolean;
+            }
         });
         builder.addCase(fetchStaticAssessment.fulfilled, (state, action) => {
             // check whether action is void or not
