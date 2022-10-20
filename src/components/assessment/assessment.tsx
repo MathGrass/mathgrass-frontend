@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
-import {fetchAssessment, JsonFormTuple, Question, Task} from '../../state/applicationState';
+import {fetchDynamicAssessment, JsonFormTuple, Question, Task} from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 import {JSONSchema7} from 'json-schema';
 
@@ -22,7 +22,7 @@ const Assessment = () => {
               uiSchema={questionSchema.uiSchema}
               onSubmit={() => {
                   if(currentTask) {
-                      dispatch(fetchAssessment({
+                      dispatch(fetchDynamicAssessment({
                           taskId: currentTask.taskId,
                           answer: 'answer'
                       }));

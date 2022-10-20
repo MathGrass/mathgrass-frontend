@@ -24,6 +24,7 @@ export interface Task {
 export interface Question {
     question: string;
     possibleAnswer: string[];
+    isDynamicQuestion: boolean;
 }
 
 export interface JsonFormTuple {
@@ -61,7 +62,7 @@ export const applicationState = createSlice({
         builder.addCase(fetchHint.fulfilled, (state, action) => {
             //
         });
-        builder.addCase(fetchAssessment.fulfilled, (state, action) => {
+        builder.addCase(fetchDynamicAssessment.fulfilled, (state, action) => {
             //
         });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
@@ -100,8 +101,20 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
 
             const questions: Question[] = [];
 
+            let questionString : string;
+            let isDynamicQuestionFromResult: boolean;
+            if(obj.question == null){
+                questionString = obj.template.question;
+                isDynamicQuestionFromResult = true;
+            }else{
+                questionString = obj.question;
+                isDynamicQuestionFromResult = false;
+            }
+
             questions.push({
-                question: obj.question, possibleAnswer: []
+                question: questionString,
+                possibleAnswer: [],
+                isDynamicQuestion: isDynamicQuestionFromResult
             });
 
             const task: Task = {
@@ -141,7 +154,7 @@ export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     });
 });
 
-export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (params: {
+export const fetchDynamicAssessment = createAsyncThunk('api/fetchDynamicAssessment', async (params: {
     taskId: number, answer: string
 }) => {
     return fetch(serverConfig.getAssessmentUrl(params.taskId), {
@@ -160,6 +173,12 @@ export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (pa
     }).catch( () => {
         //
     });
+});
+
+export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment', async (params: {
+    taskId: number, answer: string
+}) => {
+    //
 });
 
 
