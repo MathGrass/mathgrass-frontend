@@ -11,15 +11,27 @@ import {
 import {useDispatch} from 'react-redux';
 
 
+
+
 const Assessment = () => {
     const dispatch = useDispatch();
     const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const currentAssessmentResponse: boolean | null = useAppSelector((state) => state.applicationStateManagement.currentAssessmentResponse);
+
     const question: Question | null | undefined = currentTask?.question;
 
     const questionSchema: JsonFormTuple | null = transformQuestionToSchema(question);
 
     if (questionSchema === null) {
         return <div/>;
+    }
+
+    function showCurrentAssessment() {
+        if(typeof  currentAssessmentResponse === 'boolean'){
+            return  <div>
+                {currentAssessmentResponse ? 'Your assessment is correct.' : 'Your assessment is wrong'}
+            </div>;
+        }
     }
 
     return (<div>
@@ -42,9 +54,11 @@ const Assessment = () => {
                   }
               }
               }/>
+        { currentAssessmentResponse !== null ? showCurrentAssessment() : null}
     </div>);
-
 };
+
+
 
 function transformQuestionToSchema(question: Question | null | undefined): JsonFormTuple | null {
     if (question === null || question === undefined) {

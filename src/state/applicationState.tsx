@@ -8,6 +8,7 @@ interface ApplicationState {
     graphInEditor: any;
     hintLevel: number;
     currentTask: Task | null;
+    currentAssessmentResponse: boolean | null;
     availableTasks: Task[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
@@ -37,6 +38,7 @@ function getInitialApplicationState(): ApplicationState {
         graphInEditor: undefined,
         hintLevel: 0,
         currentTask: null,
+        currentAssessmentResponse: null,
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         feedbackHistory: [] as string[],
@@ -65,6 +67,12 @@ export const applicationState = createSlice({
         builder.addCase(fetchDynamicAssessment.fulfilled, (state, action) => {
             //
         });
+        builder.addCase(fetchStaticAssessment.fulfilled, (state, action) => {
+            // check whether action is void or not
+            if (action.payload !== undefined) {
+                state.currentAssessmentResponse = action.payload as boolean;
+            }
+        });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
             // check whether action is void or not
             if (action.payload !== undefined) {
@@ -89,7 +97,6 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
                 vertices.push(vertex);
             });
 
-
             // extract edges
             const edges: Edge[] = [];
             obj.graph.edges.forEach((e: any) => {
@@ -98,8 +105,6 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
                 };
                 edges.push(edge);
             });
-
-            const questions: Question[] = [];
 
             let questionString: string;
             let isDynamicQuestionFromResult: boolean;
@@ -121,7 +126,7 @@ export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: nu
                 graph: {
                     vertices, edges
                 },
-                question: question
+                question
             };
             return task;
         })
@@ -184,7 +189,7 @@ export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment
             'answer': params.answer
         })
     }).then((response) => response.json()).then((json) => {
-        // TODO
+        return json;
     }).catch(() => {
         //
     });
