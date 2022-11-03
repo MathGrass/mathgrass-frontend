@@ -63,7 +63,11 @@ export const applicationState = createSlice({
             }
         });
         builder.addCase(fetchHint.fulfilled, (state, action) => {
-            //
+            // check whether action is void or not
+            if (action.payload !== undefined) {
+                state.feedbackHistory.push(action.payload as string);
+                state.hintLevel = state.hintLevel + 1;
+            }
         });
         builder.addCase(fetchDynamicAssessment.fulfilled, (state, action) => {
             // check whether action is void or not
@@ -159,8 +163,9 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
 export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     taskId: number, hintLevel: number
 }) => {
-    return fetch(serverConfig.getNextHint(params.taskId, params.hintLevel)).then((response) => response.json()).then((json) => {
-        // handle logic
+    const nextHintResource : string = serverConfig.getNextHint(params.taskId, params.hintLevel);
+    return fetch(nextHintResource).then((response) => response.json()).then((json) => {
+        return json.content;
     });
 });
 

@@ -1,5 +1,4 @@
 export interface MathGrassConfig {
-    readonly getNextHint: string;
     readonly serverUrl: string;
     readonly getAllTasks: string;
     readonly submitDynamicAssessmentPath: string;
@@ -24,7 +23,7 @@ export function getTaskByIdUrl(id: number): string{
 }
 
 export function getNextHint(taskId: number, hintLevel: number): string {
-    return devServerConfig.serverUrl + devServerConfig.getNextHint + '/' + taskId + '/' + hintLevel;
+    return devServerConfig.serverUrl + devServerConfig.getTaskByIdUrl + '/' + taskId + '/hint/' + hintLevel;
 }
 
 export function getDynamicAssessmentUrl(taskId: number): string {
@@ -50,6 +49,5 @@ const devServerConfig : MathGrassConfig = {
     getAssessmentPath: 'evaluator/taskResult',
     requestHintsPath: 'requestHint',
     domContainerId: 'root',
-    getNextHint: 'hint',
     taskResultLongPollingUrl: 'evaluator/longPollTaskResult'
 };
