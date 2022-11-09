@@ -4,19 +4,17 @@ import Assessment from './components/assessment/assessment';
 import IncrementalHints from './components/incrementalHints/incrementalHints';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TaskManagement from './components/taskManagement/taskManagement';
-import {JsonFormTuple, setupApplication} from './state/applicationState';
+import {fetchAvailableTasks, Task} from './state/applicationState';
 import {useAppSelector} from './state/common/hooks';
 import {useDispatch} from 'react-redux';
 
 const MathGrass = () => {
-
-    const questionSchema: JsonFormTuple | undefined = useAppSelector((state) => state.applicationStateManagement.jsonFormDescription);
-
+    const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
 
     const dispatch = useDispatch();
     // this is only run once for the initial setup
     useEffect(() => {
-        dispatch(setupApplication());
+        dispatch(fetchAvailableTasks());
     }, []);
 
 
@@ -48,7 +46,7 @@ const MathGrass = () => {
                                 </div>
                             </div>
                         </div>
-                        {questionSchema ? renderAssessmentAndHints() : null}
+                        {currentTask ? renderAssessmentAndHints() : null}
                     </div>
                 </div>
             </div>

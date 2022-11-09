@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import MathGrass from './mathGrass';
 import {store} from './state/common/store';
-import {getServerConfig, MathGrassConfig} from './config/serverConfig';
+import * as serverConfig from './config/serverConfig';
+import {MathGrassConfig} from './config/serverConfig';
+
 
 function renderApp() {
     ReactDOM.render(
@@ -11,7 +13,7 @@ function renderApp() {
             <Provider store={store}>
                 <MathGrass/>
             </Provider>
-        </React.StrictMode>, document.getElementById(getServerConfig().domContainerId));
+        </React.StrictMode>, document.getElementById(serverConfig.getServerConfig().domContainerId));
 }
 
 // TODO - for instantiating the application externally
