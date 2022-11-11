@@ -12,6 +12,7 @@ interface ApplicationState {
     availableTasks: Task[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
+    currentAnswer: string | undefined;
     feedbackHistory: string [];
 }
 
@@ -42,7 +43,8 @@ function getInitialApplicationState(): ApplicationState {
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         feedbackHistory: [] as string[],
-        availableTasks: [] as Task[]
+        availableTasks: [] as Task[],
+        currentAnswer: undefined
     };
 }
 
@@ -51,7 +53,10 @@ export const applicationState = createSlice({
     name: 'tasks', initialState: initialTaskState, reducers: {
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
-        }
+        },
+        propagateCurrentAnswer: (state, action: PayloadAction<string>) => {
+            state.currentAnswer = action.payload;
+        },
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
@@ -168,8 +173,6 @@ export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
         response.json()
     ).then((json) => {
         return json;
-    }).catch(reason => {
-        console.log(reason)
     });
 });
 
@@ -210,6 +213,7 @@ export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment
 
 
 export const {
-    propagateGraphState
+    propagateGraphState,
+    propagateCurrentAnswer
 } = applicationState.actions;
 // export default applicationState.reducer;
