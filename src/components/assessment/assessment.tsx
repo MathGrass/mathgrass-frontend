@@ -4,7 +4,7 @@ import {useAppSelector} from '../../state/common/hooks';
 import {
     fetchDynamicAssessment,
     fetchStaticAssessment,
-    JsonFormTuple,
+    JsonFormTuple, propagateCurrentAnswer,
     Question,
     Task
 } from '../../state/applicationState';
@@ -16,6 +16,7 @@ import {useDispatch} from 'react-redux';
 const Assessment = () => {
     const dispatch = useDispatch();
     const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const currentAnswer: string | undefined = useAppSelector((state) => state.applicationStateManagement.currentAnswer);
     const currentAssessmentResponse: boolean | null = useAppSelector((state) => state.applicationStateManagement.currentAssessmentResponse);
 
     const question: Question | null | undefined = currentTask?.question;
@@ -28,8 +29,13 @@ const Assessment = () => {
 
     function showCurrentAssessment() {
         if(typeof  currentAssessmentResponse === 'boolean'){
-            return  <div>
-                {currentAssessmentResponse ? 'Your assessment is correct.' : 'Your assessment is wrong'}
+            return  <div><br/>
+                    <div className="alert alert-secondary" role="alert">
+                        You submitted the following answer: '{currentAnswer}'
+                    </div>
+                {currentAssessmentResponse ?
+                    <div className="alert alert-success" role="alert">Your assessment is correct.</div> :
+                    <div className="alert alert-danger" role="alert">Your assessment is wrong</div>}
             </div>;
         }
     }
@@ -51,6 +57,7 @@ const Assessment = () => {
                               answer: submittedAnswer
                           }));
                       }
+                      dispatch(propagateCurrentAnswer(submittedAnswer));
                   }
               }
               }/>

@@ -18,7 +18,7 @@ const IncrementalHints = () => {
                 }
             }}>Request Hint
             </button>
-            {feedbackHistory.length !== 0 ? <div>{feedbackHistory[feedbackHistory.length]}</div> : null}
+            {feedbackHistory.length !== 0 ? <div>{feedbackHistory[feedbackHistory.length-1]}</div> : null}
             {/*// implement e.g. a carousel with the hint history*/}
         </div>);
 };

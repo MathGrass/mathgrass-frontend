@@ -12,6 +12,7 @@ interface ApplicationState {
     availableTasks: Task[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
+    currentAnswer: string | undefined;
     feedbackHistory: string [];
 }
 
@@ -42,7 +43,8 @@ function getInitialApplicationState(): ApplicationState {
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         feedbackHistory: [] as string[],
-        availableTasks: [] as Task[]
+        availableTasks: [] as Task[],
+        currentAnswer: undefined
     };
 }
 
@@ -51,7 +53,10 @@ export const applicationState = createSlice({
     name: 'tasks', initialState: initialTaskState, reducers: {
         propagateGraphState: (state, action: PayloadAction<any>) => {
             state.graphInEditor = action.payload;
-        }
+        },
+        propagateCurrentAnswer: (state, action: PayloadAction<string>) => {
+            state.currentAnswer = action.payload;
+        },
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
@@ -65,7 +70,7 @@ export const applicationState = createSlice({
         builder.addCase(fetchHint.fulfilled, (state, action) => {
             // check whether action is void or not
             if (action.payload !== undefined) {
-                state.feedbackHistory.push(action.payload as string);
+                state.feedbackHistory.push(action.payload.content as string);
                 state.hintLevel = state.hintLevel + 1;
             }
         });
@@ -164,8 +169,10 @@ export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     taskId: number, hintLevel: number
 }) => {
     const nextHintResource : string = serverConfig.getNextHint(params.taskId, params.hintLevel);
-    return fetch(nextHintResource).then((response) => response.json()).then((json) => {
-        return json.content;
+    return fetch(nextHintResource).then((response) =>
+        response.json()
+    ).then((json) => {
+        return json;
     });
 });
 
@@ -206,6 +213,7 @@ export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment
 
 
 export const {
-    propagateGraphState
+    propagateGraphState,
+    propagateCurrentAnswer
 } = applicationState.actions;
 // export default applicationState.reducer;
