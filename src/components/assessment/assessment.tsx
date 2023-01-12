@@ -10,9 +10,6 @@ import {
 } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 
-
-
-
 const Assessment = () => {
     const dispatch = useDispatch();
     const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
@@ -64,8 +61,6 @@ const Assessment = () => {
         { currentAssessmentResponse !== null ? showCurrentAssessment() : null}
     </div>);
 };
-
-
 
 function transformQuestionToSchema(question: Question | null | undefined): JsonFormTuple | null {
     if (question === null || question === undefined) {
