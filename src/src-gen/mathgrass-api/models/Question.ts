@@ -24,13 +24,13 @@ export interface Question {
      * @type {string}
      * @memberof Question
      */
-    question?: string;
+    question: string;
     /**
      * 
      * @type {string}
      * @memberof Question
      */
-    questionType?: QuestionQuestionTypeEnum;
+    questionType: QuestionQuestionTypeEnum;
     /**
      * 
      * @type {Array<string>}
@@ -57,6 +57,8 @@ export type QuestionQuestionTypeEnum = typeof QuestionQuestionTypeEnum[keyof typ
  */
 export function instanceOfQuestion(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "question" in value;
+    isInstance = isInstance && "questionType" in value;
 
     return isInstance;
 }
@@ -71,8 +73,8 @@ export function QuestionFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'question': !exists(json, 'question') ? undefined : json['question'],
-        'questionType': !exists(json, 'questionType') ? undefined : json['questionType'],
+        'question': json['question'],
+        'questionType': json['questionType'],
         'possibleAnswers': !exists(json, 'possible_answers') ? undefined : json['possible_answers'],
     };
 }

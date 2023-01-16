@@ -24,7 +24,7 @@ export interface Vertex {
      * @type {number}
      * @memberof Vertex
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {number}
@@ -50,6 +50,7 @@ export interface Vertex {
  */
 export function instanceOfVertex(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
     isInstance = isInstance && "x" in value;
     isInstance = isInstance && "y" in value;
 
@@ -66,7 +67,7 @@ export function VertexFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ve
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'id': json['id'],
         'x': json['x'],
         'y': json['y'],
         'label': !exists(json, 'label') ? undefined : json['label'],

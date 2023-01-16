@@ -1,4 +1,4 @@
-import {Configuration} from '../../src-gen/mathgrass-api';
+import {Configuration} from '../src-gen/mathgrass-api';
 
 export interface MathGrassConfig {
     readonly serverUrl: string;
@@ -41,7 +41,7 @@ export function getAssessmentLongPollingUrl(resultId: number): string {
     return devServerConfig.serverUrl + devServerConfig.taskResultLongPollingUrl + '/' + resultId;
 }
 
-const serverUrl: string = 'http://localhost:8080/';
+const serverUrl: string = 'http://localhost:8080';
 
 // TODO - fetch from external config or app constructor
 export const devServerConfig : MathGrassConfig = {

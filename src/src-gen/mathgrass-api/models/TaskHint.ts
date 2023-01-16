@@ -16,48 +16,57 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TaskIdLabelTuple
+ * @interface TaskHint
  */
-export interface TaskIdLabelTuple {
+export interface TaskHint {
     /**
      * 
      * @type {number}
-     * @memberof TaskIdLabelTuple
+     * @memberof TaskHint
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
-     * @memberof TaskIdLabelTuple
+     * @memberof TaskHint
      */
     label?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TaskHint
+     */
+    content: string;
 }
 
 /**
- * Check if a given object implements the TaskIdLabelTuple interface.
+ * Check if a given object implements the TaskHint interface.
  */
-export function instanceOfTaskIdLabelTuple(value: object): boolean {
+export function instanceOfTaskHint(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "content" in value;
 
     return isInstance;
 }
 
-export function TaskIdLabelTupleFromJSON(json: any): TaskIdLabelTuple {
-    return TaskIdLabelTupleFromJSONTyped(json, false);
+export function TaskHintFromJSON(json: any): TaskHint {
+    return TaskHintFromJSONTyped(json, false);
 }
 
-export function TaskIdLabelTupleFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskIdLabelTuple {
+export function TaskHintFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskHint {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'id': json['id'],
         'label': !exists(json, 'label') ? undefined : json['label'],
+        'content': json['content'],
     };
 }
 
-export function TaskIdLabelTupleToJSON(value?: TaskIdLabelTuple | null): any {
+export function TaskHintToJSON(value?: TaskHint | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -68,6 +77,7 @@ export function TaskIdLabelTupleToJSON(value?: TaskIdLabelTuple | null): any {
         
         'id': value.id,
         'label': value.label,
+        'content': value.content,
     };
 }
 

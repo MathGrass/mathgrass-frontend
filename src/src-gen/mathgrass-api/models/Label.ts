@@ -16,55 +16,50 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TaskHint
+ * @interface Label
  */
-export interface TaskHint {
+export interface Label {
     /**
      * 
      * @type {number}
-     * @memberof TaskHint
+     * @memberof Label
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
-     * @memberof TaskHint
+     * @memberof Label
      */
-    label?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TaskHint
-     */
-    content?: string;
+    label: string;
 }
 
 /**
- * Check if a given object implements the TaskHint interface.
+ * Check if a given object implements the Label interface.
  */
-export function instanceOfTaskHint(value: object): boolean {
+export function instanceOfLabel(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "label" in value;
 
     return isInstance;
 }
 
-export function TaskHintFromJSON(json: any): TaskHint {
-    return TaskHintFromJSONTyped(json, false);
+export function LabelFromJSON(json: any): Label {
+    return LabelFromJSONTyped(json, false);
 }
 
-export function TaskHintFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskHint {
+export function LabelFromJSONTyped(json: any, ignoreDiscriminator: boolean): Label {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'label': !exists(json, 'label') ? undefined : json['label'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'id': json['id'],
+        'label': json['label'],
     };
 }
 
-export function TaskHintToJSON(value?: TaskHint | null): any {
+export function LabelToJSON(value?: Label | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -75,7 +70,6 @@ export function TaskHintToJSON(value?: TaskHint | null): any {
         
         'id': value.id,
         'label': value.label,
-        'content': value.content,
     };
 }
 

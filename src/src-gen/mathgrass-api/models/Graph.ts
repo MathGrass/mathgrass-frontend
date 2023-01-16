@@ -43,13 +43,7 @@ export interface Graph {
      * @type {number}
      * @memberof Graph
      */
-    id?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof Graph
-     */
-    label?: string;
+    id: number;
     /**
      * 
      * @type {Array<Label>}
@@ -61,13 +55,13 @@ export interface Graph {
      * @type {Array<Edge>}
      * @memberof Graph
      */
-    edges?: Array<Edge>;
+    edges: Array<Edge>;
     /**
      * 
      * @type {Array<Vertex>}
      * @memberof Graph
      */
-    vertices?: Array<Vertex>;
+    vertices: Array<Vertex>;
 }
 
 /**
@@ -75,6 +69,9 @@ export interface Graph {
  */
 export function instanceOfGraph(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "edges" in value;
+    isInstance = isInstance && "vertices" in value;
 
     return isInstance;
 }
@@ -89,11 +86,10 @@ export function GraphFromJSONTyped(json: any, ignoreDiscriminator: boolean): Gra
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'label': !exists(json, 'label') ? undefined : json['label'],
+        'id': json['id'],
         'labels': !exists(json, 'labels') ? undefined : ((json['labels'] as Array<any>).map(LabelFromJSON)),
-        'edges': !exists(json, 'edges') ? undefined : ((json['edges'] as Array<any>).map(EdgeFromJSON)),
-        'vertices': !exists(json, 'vertices') ? undefined : ((json['vertices'] as Array<any>).map(VertexFromJSON)),
+        'edges': ((json['edges'] as Array<any>).map(EdgeFromJSON)),
+        'vertices': ((json['vertices'] as Array<any>).map(VertexFromJSON)),
     };
 }
 
@@ -107,10 +103,9 @@ export function GraphToJSON(value?: Graph | null): any {
     return {
         
         'id': value.id,
-        'label': value.label,
         'labels': value.labels === undefined ? undefined : ((value.labels as Array<any>).map(LabelToJSON)),
-        'edges': value.edges === undefined ? undefined : ((value.edges as Array<any>).map(EdgeToJSON)),
-        'vertices': value.vertices === undefined ? undefined : ((value.vertices as Array<any>).map(VertexToJSON)),
+        'edges': ((value.edges as Array<any>).map(EdgeToJSON)),
+        'vertices': ((value.vertices as Array<any>).map(VertexToJSON)),
     };
 }
 

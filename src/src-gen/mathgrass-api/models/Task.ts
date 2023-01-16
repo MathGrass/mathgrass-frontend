@@ -43,7 +43,7 @@ export interface Task {
      * @type {number}
      * @memberof Task
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {TaskTemplate}
@@ -55,7 +55,7 @@ export interface Task {
      * @type {Graph}
      * @memberof Task
      */
-    graph?: Graph;
+    graph: Graph;
     /**
      * 
      * @type {Array<TaskHint>}
@@ -73,7 +73,7 @@ export interface Task {
      * @type {string}
      * @memberof Task
      */
-    question?: string;
+    question: string;
     /**
      * 
      * @type {string}
@@ -93,6 +93,9 @@ export interface Task {
  */
 export function instanceOfTask(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "graph" in value;
+    isInstance = isInstance && "question" in value;
 
     return isInstance;
 }
@@ -107,12 +110,12 @@ export function TaskFromJSONTyped(json: any, ignoreDiscriminator: boolean): Task
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'id': json['id'],
         'template': !exists(json, 'template') ? undefined : TaskTemplateFromJSON(json['template']),
-        'graph': !exists(json, 'graph') ? undefined : GraphFromJSON(json['graph']),
+        'graph': GraphFromJSON(json['graph']),
         'hints': !exists(json, 'hints') ? undefined : (json['hints'] === null ? null : (json['hints'] as Array<any>).map(TaskHintFromJSON)),
         'feedback': !exists(json, 'feedback') ? undefined : json['feedback'],
-        'question': !exists(json, 'question') ? undefined : json['question'],
+        'question': json['question'],
         'label': !exists(json, 'label') ? undefined : json['label'],
         'answer': !exists(json, 'answer') ? undefined : json['answer'],
     };

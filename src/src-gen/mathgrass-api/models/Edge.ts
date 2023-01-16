@@ -31,13 +31,13 @@ export interface Edge {
      * @type {Vertex}
      * @memberof Edge
      */
-    firstVertex?: Vertex;
+    firstVertex: Vertex;
     /**
      * 
      * @type {Vertex}
      * @memberof Edge
      */
-    secondVertex?: Vertex;
+    secondVertex: Vertex;
     /**
      * 
      * @type {string}
@@ -51,6 +51,8 @@ export interface Edge {
  */
 export function instanceOfEdge(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "firstVertex" in value;
+    isInstance = isInstance && "secondVertex" in value;
 
     return isInstance;
 }
@@ -65,8 +67,8 @@ export function EdgeFromJSONTyped(json: any, ignoreDiscriminator: boolean): Edge
     }
     return {
         
-        'firstVertex': !exists(json, 'firstVertex') ? undefined : VertexFromJSON(json['firstVertex']),
-        'secondVertex': !exists(json, 'secondVertex') ? undefined : VertexFromJSON(json['secondVertex']),
+        'firstVertex': VertexFromJSON(json['firstVertex']),
+        'secondVertex': VertexFromJSON(json['secondVertex']),
         'label': !exists(json, 'label') ? undefined : json['label'],
     };
 }

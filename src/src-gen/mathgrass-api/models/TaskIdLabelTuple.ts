@@ -16,48 +16,50 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Label
+ * @interface TaskIdLabelTuple
  */
-export interface Label {
+export interface TaskIdLabelTuple {
     /**
      * 
      * @type {number}
-     * @memberof Label
+     * @memberof TaskIdLabelTuple
      */
-    id?: number;
+    id: number;
     /**
      * 
      * @type {string}
-     * @memberof Label
+     * @memberof TaskIdLabelTuple
      */
-    label?: string;
+    label: string;
 }
 
 /**
- * Check if a given object implements the Label interface.
+ * Check if a given object implements the TaskIdLabelTuple interface.
  */
-export function instanceOfLabel(value: object): boolean {
+export function instanceOfTaskIdLabelTuple(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "label" in value;
 
     return isInstance;
 }
 
-export function LabelFromJSON(json: any): Label {
-    return LabelFromJSONTyped(json, false);
+export function TaskIdLabelTupleFromJSON(json: any): TaskIdLabelTuple {
+    return TaskIdLabelTupleFromJSONTyped(json, false);
 }
 
-export function LabelFromJSONTyped(json: any, ignoreDiscriminator: boolean): Label {
+export function TaskIdLabelTupleFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskIdLabelTuple {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'label': !exists(json, 'label') ? undefined : json['label'],
+        'id': json['id'],
+        'label': json['label'],
     };
 }
 
-export function LabelToJSON(value?: Label | null): any {
+export function TaskIdLabelTupleToJSON(value?: TaskIdLabelTuple | null): any {
     if (value === undefined) {
         return undefined;
     }

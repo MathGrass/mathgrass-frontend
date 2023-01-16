@@ -2,10 +2,11 @@ import React, {useEffect} from 'react';
 import * as joint from 'jointjs';
 import {useAppSelector} from '../../state/common/hooks';
 import {useDispatch} from 'react-redux';
-import {propagateGraphState, Task} from '../../state/applicationState';
+import {propagateGraphState} from '../../state/applicationState';
 import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 import {abstractGraphToJointJsGraph} from './graphConverter';
+import {Task} from '../../src-gen/mathgrass-api';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 const EDITOR_HEIGHT: number = 600;
