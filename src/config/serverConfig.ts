@@ -1,3 +1,5 @@
+import {Configuration} from '../../src-gen/mathgrass-api';
+
 export interface MathGrassConfig {
     readonly serverUrl: string;
     readonly getAllTasks: string;
@@ -8,6 +10,7 @@ export interface MathGrassConfig {
     readonly getTaskByIdUrl: string;
     readonly getAssessmentPath: string;
     readonly taskResultLongPollingUrl: string;
+    readonly apiConfig: Configuration;
 }
 
 export function getAllTasksUrl() : string  {
@@ -38,10 +41,11 @@ export function getAssessmentLongPollingUrl(resultId: number): string {
     return devServerConfig.serverUrl + devServerConfig.taskResultLongPollingUrl + '/' + resultId;
 }
 
+const serverUrl: string = 'http://localhost:8080/';
 
 // TODO - fetch from external config or app constructor
-const devServerConfig : MathGrassConfig = {
-    serverUrl: 'http://localhost:8080/',
+export const devServerConfig : MathGrassConfig = {
+    serverUrl,
     getAllTasks: 'task',
     getTaskByIdUrl: 'task',
     submitDynamicAssessmentPath: 'evaluator/runTask',
@@ -49,5 +53,8 @@ const devServerConfig : MathGrassConfig = {
     getAssessmentPath: 'evaluator/taskResult',
     requestHintsPath: 'requestHint',
     domContainerId: 'root',
-    taskResultLongPollingUrl: 'evaluator/longPollTaskResult'
+    taskResultLongPollingUrl: 'evaluator/longPollTaskResult',
+    apiConfig: new Configuration({
+        basePath: serverUrl,
+    })
 };

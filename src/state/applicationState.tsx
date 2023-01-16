@@ -3,6 +3,12 @@ import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import * as serverConfig from '../config/serverConfig';
 import {AbstractGraph, Edge, Vertex} from './model/abstractGraphModel';
+import {devServerConfig} from '../config/serverConfig';
+import {DefaultApi} from '../../src-gen/mathgrass-api';
+
+const api = new DefaultApi(devServerConfig.apiConfig);
+api.createGraph
+
 
 interface ApplicationState {
     graphInEditor: any;
