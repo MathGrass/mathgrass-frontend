@@ -1,0 +1,790 @@
+openapi: 3.0.1
+info:
+  version: "0.1.0"
+  title: "MathGrass"
+  description: "This is the OpenAPI specification for MathGrass"
+  contact:
+    name: "Andreas Domanowski"
+    email: "andreas.domanowski@tu-dresden.de"
+  license:
+    name: "MIT"
+    url: "https://github.com/MathGrass/mathgrass-api"
+paths:
+  /graph/{graphId}:
+    get:
+      description: Get a graph by id
+      operationId: getGraphById
+      parameters:
+      - name: graphId
+        in: path
+        description: Graph id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Graph'
+    put:
+      description: Update a graph
+      operationId: updateGraph
+      parameters:
+      - name: graphId
+        in: path
+        description: ID of graph
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Graph object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Graph'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: graph
+  /graph:
+    post:
+      description: Create a new graph
+      operationId: createGraph
+      requestBody:
+        description: Graph object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Graph'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+      x-codegen-request-body-name: graph
+  /taskTemplate/{taskTemplateId}:
+    get:
+      description: Returns a task template
+      operationId: getTaskTemplateById
+      parameters:
+      - name: taskTemplateId
+        in: path
+        description: ID of task template
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskTemplate'
+        404:
+          description: Task Template not found
+          content: {}
+  /taskTemplate/{taskTemplateId}/getHint/{index}:
+    get:
+      description: Returns a hint
+      operationId: getTaskTemplateHint
+      parameters:
+      - name: taskTemplateId
+        in: path
+        description: ID of task template
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: index
+        in: path
+        description: Index of the hint
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskHint'
+        404:
+          description: Task Template not found
+          content: {}
+  /taskTemplate:
+    post:
+      description: Creates a task template
+      operationId: createTaskTemplate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskTemplate'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+      x-codegen-request-body-name: taskTemplate
+  /taskTemplate/{taskTemplateId}/setLabel:
+    put:
+      description: Sets a label for a task template
+      operationId: setTaskTemplateLabel
+      parameters:
+      - name: taskTemplateId
+        in: path
+        description: ID of task template
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Label to set
+        content:
+          '*/*':
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: label
+  /taskTemplate/{taskTemplateId}/setQuestion:
+    put:
+      description: Sets a question for a task template
+      operationId: setTaskTemplateQuestion
+      parameters:
+      - name: taskTemplateId
+        in: path
+        description: ID of task template
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Question to set
+        content:
+          '*/*':
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: question
+  /task/{taskId}:
+    get:
+      description: Returns a task
+      operationId: getTaskById
+      parameters:
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+    put:
+      description: Updates a task
+      operationId: updateTask
+      parameters:
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: ID of task
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: task
+  /task:
+    get:
+      description: Get the IDs of all tasks
+      operationId: getIdsOfAllTasks
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskIdLabelTuple'
+    post:
+      description: Creates a task
+      operationId: createTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+      x-codegen-request-body-name: task
+  /task/{taskId}/addFeedback:
+    post:
+      description: Adds feedback to a task
+      operationId: addTaskFeedback
+      parameters:
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: feedback content
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: feedback
+  /task/{taskId}/getFeedback:
+    get:
+      description: Get all feedback of a task
+      operationId: getTaskFeedback
+      parameters:
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Feedback'
+  /task/{taskId}/addHint:
+    post:
+      description: Adds a hint to a task
+      operationId: addTaskHint
+      parameters:
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: hint item
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskHint'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: hint
+  /task/{taskId}/hint/{hintLevel}:
+    get:
+      description: Get hint at hintlevel for task
+      operationId: getHintForTask
+      parameters:
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: hintLevel
+        in: path
+        description: level of the hint
+        required: true
+        schema:
+          type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskHint'
+  /taskCollection:
+    get:
+      description: Get all task collection
+      operationId: getTaskCollections
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskCollection'
+    post:
+      description: Creates a task collection
+      operationId: createTaskCollection
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCollection'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskCollection'
+      x-codegen-request-body-name: taskCollection
+  /taskCollection/{taskCollectionId}:
+    get:
+      description: Returns a task collection
+      operationId: getTaskCollectionById
+      parameters:
+      - name: taskCollectionId
+        in: path
+        description: ID of task collection
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskCollection'
+  /taskTopic:
+    get:
+      description: Get all task topics
+      operationId: getTaskTopics
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaskTopic'
+    post:
+      description: Creates a task topic
+      operationId: createTaskTopic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskTopic'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaskTopic'
+      x-codegen-request-body-name: taskTopic
+  /taskSolver/{taskSolverId}:
+    get:
+      description: Returns a task solver
+      operationId: getTaskSolverById
+      parameters:
+      - name: taskSolverId
+        in: path
+        description: ID of task solver
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskSolver'
+  /taskSolver:
+    post:
+      description: Creates a task solver
+      operationId: createTaskSolver
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskSolver'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+      x-codegen-request-body-name: taskSolver
+  /label/{labelId}:
+    get:
+      description: Returns a label
+      operationId: getLabelById
+      parameters:
+      - name: labelId
+        in: path
+        description: ID of label
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
+  /label:
+    get:
+      description: Get all labels
+      operationId: getLabels
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Label'
+    post:
+      description: Creates a label
+      operationId: createLabel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Label'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Label'
+      x-codegen-request-body-name: label
+  /evaluator/runTask/{taskId}:
+    post:
+      description: Run a task with an answer
+      operationId: runTask
+      parameters:
+      - name: taskId
+        in: path
+        description: ID of task
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        description: Answer of student
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+      x-codegen-request-body-name: answer
+  /evaluator/taskResult/{resultId}:
+    get:
+      description: Get the result for an evaluation process
+      operationId: getTaskResult
+      parameters:
+      - name: resultId
+        in: path
+        description: ID of task
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResult'
+components:
+  schemas:
+    Graph:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        label:
+          type: string
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+        edges:
+          type: array
+          items:
+            $ref: '#/components/schemas/Edge'
+        vertices:
+          type: array
+          items:
+              $ref: '#/components/schemas/Vertex'
+              nullable: false
+    Vertex:
+      title: Vertex
+      required:
+        - x
+        - y
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        # Relative coordinate system
+        # x and y are relative to editor width and height (percentage)
+        x:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        y:
+          maximum: 99
+          minimum: 0
+          type: integer
+          format: int32
+        label:
+          type: string
+    Edge:
+      type: object
+      properties:
+        firstVertex:
+          $ref: '#/components/schemas/Vertex'
+        secondVertex:
+          $ref: '#/components/schemas/Vertex'
+        label:
+          type: string
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        label:
+          type: string
+    Question:
+      type: object
+      properties:
+        question:
+          type: string
+        questionType:
+          type: string
+          enum:
+          - freetext
+          - number
+          - mark_nodes
+          - mark_edges
+        possible_answers:
+          type: array
+          items:
+            type: string
+    TaskSolver:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        label:
+          type: string
+        executionDescriptor:
+          type: string
+    TaskTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        label:
+          type: string
+        question:
+          type: string
+        taskSolver:
+          type: integer
+          format: int64
+        hints:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/TaskHint'
+        labels:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        template:
+          $ref: '#/components/schemas/TaskTemplate'
+        graph:
+          $ref: '#/components/schemas/Graph'
+        hints:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/TaskHint'
+        feedback:
+          type: array
+          items:
+            type: integer
+            format: int64
+        question:
+          type: string
+        label:
+          type: string
+        answer:
+          type: string
+    TaskIdLabelTuple:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        label:
+          type: string
+    TaskHint:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        label:
+          type: string
+        content:
+          type: string
+    TaskResult:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        task:
+          type: integer
+          format: int64
+        answer:
+          type: string
+        submissionDate:
+          type: string
+        evaluationDate:
+          type: string
+        answerTrue:
+          type: boolean
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        content:
+          type: string
+    TaskTopic:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        label:
+          type: string
+        tasks:
+          type: array
+          items:
+            type: integer
+            format: int64
+    TaskCollection:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        label:
+          type: string
+        tasks:
+          type: array
+          items:
+            type: integer
+            format: int64
+  securitySchemes:
+    mathgrass_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://mathgrass.swagger.io/oauth/dialog
+          scopes:
+            write:exercising: modify entities of exercising
+            read:exercising: read exercising
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
