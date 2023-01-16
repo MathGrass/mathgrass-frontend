@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "^7.16.0",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@reduxjs/toolkit": "^1.8.0",
     "@rjsf/core": "^4.0.1",
@@ -76,7 +77,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "lint:ts": "tslint --force -p tsconfig.json -c tslint.json"
+    "lint:ts": "tslint --force -p tsconfig.json -c tslint.json",
+    "codegen": "rm -rf src/generated-sources/openapi; openapi-generator-cli generate -i ./mathgrass-api.yaml -o src/generated-sources/mathgrass-api -g typescript-fetch --additional-properties=supportsES6=true,npmVersion=6.9.0,typescriptThreePlus=true"
   },
   "eslintConfig": {
     "extends": [
