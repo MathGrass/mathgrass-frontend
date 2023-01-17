@@ -80,7 +80,7 @@ export const applicationState = createSlice({
         builder.addCase(fetchStaticAssessment.fulfilled, (state, action) => {
             // check whether action is void or not
             if (action.payload !== undefined) {
-                state.currentAssessmentResponse = action.payload as boolean;
+                state.currentAssessmentResponse = action.payload.isAssessmentCorrect as boolean;
             }
         });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
@@ -94,17 +94,17 @@ export const applicationState = createSlice({
 
 // create async thunk for fetching task types. Can be dispatched like a regular reducer. Results are processed in extraReducers
 export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: number) => {
-    return api.getTaskById({ taskId: id }).then((value) => value).catch((reason) => reason);
+    return api.getTaskById({taskId: id}).then((value) => value).catch((reason) => reason);
 });
 
 export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', async () => {
-    return api.getIdsOfAllTasks().then((value) => value);
+    return api.getIdsOfAllTasks().then((value) => value).catch((reason) => reason);
 });
 
 export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     taskId: number, hintLevel: number
 }) => {
-    const nextHintResource : string = serverConfig.getNextHint(params.taskId, params.hintLevel);
+    const nextHintResource: string = serverConfig.getNextHint(params.taskId, params.hintLevel);
     return fetch(nextHintResource).then((response) =>
         response.json()
     ).then((json) => {
@@ -134,17 +134,12 @@ export const fetchDynamicAssessment = createAsyncThunk('api/fetchDynamicAssessme
 export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment', async (params: {
     taskId: number, answer: string
 }) => {
-    return fetch(serverConfig.getStaticAssessmentUrl(params.taskId), {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify({
-            'answer': params.answer
-        })
-    }).then((response) => response.json()).then((json) => {
-        return json;
-    }).catch(() => {
-        //
-    });
+    return api.runStaticAssessment({
+        taskId: params.taskId,
+        runStaticAssessmentRequest: {
+            answer: params.answer
+        }
+    }).then((result) => result).catch((reason) => reason);
 });
 
 
