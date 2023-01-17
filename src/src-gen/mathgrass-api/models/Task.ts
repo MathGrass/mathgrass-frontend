@@ -19,6 +19,12 @@ import {
     GraphFromJSONTyped,
     GraphToJSON,
 } from './Graph';
+import type { Question } from './Question';
+import {
+    QuestionFromJSON,
+    QuestionFromJSONTyped,
+    QuestionToJSON,
+} from './Question';
 import type { TaskHint } from './TaskHint';
 import {
     TaskHintFromJSON,
@@ -61,7 +67,7 @@ export interface Task {
      * @type {Array<TaskHint>}
      * @memberof Task
      */
-    hints?: Array<TaskHint> | null;
+    hints?: Array<TaskHint>;
     /**
      * 
      * @type {Array<number>}
@@ -70,10 +76,10 @@ export interface Task {
     feedback?: Array<number>;
     /**
      * 
-     * @type {string}
+     * @type {Question}
      * @memberof Task
      */
-    question: string;
+    question: Question;
     /**
      * 
      * @type {string}
@@ -113,9 +119,9 @@ export function TaskFromJSONTyped(json: any, ignoreDiscriminator: boolean): Task
         'id': json['id'],
         'template': !exists(json, 'template') ? undefined : TaskTemplateFromJSON(json['template']),
         'graph': GraphFromJSON(json['graph']),
-        'hints': !exists(json, 'hints') ? undefined : (json['hints'] === null ? null : (json['hints'] as Array<any>).map(TaskHintFromJSON)),
+        'hints': !exists(json, 'hints') ? undefined : ((json['hints'] as Array<any>).map(TaskHintFromJSON)),
         'feedback': !exists(json, 'feedback') ? undefined : json['feedback'],
-        'question': json['question'],
+        'question': QuestionFromJSON(json['question']),
         'label': !exists(json, 'label') ? undefined : json['label'],
         'answer': !exists(json, 'answer') ? undefined : json['answer'],
     };
@@ -133,9 +139,9 @@ export function TaskToJSON(value?: Task | null): any {
         'id': value.id,
         'template': TaskTemplateToJSON(value.template),
         'graph': GraphToJSON(value.graph),
-        'hints': value.hints === undefined ? undefined : (value.hints === null ? null : (value.hints as Array<any>).map(TaskHintToJSON)),
+        'hints': value.hints === undefined ? undefined : ((value.hints as Array<any>).map(TaskHintToJSON)),
         'feedback': value.feedback,
-        'question': value.question,
+        'question': QuestionToJSON(value.question),
         'label': value.label,
         'answer': value.answer,
     };

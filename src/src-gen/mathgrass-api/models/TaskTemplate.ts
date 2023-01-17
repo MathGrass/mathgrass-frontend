@@ -61,7 +61,7 @@ export interface TaskTemplate {
      * @type {Array<TaskHint>}
      * @memberof TaskTemplate
      */
-    hints?: Array<TaskHint> | null;
+    hints?: Array<TaskHint>;
     /**
      * 
      * @type {Array<Label>}
@@ -93,7 +93,7 @@ export function TaskTemplateFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'label': !exists(json, 'label') ? undefined : json['label'],
         'question': !exists(json, 'question') ? undefined : json['question'],
         'taskSolver': !exists(json, 'taskSolver') ? undefined : json['taskSolver'],
-        'hints': !exists(json, 'hints') ? undefined : (json['hints'] === null ? null : (json['hints'] as Array<any>).map(TaskHintFromJSON)),
+        'hints': !exists(json, 'hints') ? undefined : ((json['hints'] as Array<any>).map(TaskHintFromJSON)),
         'labels': !exists(json, 'labels') ? undefined : ((json['labels'] as Array<any>).map(LabelFromJSON)),
     };
 }
@@ -111,7 +111,7 @@ export function TaskTemplateToJSON(value?: TaskTemplate | null): any {
         'label': value.label,
         'question': value.question,
         'taskSolver': value.taskSolver,
-        'hints': value.hints === undefined ? undefined : (value.hints === null ? null : (value.hints as Array<any>).map(TaskHintToJSON)),
+        'hints': value.hints === undefined ? undefined : ((value.hints as Array<any>).map(TaskHintToJSON)),
         'labels': value.labels === undefined ? undefined : ((value.labels as Array<any>).map(LabelToJSON)),
     };
 }

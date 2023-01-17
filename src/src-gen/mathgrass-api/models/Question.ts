@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { TaskSolver } from './TaskSolver';
+import {
+    TaskSolverFromJSON,
+    TaskSolverFromJSONTyped,
+    TaskSolverToJSON,
+} from './TaskSolver';
+
 /**
  * 
  * @export
@@ -25,6 +32,18 @@ export interface Question {
      * @memberof Question
      */
     question: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Question
+     */
+    isDynamicQuestion?: boolean;
+    /**
+     * 
+     * @type {TaskSolver}
+     * @memberof Question
+     */
+    taskSolver?: TaskSolver;
     /**
      * 
      * @type {string}
@@ -74,6 +93,8 @@ export function QuestionFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     return {
         
         'question': json['question'],
+        'isDynamicQuestion': !exists(json, 'isDynamicQuestion') ? undefined : json['isDynamicQuestion'],
+        'taskSolver': !exists(json, 'taskSolver') ? undefined : TaskSolverFromJSON(json['taskSolver']),
         'questionType': json['questionType'],
         'possibleAnswers': !exists(json, 'possible_answers') ? undefined : json['possible_answers'],
     };
@@ -89,6 +110,8 @@ export function QuestionToJSON(value?: Question | null): any {
     return {
         
         'question': value.question,
+        'isDynamicQuestion': value.isDynamicQuestion,
+        'taskSolver': TaskSolverToJSON(value.taskSolver),
         'questionType': value.questionType,
         'possible_answers': value.possibleAnswers,
     };
