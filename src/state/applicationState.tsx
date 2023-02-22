@@ -4,7 +4,6 @@ import {UiSchema} from '@rjsf/core';
 import * as serverConfig from '../config/serverConfig';
 import {devServerConfig} from '../config/serverConfig';
 import {DefaultApi, Task, TaskIdLabelTuple} from '../src-gen/mathgrass-api';
-import {log} from 'util';
 
 const api = new DefaultApi(devServerConfig.apiConfig);
 
@@ -85,12 +84,16 @@ export const applicationState = createSlice({
         });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (action.payload !== undefined) {
+            if (isFetchErrorOrUndefined(action)) {
                 state.availableTasks = action.payload;
             }
         });
     }
 });
+
+function isFetchErrorOrUndefined(action: PayloadAction){
+    return action === undefined || ('name' in action.payload && action.payload.name === "FetchError");
+}
 
 // create async thunk for fetching task types. Can be dispatched like a regular reducer. Results are processed in extraReducers
 export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: number) => {
