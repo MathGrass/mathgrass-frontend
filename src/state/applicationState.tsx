@@ -91,8 +91,10 @@ export const applicationState = createSlice({
     }
 });
 
-function isFetchErrorOrUndefined(action: PayloadAction){
-    return action === undefined || ('name' in action.payload && action.payload.name === "FetchError");
+function isFetchErrorOrUndefined(action: PayloadAction<any>){
+    // check whether the generated fetch api returned an error
+    const fetchErrorName = 'FetchError';
+    return action === undefined || ('name' in action.payload && action.payload.name === fetchErrorName);
 }
 
 // create async thunk for fetching task types. Can be dispatched like a regular reducer. Results are processed in extraReducers
