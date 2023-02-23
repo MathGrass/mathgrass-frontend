@@ -56,7 +56,7 @@ export const applicationState = createSlice({
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (action.payload !== undefined) {
+            if (!isFetchErrorOrUndefined(action)) {
                 state.currentTask = action.payload as Task;
                 state.currentAssessmentResponse = null;
                 // Handle fetch by id logic
@@ -65,26 +65,26 @@ export const applicationState = createSlice({
         });
         builder.addCase(fetchHint.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (action.payload !== undefined) {
+            if (!isFetchErrorOrUndefined(action)) {
                 state.feedbackHistory.push(action.payload.content as string);
                 state.hintLevel = state.hintLevel + 1;
             }
         });
         builder.addCase(fetchDynamicAssessment.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (action.payload !== undefined) {
+            if (!isFetchErrorOrUndefined(action)) {
                 state.currentAssessmentResponse = action.payload.answerTrue as boolean;
             }
         });
         builder.addCase(fetchStaticAssessment.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (action.payload !== undefined) {
+            if (!isFetchErrorOrUndefined(action)) {
                 state.currentAssessmentResponse = action.payload.isAssessmentCorrect as boolean;
             }
         });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (isFetchErrorOrUndefined(action)) {
+            if (!isFetchErrorOrUndefined(action)) {
                 state.availableTasks = action.payload;
             }
         });
