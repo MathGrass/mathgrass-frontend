@@ -5,7 +5,8 @@ import MathGrass from './mathGrass';
 import {store} from './state/common/store';
 import * as serverConfig from './config/serverConfig';
 import {MathGrassConfig} from './config/serverConfig';
-import client from "./websockets/client";
+import {WebsocketService} from "./websockets/websocketService";
+
 
 function renderApp() {
     ReactDOM.render(
@@ -22,20 +23,6 @@ export function MathGrassApplication(config: MathGrassConfig){
 }
 
 renderApp();
-// @ts-ignore
-const callback = function (message) {
-    // called when the client receives a STOMP message from the server
-    if (message.body) {
-        alert('got message with body ' + message.body);
-    } else {
-        alert('got empty message');
-    }
-};
 
-client.activate()
-while (!client.active) {
-    console.log("Client not active")
-}
-if (client.connected) {
-    client.subscribe("/topic/resultSubmitted", callback)
-}
+const websocketService = new WebsocketService()
+websocketService.connect()
