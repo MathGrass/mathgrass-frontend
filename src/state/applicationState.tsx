@@ -3,7 +3,7 @@ import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import * as serverConfig from '../config/serverConfig';
 import {devServerConfig} from '../config/serverConfig';
-import {DefaultApi, Task, TaskIdLabelTuple} from '../src-gen/mathgrass-api';
+import {DefaultApi, FetchError, Task, TaskIdLabelTuple} from '../src-gen/mathgrass-api';
 
 const api = new DefaultApi(devServerConfig.apiConfig);
 
@@ -93,7 +93,7 @@ export const applicationState = createSlice({
 
 function isFetchErrorOrUndefined(action: PayloadAction<any>){
     // check whether the generated fetch api returned an error
-    const fetchErrorName = 'FetchError';
+    const fetchErrorName = FetchError.name;
     return action === undefined || ('name' in action.payload && action.payload.name === fetchErrorName);
 }
 
