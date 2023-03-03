@@ -5,10 +5,9 @@ import {
     fetchDynamicAssessment,
     fetchStaticAssessment,
     JsonFormTuple, propagateCurrentAnswer,
-    Question,
-    Task
-} from '../../state/applicationState';
+     } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
+import {Question, Task} from '../../src-gen/mathgrass-api';
 
 
 
@@ -48,12 +47,12 @@ const Assessment = () => {
                   if (currentTask && currentTask.question) {
                       if (currentTask.question.isDynamicQuestion) {
                           dispatch(fetchDynamicAssessment({
-                              taskId: currentTask.taskId,
+                              taskId: currentTask.id,
                               answer: submittedAnswer
                           }));
                       } else {
                           dispatch(fetchStaticAssessment({
-                              taskId: currentTask.taskId,
+                              taskId: currentTask.id,
                               answer: submittedAnswer
                           }));
                       }
