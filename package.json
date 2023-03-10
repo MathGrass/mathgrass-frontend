@@ -30,7 +30,8 @@
     "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "lint:ts": "tslint --force -p tsconfig.json -c tslint.json"
+    "lint:ts": "tslint --force -p tsconfig.json -c tslint.json",
+    "generate-fetch-api": "rm -rf src/src-gen/mathgrass-api; openapi-generator-cli generate -i ./../mathgrass-api/openapi-spec/mathgrass-api.yaml -o src/src-gen/mathgrass-api -g typescript-fetch"
   },
   "eslintConfig": {
     "extends": [
