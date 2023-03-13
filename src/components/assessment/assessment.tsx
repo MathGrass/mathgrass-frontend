@@ -2,13 +2,16 @@ import React from 'react';
 import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
 import {
-    fetchDynamicAssessment,
-    fetchStaticAssessment,
-    JsonFormTuple, propagateCurrentAnswer,
+    JsonFormTuple,
+    propagateCurrentAnswer,
+    propagateCurrentAssessmentResponse,
     Question,
     Task
 } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
+import {WebsocketService} from "../../websockets/websocketService";
+
+const getWebsocketChannel = (taskId: number) => `/topic/assessmentResult/${taskId}`;
 
 const Assessment = () => {
     const dispatch = useDispatch();
@@ -20,18 +23,22 @@ const Assessment = () => {
 
     const questionSchema: JsonFormTuple | null = transformQuestionToSchema(question);
 
+    // initialize websocket connection to backend
+    const websocketService = new WebsocketService();
+    websocketService.connect();
+
     if (questionSchema === null) {
         return <div/>;
     }
 
     function showCurrentAssessment() {
-        if(typeof  currentAssessmentResponse === 'boolean'){
+        if (typeof currentAssessmentResponse === 'boolean'){
             return  <div><br/>
                     <div className="alert alert-secondary" role="alert">
                         You submitted the following answer: '{currentAnswer}'
                     </div>
                 {currentAssessmentResponse ?
-                    <div className="alert alert-success" role="alert">Your assessment is correct.</div> :
+                    <div className="alert alert-success" role="alert">Your assessment is correct</div> :
                     <div className="alert alert-danger" role="alert">Your assessment is wrong</div>}
             </div>;
         }
@@ -44,15 +51,24 @@ const Assessment = () => {
                   const submittedAnswer: string = e.formData as string;
                   if (currentTask && currentTask.question) {
                       if (currentTask.question.isDynamicQuestion) {
-                          dispatch(fetchDynamicAssessment({
-                              taskId: currentTask.taskId,
-                              answer: submittedAnswer
-                          }));
+                          websocketService.subscribe(getWebsocketChannel(currentTask.taskId))
+                          websocketService.receive(getWebsocketChannel(currentTask.taskId))
+                              .subscribe((result: boolean) => {
+                                      dispatch(propagateCurrentAssessmentResponse(result));
+                                      websocketService.unsubscribe(getWebsocketChannel(currentTask.taskId));
+                                  }
+                              )
+                          websocketService.send("/app/evaluateDynamicAssessment",
+                              {taskId: currentTask.taskId, answer: submittedAnswer})
                       } else {
-                          dispatch(fetchStaticAssessment({
-                              taskId: currentTask.taskId,
-                              answer: submittedAnswer
-                          }));
+                          console.log("Subscribing to channel " + getWebsocketChannel(currentTask.taskId))
+                          websocketService.subscribe(getWebsocketChannel(currentTask.taskId))
+                          websocketService.receive((getWebsocketChannel(currentTask.taskId))).subscribe((result) => {
+                              dispatch(propagateCurrentAssessmentResponse(result));
+                              websocketService.unsubscribe(getWebsocketChannel(currentTask.taskId));
+                          })
+                          websocketService.send("/app/evaluateStaticAssessment",
+                              {taskId: currentTask.taskId, answer: submittedAnswer})
                       }
                       dispatch(propagateCurrentAnswer(submittedAnswer));
                   }

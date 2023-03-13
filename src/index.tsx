@@ -5,7 +5,6 @@ import MathGrass from './mathGrass';
 import {store} from './state/common/store';
 import * as serverConfig from './config/serverConfig';
 import {MathGrassConfig} from './config/serverConfig';
-import {WebsocketService} from "./websockets/websocketService";
 
 
 function renderApp() {
@@ -23,6 +22,3 @@ export function MathGrassApplication(config: MathGrassConfig){
 }
 
 renderApp();
-
-const websocketService = new WebsocketService()
-websocketService.connect()

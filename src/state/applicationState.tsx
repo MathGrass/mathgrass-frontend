@@ -57,6 +57,9 @@ export const applicationState = createSlice({
         propagateCurrentAnswer: (state, action: PayloadAction<string>) => {
             state.currentAnswer = action.payload;
         },
+        propagateCurrentAssessmentResponse: (state, action: PayloadAction<boolean>) => {
+            state.currentAssessmentResponse = action.payload;
+        }
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
@@ -211,9 +214,9 @@ export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment
     });
 });
 
-
 export const {
     propagateGraphState,
-    propagateCurrentAnswer
+    propagateCurrentAnswer,
+    propagateCurrentAssessmentResponse
 } = applicationState.actions;
 // export default applicationState.reducer;
