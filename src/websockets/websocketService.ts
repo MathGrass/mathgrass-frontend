@@ -223,7 +223,7 @@ export class WebsocketService implements IWebsocketService {
     }
 
     /**
-    * Creates a new observable  in case there is no observable for the passed channel yet.
+    * Creates a new observable in case there is no observable for the passed channel yet.
     * Returns the Observable which is invoked when a new message is received
     * @param channel The channel the observable listens on
     */
@@ -242,7 +242,6 @@ export class WebsocketService implements IWebsocketService {
     send(path: string, data: any): void {
         if (this.isConnected()) {
             this.stompClient!.send(path, JSON.stringify(data), {});
-            console.log("Message sent!")
         }
     }
 
@@ -328,7 +327,7 @@ export class WebsocketService implements IWebsocketService {
     // https://stackoverflow.com/a/35651029/3802758
     private getSessionId(): string {
         if (this.socket && this.socket._transport && this.socket._transport.url) {
-            return this.socket._transport.url.match('.*\\/websocket\\/\\d*\\/(.*)\\/websocket.*')[1];
+            return this.socket._transport.url.match('.*\\/ws\\/\\d*\\/(.*)\\/websocket.*')[1];
         } else {
             return 'unsubscribed';
         }
