@@ -77,18 +77,6 @@ export const applicationState = createSlice({
                 state.hintLevel = state.hintLevel + 1;
             }
         });
-        builder.addCase(fetchDynamicAssessment.fulfilled, (state, action) => {
-            // check whether action is void or not
-            if (action.payload !== undefined) {
-                state.currentAssessmentResponse = action.payload.answerTrue as boolean;
-            }
-        });
-        builder.addCase(fetchStaticAssessment.fulfilled, (state, action) => {
-            // check whether action is void or not
-            if (action.payload !== undefined) {
-                state.currentAssessmentResponse = action.payload as boolean;
-            }
-        });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
             // check whether action is void or not
             if (action.payload !== undefined) {
@@ -179,44 +167,8 @@ export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     });
 });
 
-export const fetchDynamicAssessment = createAsyncThunk('api/fetchDynamicAssessment', async (params: {
-    taskId: number, answer: string
-}) => {
-    return fetch(serverConfig.getDynamicAssessmentUrl(params.taskId), {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify({
-            'answer': params.answer
-        })
-    }).then((response) => response.json()).then((json) => {
-        const resultId: number = json;
-        return fetch(serverConfig.getAssessmentLongPollingUrl(resultId)).then((result) => result.json()).then((assessmentJson) => {
-            return assessmentJson;
-        });
-    }).catch(() => {
-        //
-    });
-});
-
-export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment', async (params: {
-    taskId: number, answer: string
-}) => {
-    return fetch(serverConfig.getStaticAssessmentUrl(params.taskId), {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify({
-            'answer': params.answer
-        })
-    }).then((response) => response.json()).then((json) => {
-        return json;
-    }).catch(() => {
-        //
-    });
-});
-
 export const {
     propagateGraphState,
     propagateCurrentAnswer,
     propagateCurrentAssessmentResponse
 } = applicationState.actions;
-// export default applicationState.reducer;
