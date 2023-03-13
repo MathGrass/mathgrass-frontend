@@ -4,9 +4,10 @@ import Assessment from './components/assessment/assessment';
 import IncrementalHints from './components/incrementalHints/incrementalHints';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TaskManagement from './components/taskManagement/taskManagement';
-import {fetchAvailableTasks, Task} from './state/applicationState';
+import {fetchAvailableTasks} from './state/applicationState';
 import {useAppSelector} from './state/common/hooks';
 import {useDispatch} from 'react-redux';
+import {Task} from './src-gen/mathgrass-api';
 
 const MathGrass = () => {
     const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);

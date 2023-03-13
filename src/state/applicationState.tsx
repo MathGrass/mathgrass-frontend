@@ -2,25 +2,21 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import * as serverConfig from '../config/serverConfig';
-import {AbstractGraph, Edge, Vertex} from './model/abstractGraphModel';
+import {devServerConfig} from '../config/serverConfig';
+import {DefaultApi, FetchError, Task, TaskIdLabelTuple} from '../src-gen/mathgrass-api';
+
+const api = new DefaultApi(devServerConfig.apiConfig);
 
 interface ApplicationState {
     graphInEditor: any;
     hintLevel: number;
     currentTask: Task | null;
     currentAssessmentResponse: boolean | null;
-    availableTasks: Task[];
+    availableTasks: TaskIdLabelTuple[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
     currentAnswer: string | undefined;
     feedbackHistory: string [];
-}
-
-export interface Task {
-    taskId: number;
-    displayName: string;
-    graph: AbstractGraph | null;
-    question: Question | null;
 }
 
 export interface Question {
@@ -43,7 +39,7 @@ function getInitialApplicationState(): ApplicationState {
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         feedbackHistory: [] as string[],
-        availableTasks: [] as Task[],
+        availableTasks: [] as TaskIdLabelTuple[],
         currentAnswer: undefined
     };
 }
@@ -63,7 +59,7 @@ export const applicationState = createSlice({
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (action.payload !== undefined) {
+            if (!isFetchErrorOrUndefined(action)) {
                 state.currentTask = action.payload as Task;
                 state.currentAssessmentResponse = null;
                 // Handle fetch by id logic
@@ -72,94 +68,39 @@ export const applicationState = createSlice({
         });
         builder.addCase(fetchHint.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (action.payload !== undefined) {
+            if (!isFetchErrorOrUndefined(action)) {
                 state.feedbackHistory.push(action.payload.content as string);
                 state.hintLevel = state.hintLevel + 1;
             }
         });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
             // check whether action is void or not
-            if (action.payload !== undefined) {
+            if (!isFetchErrorOrUndefined(action)) {
                 state.availableTasks = action.payload;
             }
         });
     }
 });
 
+function isFetchErrorOrUndefined(action: PayloadAction<any>){
+    // check whether the generated fetch api returned an error
+    const fetchErrorName = FetchError.name;
+    return action === undefined || ('name' in action.payload && action.payload.name === fetchErrorName);
+}
+
 // create async thunk for fetching task types. Can be dispatched like a regular reducer. Results are processed in extraReducers
 export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: number) => {
-    const taskByIdUrl = serverConfig.getTaskByIdUrl(id);
-    return fetch(taskByIdUrl)
-        .then((response) => response.json())
-        .then((obj) => {
-            // extract vertices
-            const vertices: Vertex[] = [];
-            obj.graph.vertices.forEach((v: any) => {
-                const vertex: Vertex = {
-                    id: v.id, x: v.x, y: v.y, label: v.label
-                };
-                vertices.push(vertex);
-            });
-
-            // extract edges
-            const edges: Edge[] = [];
-            obj.graph.edges.forEach((e: any) => {
-                const edge: Edge = {
-                    from: e.firstVertex.id, to: e.secondVertex.id
-                };
-                edges.push(edge);
-            });
-
-            let questionString: string;
-            let isDynamicQuestionFromResult: boolean;
-            if (obj.question == null) {
-                questionString = obj.template.question;
-                isDynamicQuestionFromResult = true;
-            } else {
-                questionString = obj.question;
-                isDynamicQuestionFromResult = false;
-            }
-
-            const question: Question = {
-                question: questionString, possibleAnswer: [], isDynamicQuestion: isDynamicQuestionFromResult
-            };
-
-            const task: Task = {
-                taskId: obj.id,
-                displayName: obj.label,
-                graph: {
-                    vertices, edges
-                },
-                question
-            };
-            return task;
-        })
-        .catch(() => {
-            return undefined;
-        });
+    return api.getTaskById({taskId: id}).then((value) => value).catch((reason) => reason);
 });
 
 export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', async () => {
-    return fetch(serverConfig.getAllTasksUrl())
-        .then((response) => response.json())
-        .then((json) => {
-            const result: Task[] = [];
-            json.forEach((e: any) => {
-                result.push({
-                    graph: null, displayName: e.label, taskId: e.id, question: null
-                });
-            });
-            return result;
-        })
-        .catch(() => {
-            return undefined;
-        });
+    return api.getIdsOfAllTasks().then((value) => value).catch((reason) => reason);
 });
 
 export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     taskId: number, hintLevel: number
 }) => {
-    const nextHintResource : string = serverConfig.getNextHint(params.taskId, params.hintLevel);
+    const nextHintResource: string = serverConfig.getNextHint(params.taskId, params.hintLevel);
     return fetch(nextHintResource).then((response) =>
         response.json()
     ).then((json) => {

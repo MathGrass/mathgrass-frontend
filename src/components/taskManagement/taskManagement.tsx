@@ -2,7 +2,8 @@ import React from 'react';
 import Form, {IChangeEvent} from '@rjsf/core';
 import {JSONSchema7} from 'json-schema';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
-import {fetchTaskById, Task} from '../../state/applicationState';
+import {fetchTaskById} from '../../state/applicationState';
+import {Task, TaskIdLabelTuple} from '../../src-gen/mathgrass-api';
 
 const TaskManagement = () => {
     const availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);
@@ -15,7 +16,7 @@ const TaskManagement = () => {
     const schema: JSONSchema7 = {
         'type': 'number',
         'anyOf': availableTaskTypesEnum,
-        ... (currentTask !== null ? {'default' : currentTask.taskId} : {} )
+        ... (currentTask !== null ? {'default' : currentTask.id} : {} )
     };
 
     const uiSchema = {};
@@ -39,16 +40,16 @@ const TaskManagement = () => {
     );
 };
 
-function availableTasksToTaskTypesEnum(availableTaskTypes: Task[]): JSONSchema7[] {
+function availableTasksToTaskTypesEnum(availableTaskTypes: TaskIdLabelTuple[]): JSONSchema7[] {
     const availableTaskTypesEnum: JSONSchema7[] = [];
 
     if (availableTaskTypes !== undefined) {
         availableTaskTypes.forEach((tt) => {
             availableTaskTypesEnum.push({
                 'type': 'number',
-                'title': tt.displayName,
+                'title': tt.label,
                 'enum': [
-                    tt.taskId
+                    tt.id
                 ]
             });
         });

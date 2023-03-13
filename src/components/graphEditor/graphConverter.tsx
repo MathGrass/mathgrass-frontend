@@ -1,7 +1,7 @@
-import {AbstractGraph} from '../../state/model/abstractGraphModel';
 import * as joint from 'jointjs';
+import {Graph} from '../../src-gen/mathgrass-api';
 
-export function abstractGraphToJointJsGraph(abstractGraph: AbstractGraph, graphWidth: number, graphHeight: number): joint.dia.Graph {
+export function abstractGraphToJointJsGraph(abstractGraph: Graph, graphWidth: number, graphHeight: number): joint.dia.Graph {
     const namespace = joint.shapes;
     const graph = new joint.dia.Graph({}, {cellNamespace: namespace});
     const vertexMap: Map<number, joint.shapes.standard.Circle> = new Map();
@@ -25,8 +25,8 @@ export function abstractGraphToJointJsGraph(abstractGraph: AbstractGraph, graphW
 
     abstractGraph.edges.forEach((edge) => {
         const link = new joint.shapes.standard.Link();
-        link.source(vertexMap.get(edge.from) as joint.dia.Cell);
-        link.target(vertexMap.get(edge.to) as joint.dia.Cell);
+        link.source(vertexMap.get(edge.firstVertex.id) as joint.dia.Cell);
+        link.target(vertexMap.get(edge.secondVertex.id) as joint.dia.Cell);
         link.addTo(graph);
     });
 

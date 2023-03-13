@@ -5,11 +5,11 @@ import {
     JsonFormTuple,
     propagateCurrentAnswer,
     propagateCurrentAssessmentResponse,
-    Question,
-    Task
 } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 import {WebsocketService} from "../../websockets/websocketService";
+import {Question, Task} from '../../src-gen/mathgrass-api';
+
 
 const getWebsocketChannel = (taskId: number) => `/topic/assessmentResult/${taskId}`;
 
@@ -51,24 +51,24 @@ const Assessment = () => {
                   const submittedAnswer: string = e.formData as string;
                   if (currentTask && currentTask.question) {
                       if (currentTask.question.isDynamicQuestion) {
-                          websocketService.subscribe(getWebsocketChannel(currentTask.taskId))
-                          websocketService.receive(getWebsocketChannel(currentTask.taskId))
+                          websocketService.subscribe(getWebsocketChannel(currentTask.id))
+                          websocketService.receive(getWebsocketChannel(currentTask.id))
                               .subscribe((result: boolean) => {
                                       dispatch(propagateCurrentAssessmentResponse(result));
-                                      websocketService.unsubscribe(getWebsocketChannel(currentTask.taskId));
+                                      websocketService.unsubscribe(getWebsocketChannel(currentTask.id));
                                   }
                               )
                           websocketService.send("/app/evaluateDynamicAssessment",
-                              {taskId: currentTask.taskId, answer: submittedAnswer})
+                              {taskId: currentTask.id, answer: submittedAnswer})
                       } else {
-                          console.log("Subscribing to channel " + getWebsocketChannel(currentTask.taskId))
-                          websocketService.subscribe(getWebsocketChannel(currentTask.taskId))
-                          websocketService.receive((getWebsocketChannel(currentTask.taskId))).subscribe((result) => {
+                          console.log("Subscribing to channel " + getWebsocketChannel(currentTask.id))
+                          websocketService.subscribe(getWebsocketChannel(currentTask.id))
+                          websocketService.receive((getWebsocketChannel(currentTask.id))).subscribe((result) => {
                               dispatch(propagateCurrentAssessmentResponse(result));
-                              websocketService.unsubscribe(getWebsocketChannel(currentTask.taskId));
+                              websocketService.unsubscribe(getWebsocketChannel(currentTask.id));
                           })
                           websocketService.send("/app/evaluateStaticAssessment",
-                              {taskId: currentTask.taskId, answer: submittedAnswer})
+                              {taskId: currentTask.id, answer: submittedAnswer})
                       }
                       dispatch(propagateCurrentAnswer(submittedAnswer));
                   }

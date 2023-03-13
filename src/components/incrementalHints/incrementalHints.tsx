@@ -1,7 +1,8 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import {fetchHint, Task} from '../../state/applicationState';
+import {fetchHint} from '../../state/applicationState';
 import {useAppSelector} from '../../state/common/hooks';
+import {Task} from '../../src-gen/mathgrass-api';
 
 const IncrementalHints = () => {
     const dispatch = useDispatch();
@@ -12,9 +13,9 @@ const IncrementalHints = () => {
     return (<div>
             <button className="btn btn-info" onClick={() => {
                 if (currentTask !== null) {
-                    dispatch(fetchHint({
-                        hintLevel: currentHintLevel, taskId: currentTask?.taskId
-                    }));
+                   /* dispatch(fetchHint({
+                        hintLevel: currentHintLevel, taskId: currentTask?.id
+                    }));*/
                 }
             }}>Request Hint
             </button>
