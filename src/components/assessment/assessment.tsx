@@ -44,31 +44,37 @@ const Assessment = () => {
         }
     }
 
+    // wait for assessment response and update current state
+    function subscribeToAssessmentResponse(taskId: number) {
+        // subscribe to websocket channel for current task
+        websocketService.subscribe(getWebsocketChannel(taskId))
+
+        // handle incoming messages
+        websocketService.receive(getWebsocketChannel(taskId))
+            .subscribe((result: boolean) => {
+                // update current state
+                dispatch(propagateCurrentAssessmentResponse(result));
+                // unsubscribe again
+                websocketService.unsubscribe(getWebsocketChannel(taskId));
+            })
+    }
+
     return (<div>
         <Form schema={questionSchema.schema}
               uiSchema={questionSchema.uiSchema}
               onSubmit={(e) => {
                   const submittedAnswer: string = e.formData as string;
                   if (currentTask && currentTask.question) {
+                      // create listener for backend response
+                      subscribeToAssessmentResponse(currentTask.id);
                       if (currentTask.question.isDynamicQuestion) {
-                          websocketService.subscribe(getWebsocketChannel(currentTask.id))
-                          websocketService.receive(getWebsocketChannel(currentTask.id))
-                              .subscribe((result: boolean) => {
-                                      dispatch(propagateCurrentAssessmentResponse(result));
-                                      websocketService.unsubscribe(getWebsocketChannel(currentTask.id));
-                                  }
-                              )
+                          // send assessment to backend
                           websocketService.send("/app/evaluateDynamicAssessment",
-                              {taskId: currentTask.id, answer: submittedAnswer})
+                              {taskId: currentTask.id, answer: submittedAnswer});
                       } else {
-                          console.log("Subscribing to channel " + getWebsocketChannel(currentTask.id))
-                          websocketService.subscribe(getWebsocketChannel(currentTask.id))
-                          websocketService.receive((getWebsocketChannel(currentTask.id))).subscribe((result) => {
-                              dispatch(propagateCurrentAssessmentResponse(result));
-                              websocketService.unsubscribe(getWebsocketChannel(currentTask.id));
-                          })
+                          // send assessment to backend
                           websocketService.send("/app/evaluateStaticAssessment",
-                              {taskId: currentTask.id, answer: submittedAnswer})
+                              {taskId: currentTask.id, answer: submittedAnswer});
                       }
                       dispatch(propagateCurrentAnswer(submittedAnswer));
                   }
