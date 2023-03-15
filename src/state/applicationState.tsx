@@ -3,16 +3,16 @@ import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
 import * as serverConfig from '../config/serverConfig';
 import {devServerConfig} from '../config/serverConfig';
-import {DefaultApi, FetchError, Task, TaskIdLabelTuple} from '../src-gen/mathgrass-api';
+import {DefaultApi, FetchError, TaskDTO, TaskIdLabelTupleDTO} from '../src-gen/mathgrass-api';
 
 const api = new DefaultApi(devServerConfig.apiConfig);
 
 interface ApplicationState {
     graphInEditor: any;
     hintLevel: number;
-    currentTask: Task | null;
+    currentTask: TaskDTO | null;
     currentAssessmentResponse: boolean | null;
-    availableTasks: TaskIdLabelTuple[];
+    availableTasks: TaskIdLabelTupleDTO[];
     showFeedbackSection: boolean;
     assessmentFeedback: string | undefined;
     currentAnswer: string | undefined;
@@ -39,7 +39,7 @@ function getInitialApplicationState(): ApplicationState {
         showFeedbackSection: false,
         assessmentFeedback: undefined,
         feedbackHistory: [] as string[],
-        availableTasks: [] as TaskIdLabelTuple[],
+        availableTasks: [] as TaskIdLabelTupleDTO[],
         currentAnswer: undefined
     };
 }
@@ -57,7 +57,7 @@ export const applicationState = createSlice({
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
-                state.currentTask = action.payload as Task;
+                state.currentTask = action.payload as TaskDTO;
                 state.currentAssessmentResponse = null;
                 // Handle fetch by id logic
                 // state.availableTasks = action.payload as number[];
@@ -139,9 +139,9 @@ export const fetchDynamicAssessment = createAsyncThunk('api/fetchDynamicAssessme
 export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment', async (params: {
     taskId: number, answer: string
 }) => {
-    return api.runStaticAssessment({
+    return api.evaluateAnswer({
         taskId: params.taskId,
-        runStaticAssessmentRequest: {
+        evaluateAnswerRequest: {
             answer: params.answer
         }
     }).then((result) => result).catch((reason) => reason);

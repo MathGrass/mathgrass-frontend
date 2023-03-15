@@ -16,61 +16,61 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TaskResult
+ * @interface TaskResultDTO
  */
-export interface TaskResult {
+export interface TaskResultDTO {
     /**
      * 
      * @type {number}
-     * @memberof TaskResult
+     * @memberof TaskResultDTO
      */
     id?: number;
     /**
      * 
      * @type {number}
-     * @memberof TaskResult
+     * @memberof TaskResultDTO
      */
     task?: number;
     /**
      * 
      * @type {string}
-     * @memberof TaskResult
+     * @memberof TaskResultDTO
      */
     answer?: string;
     /**
      * 
      * @type {string}
-     * @memberof TaskResult
+     * @memberof TaskResultDTO
      */
     submissionDate?: string;
     /**
      * 
      * @type {string}
-     * @memberof TaskResult
+     * @memberof TaskResultDTO
      */
     evaluationDate?: string;
     /**
      * 
      * @type {boolean}
-     * @memberof TaskResult
+     * @memberof TaskResultDTO
      */
     answerTrue?: boolean;
 }
 
 /**
- * Check if a given object implements the TaskResult interface.
+ * Check if a given object implements the TaskResultDTO interface.
  */
-export function instanceOfTaskResult(value: object): boolean {
+export function instanceOfTaskResultDTO(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function TaskResultFromJSON(json: any): TaskResult {
-    return TaskResultFromJSONTyped(json, false);
+export function TaskResultDTOFromJSON(json: any): TaskResultDTO {
+    return TaskResultDTOFromJSONTyped(json, false);
 }
 
-export function TaskResultFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskResult {
+export function TaskResultDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskResultDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -85,7 +85,7 @@ export function TaskResultFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     };
 }
 
-export function TaskResultToJSON(value?: TaskResult | null): any {
+export function TaskResultDTOToJSON(value?: TaskResultDTO | null): any {
     if (value === undefined) {
         return undefined;
     }

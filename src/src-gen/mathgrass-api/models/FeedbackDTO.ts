@@ -16,50 +16,48 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Label
+ * @interface FeedbackDTO
  */
-export interface Label {
+export interface FeedbackDTO {
     /**
      * 
      * @type {number}
-     * @memberof Label
+     * @memberof FeedbackDTO
      */
-    id: number;
+    id?: number;
     /**
      * 
      * @type {string}
-     * @memberof Label
+     * @memberof FeedbackDTO
      */
-    label: string;
+    content?: string;
 }
 
 /**
- * Check if a given object implements the Label interface.
+ * Check if a given object implements the FeedbackDTO interface.
  */
-export function instanceOfLabel(value: object): boolean {
+export function instanceOfFeedbackDTO(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "label" in value;
 
     return isInstance;
 }
 
-export function LabelFromJSON(json: any): Label {
-    return LabelFromJSONTyped(json, false);
+export function FeedbackDTOFromJSON(json: any): FeedbackDTO {
+    return FeedbackDTOFromJSONTyped(json, false);
 }
 
-export function LabelFromJSONTyped(json: any, ignoreDiscriminator: boolean): Label {
+export function FeedbackDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeedbackDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': json['id'],
-        'label': json['label'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
+        'content': !exists(json, 'content') ? undefined : json['content'],
     };
 }
 
-export function LabelToJSON(value?: Label | null): any {
+export function FeedbackDTOToJSON(value?: FeedbackDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -69,7 +67,7 @@ export function LabelToJSON(value?: Label | null): any {
     return {
         
         'id': value.id,
-        'label': value.label,
+        'content': value.content,
     };
 }
 

@@ -15,85 +15,58 @@
 
 import * as runtime from '../runtime';
 import type {
-  Feedback,
-  Graph,
-  Label,
-  RunStaticAssessment200Response,
-  RunStaticAssessmentRequest,
-  Task,
-  TaskCollection,
-  TaskHint,
-  TaskIdLabelTuple,
-  TaskResult,
-  TaskSolver,
-  TaskTemplate,
-  TaskTopic,
+  EvaluateAnswer200Response,
+  EvaluateAnswerRequest,
+  GraphDTO,
+  HintDTO,
+  LabelDTO,
+  TaskCollectionDTO,
+  TaskDTO,
+  TaskIdLabelTupleDTO,
 } from '../models';
 import {
-    FeedbackFromJSON,
-    FeedbackToJSON,
-    GraphFromJSON,
-    GraphToJSON,
-    LabelFromJSON,
-    LabelToJSON,
-    RunStaticAssessment200ResponseFromJSON,
-    RunStaticAssessment200ResponseToJSON,
-    RunStaticAssessmentRequestFromJSON,
-    RunStaticAssessmentRequestToJSON,
-    TaskFromJSON,
-    TaskToJSON,
-    TaskCollectionFromJSON,
-    TaskCollectionToJSON,
-    TaskHintFromJSON,
-    TaskHintToJSON,
-    TaskIdLabelTupleFromJSON,
-    TaskIdLabelTupleToJSON,
-    TaskResultFromJSON,
-    TaskResultToJSON,
-    TaskSolverFromJSON,
-    TaskSolverToJSON,
-    TaskTemplateFromJSON,
-    TaskTemplateToJSON,
-    TaskTopicFromJSON,
-    TaskTopicToJSON,
+    EvaluateAnswer200ResponseFromJSON,
+    EvaluateAnswer200ResponseToJSON,
+    EvaluateAnswerRequestFromJSON,
+    EvaluateAnswerRequestToJSON,
+    GraphDTOFromJSON,
+    GraphDTOToJSON,
+    HintDTOFromJSON,
+    HintDTOToJSON,
+    LabelDTOFromJSON,
+    LabelDTOToJSON,
+    TaskCollectionDTOFromJSON,
+    TaskCollectionDTOToJSON,
+    TaskDTOFromJSON,
+    TaskDTOToJSON,
+    TaskIdLabelTupleDTOFromJSON,
+    TaskIdLabelTupleDTOToJSON,
 } from '../models';
-
-export interface AddTaskFeedbackRequest {
-    taskId: number;
-    feedback: Feedback;
-}
 
 export interface AddTaskHintRequest {
     taskId: number;
-    hint: TaskHint;
+    hint: HintDTO;
 }
 
 export interface CreateGraphRequest {
-    graph: Graph;
+    graph: GraphDTO;
 }
 
 export interface CreateLabelRequest {
-    label: Label;
+    label: LabelDTO;
 }
 
 export interface CreateTaskRequest {
-    task: Task;
+    task: TaskDTO;
 }
 
 export interface CreateTaskCollectionRequest {
-    taskCollection: TaskCollection;
+    taskCollection: TaskCollectionDTO;
 }
 
-export interface CreateTaskSolverRequest {
-    taskSolver: TaskSolver;
-}
-
-export interface CreateTaskTemplateRequest {
-    taskTemplate: TaskTemplate;
-}
-
-export interface CreateTaskTopicRequest {
-    taskTopic: TaskTopic;
+export interface EvaluateAnswerOperationRequest {
+    taskId: number;
+    evaluateAnswerRequest: EvaluateAnswerRequest;
 }
 
 export interface GetGraphByIdRequest {
@@ -117,97 +90,20 @@ export interface GetTaskCollectionByIdRequest {
     taskCollectionId: number;
 }
 
-export interface GetTaskFeedbackRequest {
-    taskId: number;
-}
-
-export interface GetTaskResultRequest {
-    resultId: number;
-}
-
-export interface GetTaskSolverByIdRequest {
-    taskSolverId: number;
-}
-
-export interface GetTaskTemplateByIdRequest {
-    taskTemplateId: number;
-}
-
-export interface GetTaskTemplateHintRequest {
-    taskTemplateId: number;
-    index: number;
-}
-
-export interface RunStaticAssessmentOperationRequest {
-    taskId: number;
-    runStaticAssessmentRequest: RunStaticAssessmentRequest;
-}
-
-export interface RunTaskRequest {
-    taskId: number;
-    answer: string;
-}
-
-export interface SetTaskTemplateLabelRequest {
-    taskTemplateId: number;
-    label: string;
-}
-
-export interface SetTaskTemplateQuestionRequest {
-    taskTemplateId: number;
-    question: string;
-}
-
 export interface UpdateGraphRequest {
     graphId: number;
-    graph: Graph;
+    graph: GraphDTO;
 }
 
 export interface UpdateTaskRequest {
     taskId: number;
-    task: Task;
+    task: TaskDTO;
 }
 
 /**
  * 
  */
 export class DefaultApi extends runtime.BaseAPI {
-
-    /**
-     * Adds feedback to a task
-     */
-    async addTaskFeedbackRaw(requestParameters: AddTaskFeedbackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
-            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling addTaskFeedback.');
-        }
-
-        if (requestParameters.feedback === null || requestParameters.feedback === undefined) {
-            throw new runtime.RequiredError('feedback','Required parameter requestParameters.feedback was null or undefined when calling addTaskFeedback.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/task/{taskId}/addFeedback`.replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: FeedbackToJSON(requestParameters.feedback),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Adds feedback to a task
-     */
-    async addTaskFeedback(requestParameters: AddTaskFeedbackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.addTaskFeedbackRaw(requestParameters, initOverrides);
-    }
 
     /**
      * Adds a hint to a task
@@ -232,7 +128,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TaskHintToJSON(requestParameters.hint),
+            body: HintDTOToJSON(requestParameters.hint),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -264,7 +160,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GraphToJSON(requestParameters.graph),
+            body: GraphDTOToJSON(requestParameters.graph),
         }, initOverrides);
 
         return new runtime.TextApiResponse(response) as any;
@@ -281,7 +177,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Creates a label
      */
-    async createLabelRaw(requestParameters: CreateLabelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Label>> {
+    async createLabelRaw(requestParameters: CreateLabelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LabelDTO>> {
         if (requestParameters.label === null || requestParameters.label === undefined) {
             throw new runtime.RequiredError('label','Required parameter requestParameters.label was null or undefined when calling createLabel.');
         }
@@ -297,16 +193,16 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: LabelToJSON(requestParameters.label),
+            body: LabelDTOToJSON(requestParameters.label),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => LabelFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => LabelDTOFromJSON(jsonValue));
     }
 
     /**
      * Creates a label
      */
-    async createLabel(requestParameters: CreateLabelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Label> {
+    async createLabel(requestParameters: CreateLabelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<LabelDTO> {
         const response = await this.createLabelRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -330,7 +226,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TaskToJSON(requestParameters.task),
+            body: TaskDTOToJSON(requestParameters.task),
         }, initOverrides);
 
         return new runtime.TextApiResponse(response) as any;
@@ -347,7 +243,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Creates a task collection
      */
-    async createTaskCollectionRaw(requestParameters: CreateTaskCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskCollection>> {
+    async createTaskCollectionRaw(requestParameters: CreateTaskCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskCollectionDTO>> {
         if (requestParameters.taskCollection === null || requestParameters.taskCollection === undefined) {
             throw new runtime.RequiredError('taskCollection','Required parameter requestParameters.taskCollection was null or undefined when calling createTaskCollection.');
         }
@@ -363,26 +259,30 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TaskCollectionToJSON(requestParameters.taskCollection),
+            body: TaskCollectionDTOToJSON(requestParameters.taskCollection),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskCollectionFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TaskCollectionDTOFromJSON(jsonValue));
     }
 
     /**
      * Creates a task collection
      */
-    async createTaskCollection(requestParameters: CreateTaskCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskCollection> {
+    async createTaskCollection(requestParameters: CreateTaskCollectionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskCollectionDTO> {
         const response = await this.createTaskCollectionRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Creates a task solver
+     * Submit an answer to a task and expect a boolean response
      */
-    async createTaskSolverRaw(requestParameters: CreateTaskSolverRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<number>> {
-        if (requestParameters.taskSolver === null || requestParameters.taskSolver === undefined) {
-            throw new runtime.RequiredError('taskSolver','Required parameter requestParameters.taskSolver was null or undefined when calling createTaskSolver.');
+    async evaluateAnswerRaw(requestParameters: EvaluateAnswerOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<EvaluateAnswer200Response>> {
+        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
+            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling evaluateAnswer.');
+        }
+
+        if (requestParameters.evaluateAnswerRequest === null || requestParameters.evaluateAnswerRequest === undefined) {
+            throw new runtime.RequiredError('evaluateAnswerRequest','Required parameter requestParameters.evaluateAnswerRequest was null or undefined when calling evaluateAnswer.');
         }
 
         const queryParameters: any = {};
@@ -392,94 +292,28 @@ export class DefaultApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/taskSolver`,
+            path: `/task/{taskId}/evaluateAnswer`.replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TaskSolverToJSON(requestParameters.taskSolver),
+            body: EvaluateAnswerRequestToJSON(requestParameters.evaluateAnswerRequest),
         }, initOverrides);
 
-        return new runtime.TextApiResponse(response) as any;
+        return new runtime.JSONApiResponse(response, (jsonValue) => EvaluateAnswer200ResponseFromJSON(jsonValue));
     }
 
     /**
-     * Creates a task solver
+     * Submit an answer to a task and expect a boolean response
      */
-    async createTaskSolver(requestParameters: CreateTaskSolverRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<number> {
-        const response = await this.createTaskSolverRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates a task template
-     */
-    async createTaskTemplateRaw(requestParameters: CreateTaskTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<number>> {
-        if (requestParameters.taskTemplate === null || requestParameters.taskTemplate === undefined) {
-            throw new runtime.RequiredError('taskTemplate','Required parameter requestParameters.taskTemplate was null or undefined when calling createTaskTemplate.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/taskTemplate`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: TaskTemplateToJSON(requestParameters.taskTemplate),
-        }, initOverrides);
-
-        return new runtime.TextApiResponse(response) as any;
-    }
-
-    /**
-     * Creates a task template
-     */
-    async createTaskTemplate(requestParameters: CreateTaskTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<number> {
-        const response = await this.createTaskTemplateRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates a task topic
-     */
-    async createTaskTopicRaw(requestParameters: CreateTaskTopicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskTopic>> {
-        if (requestParameters.taskTopic === null || requestParameters.taskTopic === undefined) {
-            throw new runtime.RequiredError('taskTopic','Required parameter requestParameters.taskTopic was null or undefined when calling createTaskTopic.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/taskTopic`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: TaskTopicToJSON(requestParameters.taskTopic),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskTopicFromJSON(jsonValue));
-    }
-
-    /**
-     * Creates a task topic
-     */
-    async createTaskTopic(requestParameters: CreateTaskTopicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskTopic> {
-        const response = await this.createTaskTopicRaw(requestParameters, initOverrides);
+    async evaluateAnswer(requestParameters: EvaluateAnswerOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<EvaluateAnswer200Response> {
+        const response = await this.evaluateAnswerRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get a graph by id
      */
-    async getGraphByIdRaw(requestParameters: GetGraphByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Graph>> {
+    async getGraphByIdRaw(requestParameters: GetGraphByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GraphDTO>> {
         if (requestParameters.graphId === null || requestParameters.graphId === undefined) {
             throw new runtime.RequiredError('graphId','Required parameter requestParameters.graphId was null or undefined when calling getGraphById.');
         }
@@ -495,13 +329,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GraphFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GraphDTOFromJSON(jsonValue));
     }
 
     /**
      * Get a graph by id
      */
-    async getGraphById(requestParameters: GetGraphByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Graph> {
+    async getGraphById(requestParameters: GetGraphByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GraphDTO> {
         const response = await this.getGraphByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -509,7 +343,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Get hint at hintlevel for task
      */
-    async getHintForTaskRaw(requestParameters: GetHintForTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskHint>> {
+    async getHintForTaskRaw(requestParameters: GetHintForTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<HintDTO>> {
         if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
             throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling getHintForTask.');
         }
@@ -529,13 +363,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskHintFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => HintDTOFromJSON(jsonValue));
     }
 
     /**
      * Get hint at hintlevel for task
      */
-    async getHintForTask(requestParameters: GetHintForTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskHint> {
+    async getHintForTask(requestParameters: GetHintForTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<HintDTO> {
         const response = await this.getHintForTaskRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -543,7 +377,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Get the IDs of all tasks
      */
-    async getIdsOfAllTasksRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TaskIdLabelTuple>>> {
+    async getIdsOfAllTasksRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TaskIdLabelTupleDTO>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -555,13 +389,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TaskIdLabelTupleFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TaskIdLabelTupleDTOFromJSON));
     }
 
     /**
      * Get the IDs of all tasks
      */
-    async getIdsOfAllTasks(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TaskIdLabelTuple>> {
+    async getIdsOfAllTasks(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TaskIdLabelTupleDTO>> {
         const response = await this.getIdsOfAllTasksRaw(initOverrides);
         return await response.value();
     }
@@ -569,7 +403,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Returns a label
      */
-    async getLabelByIdRaw(requestParameters: GetLabelByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Label>> {
+    async getLabelByIdRaw(requestParameters: GetLabelByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<LabelDTO>> {
         if (requestParameters.labelId === null || requestParameters.labelId === undefined) {
             throw new runtime.RequiredError('labelId','Required parameter requestParameters.labelId was null or undefined when calling getLabelById.');
         }
@@ -585,13 +419,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => LabelFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => LabelDTOFromJSON(jsonValue));
     }
 
     /**
      * Returns a label
      */
-    async getLabelById(requestParameters: GetLabelByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Label> {
+    async getLabelById(requestParameters: GetLabelByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<LabelDTO> {
         const response = await this.getLabelByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -599,7 +433,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Get all labels
      */
-    async getLabelsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Label>>> {
+    async getLabelsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<LabelDTO>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -611,13 +445,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LabelFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LabelDTOFromJSON));
     }
 
     /**
      * Get all labels
      */
-    async getLabels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Label>> {
+    async getLabels(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<LabelDTO>> {
         const response = await this.getLabelsRaw(initOverrides);
         return await response.value();
     }
@@ -625,7 +459,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Returns a task
      */
-    async getTaskByIdRaw(requestParameters: GetTaskByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Task>> {
+    async getTaskByIdRaw(requestParameters: GetTaskByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskDTO>> {
         if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
             throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling getTaskById.');
         }
@@ -641,13 +475,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TaskDTOFromJSON(jsonValue));
     }
 
     /**
      * Returns a task
      */
-    async getTaskById(requestParameters: GetTaskByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Task> {
+    async getTaskById(requestParameters: GetTaskByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskDTO> {
         const response = await this.getTaskByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -655,7 +489,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Returns a task collection
      */
-    async getTaskCollectionByIdRaw(requestParameters: GetTaskCollectionByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskCollection>> {
+    async getTaskCollectionByIdRaw(requestParameters: GetTaskCollectionByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskCollectionDTO>> {
         if (requestParameters.taskCollectionId === null || requestParameters.taskCollectionId === undefined) {
             throw new runtime.RequiredError('taskCollectionId','Required parameter requestParameters.taskCollectionId was null or undefined when calling getTaskCollectionById.');
         }
@@ -671,13 +505,13 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskCollectionFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TaskCollectionDTOFromJSON(jsonValue));
     }
 
     /**
      * Returns a task collection
      */
-    async getTaskCollectionById(requestParameters: GetTaskCollectionByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskCollection> {
+    async getTaskCollectionById(requestParameters: GetTaskCollectionByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskCollectionDTO> {
         const response = await this.getTaskCollectionByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -685,7 +519,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Get all task collection
      */
-    async getTaskCollectionsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TaskCollection>>> {
+    async getTaskCollectionsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TaskCollectionDTO>>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -697,341 +531,15 @@ export class DefaultApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TaskCollectionFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TaskCollectionDTOFromJSON));
     }
 
     /**
      * Get all task collection
      */
-    async getTaskCollections(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TaskCollection>> {
+    async getTaskCollections(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TaskCollectionDTO>> {
         const response = await this.getTaskCollectionsRaw(initOverrides);
         return await response.value();
-    }
-
-    /**
-     * Get all feedback of a task
-     */
-    async getTaskFeedbackRaw(requestParameters: GetTaskFeedbackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Feedback>>> {
-        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
-            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling getTaskFeedback.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/task/{taskId}/getFeedback`.replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(FeedbackFromJSON));
-    }
-
-    /**
-     * Get all feedback of a task
-     */
-    async getTaskFeedback(requestParameters: GetTaskFeedbackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Feedback>> {
-        const response = await this.getTaskFeedbackRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get the result for an evaluation process
-     */
-    async getTaskResultRaw(requestParameters: GetTaskResultRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskResult>> {
-        if (requestParameters.resultId === null || requestParameters.resultId === undefined) {
-            throw new runtime.RequiredError('resultId','Required parameter requestParameters.resultId was null or undefined when calling getTaskResult.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/evaluator/taskResult/{resultId}`.replace(`{${"resultId"}}`, encodeURIComponent(String(requestParameters.resultId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskResultFromJSON(jsonValue));
-    }
-
-    /**
-     * Get the result for an evaluation process
-     */
-    async getTaskResult(requestParameters: GetTaskResultRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskResult> {
-        const response = await this.getTaskResultRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Returns a task solver
-     */
-    async getTaskSolverByIdRaw(requestParameters: GetTaskSolverByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskSolver>> {
-        if (requestParameters.taskSolverId === null || requestParameters.taskSolverId === undefined) {
-            throw new runtime.RequiredError('taskSolverId','Required parameter requestParameters.taskSolverId was null or undefined when calling getTaskSolverById.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/taskSolver/{taskSolverId}`.replace(`{${"taskSolverId"}}`, encodeURIComponent(String(requestParameters.taskSolverId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskSolverFromJSON(jsonValue));
-    }
-
-    /**
-     * Returns a task solver
-     */
-    async getTaskSolverById(requestParameters: GetTaskSolverByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskSolver> {
-        const response = await this.getTaskSolverByIdRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Returns a task template
-     */
-    async getTaskTemplateByIdRaw(requestParameters: GetTaskTemplateByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskTemplate>> {
-        if (requestParameters.taskTemplateId === null || requestParameters.taskTemplateId === undefined) {
-            throw new runtime.RequiredError('taskTemplateId','Required parameter requestParameters.taskTemplateId was null or undefined when calling getTaskTemplateById.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/taskTemplate/{taskTemplateId}`.replace(`{${"taskTemplateId"}}`, encodeURIComponent(String(requestParameters.taskTemplateId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskTemplateFromJSON(jsonValue));
-    }
-
-    /**
-     * Returns a task template
-     */
-    async getTaskTemplateById(requestParameters: GetTaskTemplateByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskTemplate> {
-        const response = await this.getTaskTemplateByIdRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Returns a hint
-     */
-    async getTaskTemplateHintRaw(requestParameters: GetTaskTemplateHintRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TaskHint>> {
-        if (requestParameters.taskTemplateId === null || requestParameters.taskTemplateId === undefined) {
-            throw new runtime.RequiredError('taskTemplateId','Required parameter requestParameters.taskTemplateId was null or undefined when calling getTaskTemplateHint.');
-        }
-
-        if (requestParameters.index === null || requestParameters.index === undefined) {
-            throw new runtime.RequiredError('index','Required parameter requestParameters.index was null or undefined when calling getTaskTemplateHint.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/taskTemplate/{taskTemplateId}/getHint/{index}`.replace(`{${"taskTemplateId"}}`, encodeURIComponent(String(requestParameters.taskTemplateId))).replace(`{${"index"}}`, encodeURIComponent(String(requestParameters.index))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => TaskHintFromJSON(jsonValue));
-    }
-
-    /**
-     * Returns a hint
-     */
-    async getTaskTemplateHint(requestParameters: GetTaskTemplateHintRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TaskHint> {
-        const response = await this.getTaskTemplateHintRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get all task topics
-     */
-    async getTaskTopicsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TaskTopic>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/taskTopic`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TaskTopicFromJSON));
-    }
-
-    /**
-     * Get all task topics
-     */
-    async getTaskTopics(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TaskTopic>> {
-        const response = await this.getTaskTopicsRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Submit an answer to a static task and expect a boolean response
-     */
-    async runStaticAssessmentRaw(requestParameters: RunStaticAssessmentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RunStaticAssessment200Response>> {
-        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
-            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling runStaticAssessment.');
-        }
-
-        if (requestParameters.runStaticAssessmentRequest === null || requestParameters.runStaticAssessmentRequest === undefined) {
-            throw new runtime.RequiredError('runStaticAssessmentRequest','Required parameter requestParameters.runStaticAssessmentRequest was null or undefined when calling runStaticAssessment.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/evaluator/staticAssessment/{taskId}`.replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: RunStaticAssessmentRequestToJSON(requestParameters.runStaticAssessmentRequest),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => RunStaticAssessment200ResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Submit an answer to a static task and expect a boolean response
-     */
-    async runStaticAssessment(requestParameters: RunStaticAssessmentOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RunStaticAssessment200Response> {
-        const response = await this.runStaticAssessmentRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Run a task with an answer
-     */
-    async runTaskRaw(requestParameters: RunTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<number>> {
-        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
-            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling runTask.');
-        }
-
-        if (requestParameters.answer === null || requestParameters.answer === undefined) {
-            throw new runtime.RequiredError('answer','Required parameter requestParameters.answer was null or undefined when calling runTask.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/evaluator/runTask/{taskId}`.replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.answer as any,
-        }, initOverrides);
-
-        return new runtime.TextApiResponse(response) as any;
-    }
-
-    /**
-     * Run a task with an answer
-     */
-    async runTask(requestParameters: RunTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<number> {
-        const response = await this.runTaskRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Sets a label for a task template
-     */
-    async setTaskTemplateLabelRaw(requestParameters: SetTaskTemplateLabelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.taskTemplateId === null || requestParameters.taskTemplateId === undefined) {
-            throw new runtime.RequiredError('taskTemplateId','Required parameter requestParameters.taskTemplateId was null or undefined when calling setTaskTemplateLabel.');
-        }
-
-        if (requestParameters.label === null || requestParameters.label === undefined) {
-            throw new runtime.RequiredError('label','Required parameter requestParameters.label was null or undefined when calling setTaskTemplateLabel.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/taskTemplate/{taskTemplateId}/setLabel`.replace(`{${"taskTemplateId"}}`, encodeURIComponent(String(requestParameters.taskTemplateId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.label as any,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Sets a label for a task template
-     */
-    async setTaskTemplateLabel(requestParameters: SetTaskTemplateLabelRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.setTaskTemplateLabelRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Sets a question for a task template
-     */
-    async setTaskTemplateQuestionRaw(requestParameters: SetTaskTemplateQuestionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.taskTemplateId === null || requestParameters.taskTemplateId === undefined) {
-            throw new runtime.RequiredError('taskTemplateId','Required parameter requestParameters.taskTemplateId was null or undefined when calling setTaskTemplateQuestion.');
-        }
-
-        if (requestParameters.question === null || requestParameters.question === undefined) {
-            throw new runtime.RequiredError('question','Required parameter requestParameters.question was null or undefined when calling setTaskTemplateQuestion.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/taskTemplate/{taskTemplateId}/setQuestion`.replace(`{${"taskTemplateId"}}`, encodeURIComponent(String(requestParameters.taskTemplateId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: requestParameters.question as any,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Sets a question for a task template
-     */
-    async setTaskTemplateQuestion(requestParameters: SetTaskTemplateQuestionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.setTaskTemplateQuestionRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -1057,7 +565,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: GraphToJSON(requestParameters.graph),
+            body: GraphDTOToJSON(requestParameters.graph),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
@@ -1093,7 +601,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: TaskToJSON(requestParameters.task),
+            body: TaskDTOToJSON(requestParameters.task),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

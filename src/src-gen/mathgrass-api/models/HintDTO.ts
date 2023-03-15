@@ -16,50 +16,57 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TaskIdLabelTuple
+ * @interface HintDTO
  */
-export interface TaskIdLabelTuple {
+export interface HintDTO {
     /**
      * 
      * @type {number}
-     * @memberof TaskIdLabelTuple
+     * @memberof HintDTO
      */
     id: number;
     /**
      * 
      * @type {string}
-     * @memberof TaskIdLabelTuple
+     * @memberof HintDTO
      */
-    label: string;
+    label?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HintDTO
+     */
+    content: string;
 }
 
 /**
- * Check if a given object implements the TaskIdLabelTuple interface.
+ * Check if a given object implements the HintDTO interface.
  */
-export function instanceOfTaskIdLabelTuple(value: object): boolean {
+export function instanceOfHintDTO(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "label" in value;
+    isInstance = isInstance && "content" in value;
 
     return isInstance;
 }
 
-export function TaskIdLabelTupleFromJSON(json: any): TaskIdLabelTuple {
-    return TaskIdLabelTupleFromJSONTyped(json, false);
+export function HintDTOFromJSON(json: any): HintDTO {
+    return HintDTOFromJSONTyped(json, false);
 }
 
-export function TaskIdLabelTupleFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskIdLabelTuple {
+export function HintDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): HintDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'label': json['label'],
+        'label': !exists(json, 'label') ? undefined : json['label'],
+        'content': json['content'],
     };
 }
 
-export function TaskIdLabelTupleToJSON(value?: TaskIdLabelTuple | null): any {
+export function HintDTOToJSON(value?: HintDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -70,6 +77,7 @@ export function TaskIdLabelTupleToJSON(value?: TaskIdLabelTuple | null): any {
         
         'id': value.id,
         'label': value.label,
+        'content': value.content,
     };
 }
 
