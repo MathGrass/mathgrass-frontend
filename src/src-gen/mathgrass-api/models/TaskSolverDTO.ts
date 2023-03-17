@@ -16,43 +16,43 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TaskSolver
+ * @interface TaskSolverDTO
  */
-export interface TaskSolver {
+export interface TaskSolverDTO {
     /**
      * 
      * @type {number}
-     * @memberof TaskSolver
+     * @memberof TaskSolverDTO
      */
     id?: number;
     /**
      * 
      * @type {string}
-     * @memberof TaskSolver
+     * @memberof TaskSolverDTO
      */
     label?: string;
     /**
      * 
      * @type {string}
-     * @memberof TaskSolver
+     * @memberof TaskSolverDTO
      */
     executionDescriptor?: string;
 }
 
 /**
- * Check if a given object implements the TaskSolver interface.
+ * Check if a given object implements the TaskSolverDTO interface.
  */
-export function instanceOfTaskSolver(value: object): boolean {
+export function instanceOfTaskSolverDTO(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function TaskSolverFromJSON(json: any): TaskSolver {
-    return TaskSolverFromJSONTyped(json, false);
+export function TaskSolverDTOFromJSON(json: any): TaskSolverDTO {
+    return TaskSolverDTOFromJSONTyped(json, false);
 }
 
-export function TaskSolverFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskSolver {
+export function TaskSolverDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskSolverDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -64,7 +64,7 @@ export function TaskSolverFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     };
 }
 
-export function TaskSolverToJSON(value?: TaskSolver | null): any {
+export function TaskSolverDTOToJSON(value?: TaskSolverDTO | null): any {
     if (value === undefined) {
         return undefined;
     }

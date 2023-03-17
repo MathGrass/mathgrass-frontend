@@ -16,65 +16,50 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Vertex
+ * @interface TaskIdLabelTupleDTO
  */
-export interface Vertex {
+export interface TaskIdLabelTupleDTO {
     /**
      * 
      * @type {number}
-     * @memberof Vertex
+     * @memberof TaskIdLabelTupleDTO
      */
     id: number;
     /**
      * 
-     * @type {number}
-     * @memberof Vertex
-     */
-    x: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof Vertex
-     */
-    y: number;
-    /**
-     * 
      * @type {string}
-     * @memberof Vertex
+     * @memberof TaskIdLabelTupleDTO
      */
-    label?: string;
+    label: string;
 }
 
 /**
- * Check if a given object implements the Vertex interface.
+ * Check if a given object implements the TaskIdLabelTupleDTO interface.
  */
-export function instanceOfVertex(value: object): boolean {
+export function instanceOfTaskIdLabelTupleDTO(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "x" in value;
-    isInstance = isInstance && "y" in value;
+    isInstance = isInstance && "label" in value;
 
     return isInstance;
 }
 
-export function VertexFromJSON(json: any): Vertex {
-    return VertexFromJSONTyped(json, false);
+export function TaskIdLabelTupleDTOFromJSON(json: any): TaskIdLabelTupleDTO {
+    return TaskIdLabelTupleDTOFromJSONTyped(json, false);
 }
 
-export function VertexFromJSONTyped(json: any, ignoreDiscriminator: boolean): Vertex {
+export function TaskIdLabelTupleDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskIdLabelTupleDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'x': json['x'],
-        'y': json['y'],
-        'label': !exists(json, 'label') ? undefined : json['label'],
+        'label': json['label'],
     };
 }
 
-export function VertexToJSON(value?: Vertex | null): any {
+export function TaskIdLabelTupleDTOToJSON(value?: TaskIdLabelTupleDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -84,8 +69,6 @@ export function VertexToJSON(value?: Vertex | null): any {
     return {
         
         'id': value.id,
-        'x': value.x,
-        'y': value.y,
         'label': value.label,
     };
 }

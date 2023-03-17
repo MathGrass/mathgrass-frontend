@@ -16,57 +16,50 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TaskHint
+ * @interface LabelDTO
  */
-export interface TaskHint {
+export interface LabelDTO {
     /**
      * 
      * @type {number}
-     * @memberof TaskHint
+     * @memberof LabelDTO
      */
     id: number;
     /**
      * 
      * @type {string}
-     * @memberof TaskHint
+     * @memberof LabelDTO
      */
-    label?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof TaskHint
-     */
-    content: string;
+    label: string;
 }
 
 /**
- * Check if a given object implements the TaskHint interface.
+ * Check if a given object implements the LabelDTO interface.
  */
-export function instanceOfTaskHint(value: object): boolean {
+export function instanceOfLabelDTO(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "content" in value;
+    isInstance = isInstance && "label" in value;
 
     return isInstance;
 }
 
-export function TaskHintFromJSON(json: any): TaskHint {
-    return TaskHintFromJSONTyped(json, false);
+export function LabelDTOFromJSON(json: any): LabelDTO {
+    return LabelDTOFromJSONTyped(json, false);
 }
 
-export function TaskHintFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskHint {
+export function LabelDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): LabelDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': json['id'],
-        'label': !exists(json, 'label') ? undefined : json['label'],
-        'content': json['content'],
+        'label': json['label'],
     };
 }
 
-export function TaskHintToJSON(value?: TaskHint | null): any {
+export function LabelDTOToJSON(value?: LabelDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -77,7 +70,6 @@ export function TaskHintToJSON(value?: TaskHint | null): any {
         
         'id': value.id,
         'label': value.label,
-        'content': value.content,
     };
 }
 

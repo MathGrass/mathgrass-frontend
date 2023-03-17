@@ -16,55 +16,65 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TaskTopic
+ * @interface VertexDTO
  */
-export interface TaskTopic {
+export interface VertexDTO {
     /**
      * 
      * @type {number}
-     * @memberof TaskTopic
+     * @memberof VertexDTO
      */
-    id?: number;
+    id: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof VertexDTO
+     */
+    x: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof VertexDTO
+     */
+    y: number;
     /**
      * 
      * @type {string}
-     * @memberof TaskTopic
+     * @memberof VertexDTO
      */
     label?: string;
-    /**
-     * 
-     * @type {Array<number>}
-     * @memberof TaskTopic
-     */
-    tasks?: Array<number>;
 }
 
 /**
- * Check if a given object implements the TaskTopic interface.
+ * Check if a given object implements the VertexDTO interface.
  */
-export function instanceOfTaskTopic(value: object): boolean {
+export function instanceOfVertexDTO(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "x" in value;
+    isInstance = isInstance && "y" in value;
 
     return isInstance;
 }
 
-export function TaskTopicFromJSON(json: any): TaskTopic {
-    return TaskTopicFromJSONTyped(json, false);
+export function VertexDTOFromJSON(json: any): VertexDTO {
+    return VertexDTOFromJSONTyped(json, false);
 }
 
-export function TaskTopicFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskTopic {
+export function VertexDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): VertexDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'id': json['id'],
+        'x': json['x'],
+        'y': json['y'],
         'label': !exists(json, 'label') ? undefined : json['label'],
-        'tasks': !exists(json, 'tasks') ? undefined : json['tasks'],
     };
 }
 
-export function TaskTopicToJSON(value?: TaskTopic | null): any {
+export function VertexDTOToJSON(value?: VertexDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -74,8 +84,9 @@ export function TaskTopicToJSON(value?: TaskTopic | null): any {
     return {
         
         'id': value.id,
+        'x': value.x,
+        'y': value.y,
         'label': value.label,
-        'tasks': value.tasks,
     };
 }
 

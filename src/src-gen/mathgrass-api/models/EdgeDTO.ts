@@ -13,43 +13,43 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Vertex } from './Vertex';
+import type { VertexDTO } from './VertexDTO';
 import {
-    VertexFromJSON,
-    VertexFromJSONTyped,
-    VertexToJSON,
-} from './Vertex';
+    VertexDTOFromJSON,
+    VertexDTOFromJSONTyped,
+    VertexDTOToJSON,
+} from './VertexDTO';
 
 /**
  * 
  * @export
- * @interface Edge
+ * @interface EdgeDTO
  */
-export interface Edge {
+export interface EdgeDTO {
     /**
      * 
-     * @type {Vertex}
-     * @memberof Edge
+     * @type {VertexDTO}
+     * @memberof EdgeDTO
      */
-    firstVertex: Vertex;
+    firstVertex: VertexDTO;
     /**
      * 
-     * @type {Vertex}
-     * @memberof Edge
+     * @type {VertexDTO}
+     * @memberof EdgeDTO
      */
-    secondVertex: Vertex;
+    secondVertex: VertexDTO;
     /**
      * 
      * @type {string}
-     * @memberof Edge
+     * @memberof EdgeDTO
      */
     label?: string;
 }
 
 /**
- * Check if a given object implements the Edge interface.
+ * Check if a given object implements the EdgeDTO interface.
  */
-export function instanceOfEdge(value: object): boolean {
+export function instanceOfEdgeDTO(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "firstVertex" in value;
     isInstance = isInstance && "secondVertex" in value;
@@ -57,23 +57,23 @@ export function instanceOfEdge(value: object): boolean {
     return isInstance;
 }
 
-export function EdgeFromJSON(json: any): Edge {
-    return EdgeFromJSONTyped(json, false);
+export function EdgeDTOFromJSON(json: any): EdgeDTO {
+    return EdgeDTOFromJSONTyped(json, false);
 }
 
-export function EdgeFromJSONTyped(json: any, ignoreDiscriminator: boolean): Edge {
+export function EdgeDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): EdgeDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'firstVertex': VertexFromJSON(json['firstVertex']),
-        'secondVertex': VertexFromJSON(json['secondVertex']),
+        'firstVertex': VertexDTOFromJSON(json['firstVertex']),
+        'secondVertex': VertexDTOFromJSON(json['secondVertex']),
         'label': !exists(json, 'label') ? undefined : json['label'],
     };
 }
 
-export function EdgeToJSON(value?: Edge | null): any {
+export function EdgeDTOToJSON(value?: EdgeDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -82,8 +82,8 @@ export function EdgeToJSON(value?: Edge | null): any {
     }
     return {
         
-        'firstVertex': VertexToJSON(value.firstVertex),
-        'secondVertex': VertexToJSON(value.secondVertex),
+        'firstVertex': VertexDTOToJSON(value.firstVertex),
+        'secondVertex': VertexDTOToJSON(value.secondVertex),
         'label': value.label,
     };
 }
