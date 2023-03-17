@@ -7,10 +7,10 @@ import TaskManagement from './components/taskManagement/taskManagement';
 import {fetchAvailableTasks} from './state/applicationState';
 import {useAppSelector} from './state/common/hooks';
 import {useDispatch} from 'react-redux';
-import {Task} from './src-gen/mathgrass-api';
+import {TaskDTO} from './src-gen/mathgrass-api';
 
 const MathGrass = () => {
-    const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
 
     const dispatch = useDispatch();
     // this is only run once for the initial setup

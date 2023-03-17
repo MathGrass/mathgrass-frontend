@@ -1,28 +1,22 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
-import * as serverConfig from '../config/serverConfig';
 import {devServerConfig} from '../config/serverConfig';
-import {DefaultApi, FetchError, Task, TaskIdLabelTuple} from '../src-gen/mathgrass-api';
+import {DefaultApi, FetchError, TaskDTO, TaskIdLabelTupleDTO} from '../src-gen/mathgrass-api';
 
 const api = new DefaultApi(devServerConfig.apiConfig);
 
 interface ApplicationState {
     graphInEditor: any;
     hintLevel: number;
-    currentTask: Task | null;
+    currentTask: TaskDTO | null;
     currentAssessmentResponse: boolean | null;
-    availableTasks: TaskIdLabelTuple[];
+    availableTasks: TaskIdLabelTupleDTO[];
     showFeedbackSection: boolean;
+    showWaitingForEvaluation: boolean;
     assessmentFeedback: string | undefined;
     currentAnswer: string | undefined;
     feedbackHistory: string [];
-}
-
-export interface Question {
-    question: string;
-    possibleAnswer: string[];
-    isDynamicQuestion: boolean;
 }
 
 export interface JsonFormTuple {
@@ -37,9 +31,10 @@ function getInitialApplicationState(): ApplicationState {
         currentTask: null,
         currentAssessmentResponse: null,
         showFeedbackSection: false,
+        showWaitingForEvaluation: false,
         assessmentFeedback: undefined,
         feedbackHistory: [] as string[],
-        availableTasks: [] as TaskIdLabelTuple[],
+        availableTasks: [] as TaskIdLabelTupleDTO[],
         currentAnswer: undefined
     };
 }
@@ -52,6 +47,7 @@ export const applicationState = createSlice({
         },
         propagateCurrentAnswer: (state, action: PayloadAction<string>) => {
             state.currentAnswer = action.payload;
+            state.showWaitingForEvaluation = true;
         },
         propagateCurrentAssessmentResponse: (state, action: PayloadAction<boolean>) => {
             state.currentAssessmentResponse = action.payload;
@@ -60,17 +56,24 @@ export const applicationState = createSlice({
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
-                state.currentTask = action.payload as Task;
+                state.currentTask = action.payload as TaskDTO;
                 state.currentAssessmentResponse = null;
                 // Handle fetch by id logic
                 // state.availableTasks = action.payload as number[];
             }
         });
-        builder.addCase(fetchHint.fulfilled, (state, action) => {
+/*        builder.addCase(fetchHint.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
                 state.feedbackHistory.push(action.payload.content as string);
                 state.hintLevel = state.hintLevel + 1;
+            }
+        });*/
+        builder.addCase(fetchAssessment.fulfilled, (state, action) => {
+            // check whether action is void or not
+            if (!isFetchErrorOrUndefined(action)) {
+                state.currentAssessmentResponse = action.payload.isAssessmentCorrect as boolean;
+                state.showWaitingForEvaluation = false;
             }
         });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {
@@ -100,13 +103,20 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
 export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     taskId: number, hintLevel: number
 }) => {
-    const nextHintResource: string = serverConfig.getNextHint(params.taskId, params.hintLevel);
-    return fetch(nextHintResource).then((response) =>
-        response.json()
-    ).then((json) => {
-        return json;
-    });
+    // TODO
 });
+
+export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (params: {
+    taskId: number, answer: string
+}) => {
+    return api.evaluateAnswer({
+        taskId: params.taskId,
+        evaluateAnswerRequest: {
+            answer: params.answer
+        }
+    }).then((result) => result).catch((reason) => reason);
+});
+
 
 export const {
     propagateGraphState,

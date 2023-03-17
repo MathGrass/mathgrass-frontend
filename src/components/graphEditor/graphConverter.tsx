@@ -1,7 +1,7 @@
 import * as joint from 'jointjs';
-import {Graph} from '../../src-gen/mathgrass-api';
+import {GraphDTO} from '../../src-gen/mathgrass-api';
 
-export function abstractGraphToJointJsGraph(abstractGraph: Graph, graphWidth: number, graphHeight: number): joint.dia.Graph {
+export function abstractGraphToJointJsGraph(abstractGraph: GraphDTO, graphWidth: number, graphHeight: number): joint.dia.Graph {
     const namespace = joint.shapes;
     const graph = new joint.dia.Graph({}, {cellNamespace: namespace});
     const vertexMap: Map<number, joint.shapes.standard.Circle> = new Map();

@@ -3,11 +3,11 @@ import Form, {IChangeEvent} from '@rjsf/core';
 import {JSONSchema7} from 'json-schema';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
 import {fetchTaskById} from '../../state/applicationState';
-import {Task, TaskIdLabelTuple} from '../../src-gen/mathgrass-api';
+import {TaskDTO, TaskIdLabelTupleDTO} from '../../src-gen/mathgrass-api';
 
 const TaskManagement = () => {
     const availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);
-    const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
 
     const dispatch = useAppDispatch();
 
@@ -40,7 +40,7 @@ const TaskManagement = () => {
     );
 };
 
-function availableTasksToTaskTypesEnum(availableTaskTypes: TaskIdLabelTuple[]): JSONSchema7[] {
+function availableTasksToTaskTypesEnum(availableTaskTypes: TaskIdLabelTupleDTO[]): JSONSchema7[] {
     const availableTaskTypesEnum: JSONSchema7[] = [];
 
     if (availableTaskTypes !== undefined) {

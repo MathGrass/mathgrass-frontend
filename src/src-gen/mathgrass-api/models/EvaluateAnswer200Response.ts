@@ -16,32 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface RunStaticAssessment200Response
+ * @interface EvaluateAnswer200Response
  */
-export interface RunStaticAssessment200Response {
+export interface EvaluateAnswer200Response {
     /**
      * 
      * @type {boolean}
-     * @memberof RunStaticAssessment200Response
+     * @memberof EvaluateAnswer200Response
      */
     isAssessmentCorrect: boolean;
 }
 
 /**
- * Check if a given object implements the RunStaticAssessment200Response interface.
+ * Check if a given object implements the EvaluateAnswer200Response interface.
  */
-export function instanceOfRunStaticAssessment200Response(value: object): boolean {
+export function instanceOfEvaluateAnswer200Response(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "isAssessmentCorrect" in value;
 
     return isInstance;
 }
 
-export function RunStaticAssessment200ResponseFromJSON(json: any): RunStaticAssessment200Response {
-    return RunStaticAssessment200ResponseFromJSONTyped(json, false);
+export function EvaluateAnswer200ResponseFromJSON(json: any): EvaluateAnswer200Response {
+    return EvaluateAnswer200ResponseFromJSONTyped(json, false);
 }
 
-export function RunStaticAssessment200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RunStaticAssessment200Response {
+export function EvaluateAnswer200ResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): EvaluateAnswer200Response {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -51,7 +51,7 @@ export function RunStaticAssessment200ResponseFromJSONTyped(json: any, ignoreDis
     };
 }
 
-export function RunStaticAssessment200ResponseToJSON(value?: RunStaticAssessment200Response | null): any {
+export function EvaluateAnswer200ResponseToJSON(value?: EvaluateAnswer200Response | null): any {
     if (value === undefined) {
         return undefined;
     }

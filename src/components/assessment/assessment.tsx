@@ -1,25 +1,20 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
-import {
-    JsonFormTuple,
-    propagateCurrentAnswer,
-    propagateCurrentAssessmentResponse,
-} from '../../state/applicationState';
+import { fetchAssessment, JsonFormTuple, propagateCurrentAnswer, propagateCurrentAssessmentResponse } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 import {WebsocketService} from "../../websockets/websocketService";
-import {Question, Task} from '../../src-gen/mathgrass-api';
-
-
+import {QuestionDTO, TaskDTO} from '../../src-gen/mathgrass-api';
 const getWebsocketChannel = (taskId: number) => `/topic/assessmentResult/${taskId}`;
 
 const Assessment = () => {
     const dispatch = useDispatch();
-    const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
     const currentAnswer: string | undefined = useAppSelector((state) => state.applicationStateManagement.currentAnswer);
     const currentAssessmentResponse: boolean | null = useAppSelector((state) => state.applicationStateManagement.currentAssessmentResponse);
+    const currentlyWaitingForEvaluation: boolean = useAppSelector((state) => state.applicationStateManagement.showWaitingForEvaluation);
 
-    const question: Question | null | undefined = currentTask?.question;
+    const question: QuestionDTO | null | undefined = currentTask?.question;
 
     const questionSchema: JsonFormTuple | null = transformQuestionToSchema(question);
 
@@ -31,17 +26,21 @@ const Assessment = () => {
         return <div/>;
     }
 
-    function showCurrentAssessment() {
-        if (typeof currentAssessmentResponse === 'boolean'){
-            return  <div><br/>
-                    <div className="alert alert-secondary" role="alert">
-                        You submitted the following answer: '{currentAnswer}'
-                    </div>
+    function renderCurrentAssessment() {
+        if (typeof currentAssessmentResponse === 'boolean') {
+            return <div><br/>
+                <div className="alert alert-secondary" role="alert">
+                    You submitted the following answer: '{currentAnswer}'
+                </div>
                 {currentAssessmentResponse ?
                     <div className="alert alert-success" role="alert">Your assessment is correct</div> :
                     <div className="alert alert-danger" role="alert">Your assessment is wrong</div>}
             </div>;
         }
+    }
+
+    function showWaitingForEvaluationNotice() {
+        return <div>Your request is being processed. Please hang on.</div>
     }
 
     // wait for assessment response and update current state
@@ -76,15 +75,20 @@ const Assessment = () => {
                           websocketService.send("/app/evaluateStaticAssessment",
                               {taskId: currentTask.id, answer: submittedAnswer});
                       }
+                      // dispatch(fetchAssessment({
+                      //     taskId: currentTask.id,
+                      //     answer: submittedAnswer
+                      // }));
                       dispatch(propagateCurrentAnswer(submittedAnswer));
                   }
               }
               }/>
-        { currentAssessmentResponse !== null ? showCurrentAssessment() : null}
+
+        {currentlyWaitingForEvaluation ? showWaitingForEvaluationNotice() : renderCurrentAssessment()}
     </div>);
 };
 
-function transformQuestionToSchema(question: Question | null | undefined): JsonFormTuple | null {
+function transformQuestionToSchema(question: QuestionDTO | null | undefined): JsonFormTuple | null {
     if (question === null || question === undefined) {
         return null;
     }

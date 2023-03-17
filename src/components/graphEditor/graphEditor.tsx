@@ -6,7 +6,7 @@ import {propagateGraphState} from '../../state/applicationState';
 import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
 import {abstractGraphToJointJsGraph} from './graphConverter';
-import {Task} from '../../src-gen/mathgrass-api';
+import {TaskDTO} from '../../src-gen/mathgrass-api';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
 const EDITOR_HEIGHT: number = 600;
@@ -15,7 +15,7 @@ const outerStyle = {
 };
 
 const GraphEditor = () => {
-    const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
     const showAssessmentFeedback: boolean = useAppSelector((state) => state.applicationStateManagement.showFeedbackSection);
 
     const dispatch = useDispatch();

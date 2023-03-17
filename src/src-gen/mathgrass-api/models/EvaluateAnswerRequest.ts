@@ -16,32 +16,32 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface RunStaticAssessmentRequest
+ * @interface EvaluateAnswerRequest
  */
-export interface RunStaticAssessmentRequest {
+export interface EvaluateAnswerRequest {
     /**
      * 
      * @type {string}
-     * @memberof RunStaticAssessmentRequest
+     * @memberof EvaluateAnswerRequest
      */
     answer: string;
 }
 
 /**
- * Check if a given object implements the RunStaticAssessmentRequest interface.
+ * Check if a given object implements the EvaluateAnswerRequest interface.
  */
-export function instanceOfRunStaticAssessmentRequest(value: object): boolean {
+export function instanceOfEvaluateAnswerRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "answer" in value;
 
     return isInstance;
 }
 
-export function RunStaticAssessmentRequestFromJSON(json: any): RunStaticAssessmentRequest {
-    return RunStaticAssessmentRequestFromJSONTyped(json, false);
+export function EvaluateAnswerRequestFromJSON(json: any): EvaluateAnswerRequest {
+    return EvaluateAnswerRequestFromJSONTyped(json, false);
 }
 
-export function RunStaticAssessmentRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RunStaticAssessmentRequest {
+export function EvaluateAnswerRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): EvaluateAnswerRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -51,7 +51,7 @@ export function RunStaticAssessmentRequestFromJSONTyped(json: any, ignoreDiscrim
     };
 }
 
-export function RunStaticAssessmentRequestToJSON(value?: RunStaticAssessmentRequest | null): any {
+export function EvaluateAnswerRequestToJSON(value?: EvaluateAnswerRequest | null): any {
     if (value === undefined) {
         return undefined;
     }

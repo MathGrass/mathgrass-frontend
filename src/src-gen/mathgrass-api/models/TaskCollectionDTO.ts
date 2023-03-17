@@ -16,48 +16,55 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Feedback
+ * @interface TaskCollectionDTO
  */
-export interface Feedback {
+export interface TaskCollectionDTO {
     /**
      * 
      * @type {number}
-     * @memberof Feedback
+     * @memberof TaskCollectionDTO
      */
     id?: number;
     /**
      * 
      * @type {string}
-     * @memberof Feedback
+     * @memberof TaskCollectionDTO
      */
-    content?: string;
+    label?: string;
+    /**
+     * 
+     * @type {Array<number>}
+     * @memberof TaskCollectionDTO
+     */
+    tasks?: Array<number>;
 }
 
 /**
- * Check if a given object implements the Feedback interface.
+ * Check if a given object implements the TaskCollectionDTO interface.
  */
-export function instanceOfFeedback(value: object): boolean {
+export function instanceOfTaskCollectionDTO(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function FeedbackFromJSON(json: any): Feedback {
-    return FeedbackFromJSONTyped(json, false);
+export function TaskCollectionDTOFromJSON(json: any): TaskCollectionDTO {
+    return TaskCollectionDTOFromJSONTyped(json, false);
 }
 
-export function FeedbackFromJSONTyped(json: any, ignoreDiscriminator: boolean): Feedback {
+export function TaskCollectionDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskCollectionDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'label': !exists(json, 'label') ? undefined : json['label'],
+        'tasks': !exists(json, 'tasks') ? undefined : json['tasks'],
     };
 }
 
-export function FeedbackToJSON(value?: Feedback | null): any {
+export function TaskCollectionDTOToJSON(value?: TaskCollectionDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -67,7 +74,8 @@ export function FeedbackToJSON(value?: Feedback | null): any {
     return {
         
         'id': value.id,
-        'content': value.content,
+        'label': value.label,
+        'tasks': value.tasks,
     };
 }
 
