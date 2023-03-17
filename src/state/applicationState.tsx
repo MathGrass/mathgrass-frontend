@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {JSONSchema7} from 'json-schema';
 import {UiSchema} from '@rjsf/core';
-import * as serverConfig from '../config/serverConfig';
 import {devServerConfig} from '../config/serverConfig';
 import {DefaultApi, FetchError, TaskDTO, TaskIdLabelTupleDTO} from '../src-gen/mathgrass-api';
 
@@ -14,15 +13,10 @@ interface ApplicationState {
     currentAssessmentResponse: boolean | null;
     availableTasks: TaskIdLabelTupleDTO[];
     showFeedbackSection: boolean;
+    showWaitingForEvaluation: boolean;
     assessmentFeedback: string | undefined;
     currentAnswer: string | undefined;
     feedbackHistory: string [];
-}
-
-export interface Question {
-    question: string;
-    possibleAnswer: string[];
-    isDynamicQuestion: boolean;
 }
 
 export interface JsonFormTuple {
@@ -37,6 +31,7 @@ function getInitialApplicationState(): ApplicationState {
         currentTask: null,
         currentAssessmentResponse: null,
         showFeedbackSection: false,
+        showWaitingForEvaluation: false,
         assessmentFeedback: undefined,
         feedbackHistory: [] as string[],
         availableTasks: [] as TaskIdLabelTupleDTO[],
@@ -52,6 +47,7 @@ export const applicationState = createSlice({
         },
         propagateCurrentAnswer: (state, action: PayloadAction<string>) => {
             state.currentAnswer = action.payload;
+            state.showWaitingForEvaluation = true;
         },
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
@@ -74,6 +70,7 @@ export const applicationState = createSlice({
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
                 state.currentAssessmentResponse = action.payload.isAssessmentCorrect as boolean;
+                state.showWaitingForEvaluation = false;
             }
         });
         builder.addCase(fetchAvailableTasks.fulfilled, (state, action) => {

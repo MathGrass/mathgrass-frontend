@@ -11,6 +11,7 @@ const Assessment = () => {
     const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
     const currentAnswer: string | undefined = useAppSelector((state) => state.applicationStateManagement.currentAnswer);
     const currentAssessmentResponse: boolean | null = useAppSelector((state) => state.applicationStateManagement.currentAssessmentResponse);
+    const currentlyWaitingForEvaluation: boolean = useAppSelector((state) => state.applicationStateManagement.showWaitingForEvaluation);
 
     const question: QuestionDTO | null | undefined = currentTask?.question;
 
@@ -20,7 +21,7 @@ const Assessment = () => {
         return <div/>;
     }
 
-    function showCurrentAssessment() {
+    function renderCurrentAssessment() {
         if (typeof currentAssessmentResponse === 'boolean') {
             return <div><br/>
                 <div className="alert alert-secondary" role="alert">
@@ -33,6 +34,10 @@ const Assessment = () => {
         }
     }
 
+    function showWaitingForEvaluationNotice() {
+        return <div>Your request is being processed. Please hang on.</div>
+    }
+
     return (<div>
         <Form schema={questionSchema.schema}
               uiSchema={questionSchema.uiSchema}
@@ -43,12 +48,12 @@ const Assessment = () => {
                           taskId: currentTask.id,
                           answer: submittedAnswer
                       }));
-
                       dispatch(propagateCurrentAnswer(submittedAnswer));
                   }
               }
               }/>
-        {currentAssessmentResponse !== null ? showCurrentAssessment() : null}
+
+        {currentlyWaitingForEvaluation ? showWaitingForEvaluationNotice() : renderCurrentAssessment()}
     </div>);
 };
 
