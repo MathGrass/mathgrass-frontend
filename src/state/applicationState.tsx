@@ -63,20 +63,14 @@ export const applicationState = createSlice({
                 // state.availableTasks = action.payload as number[];
             }
         });
-        builder.addCase(fetchHint.fulfilled, (state, action) => {
+/*        builder.addCase(fetchHint.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
                 state.feedbackHistory.push(action.payload.content as string);
                 state.hintLevel = state.hintLevel + 1;
             }
-        });
-        builder.addCase(fetchDynamicAssessment.fulfilled, (state, action) => {
-            // check whether action is void or not
-            if (!isFetchErrorOrUndefined(action)) {
-                state.currentAssessmentResponse = action.payload.answerTrue as boolean;
-            }
-        });
-        builder.addCase(fetchStaticAssessment.fulfilled, (state, action) => {
+        });*/
+        builder.addCase(fetchAssessment.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
                 state.currentAssessmentResponse = action.payload.isAssessmentCorrect as boolean;
@@ -109,34 +103,10 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
 export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     taskId: number, hintLevel: number
 }) => {
-    const nextHintResource: string = serverConfig.getNextHint(params.taskId, params.hintLevel);
-    return fetch(nextHintResource).then((response) =>
-        response.json()
-    ).then((json) => {
-        return json;
-    });
+    // TODO
 });
 
-export const fetchDynamicAssessment = createAsyncThunk('api/fetchDynamicAssessment', async (params: {
-    taskId: number, answer: string
-}) => {
-    return fetch(serverConfig.getDynamicAssessmentUrl(params.taskId), {
-        method: 'POST', headers: {
-            'Content-Type': 'application/json'
-        }, body: JSON.stringify({
-            'answer': params.answer
-        })
-    }).then((response) => response.json()).then((json) => {
-        const resultId: number = json;
-        return fetch(serverConfig.getAssessmentLongPollingUrl(resultId)).then((result) => result.json()).then((assessmentJson) => {
-            return assessmentJson;
-        });
-    }).catch(() => {
-        //
-    });
-});
-
-export const fetchStaticAssessment = createAsyncThunk('api/fetchStaticAssessment', async (params: {
+export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (params: {
     taskId: number, answer: string
 }) => {
     return api.evaluateAnswer({
