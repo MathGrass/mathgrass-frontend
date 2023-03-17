@@ -2,12 +2,12 @@ import React from 'react';
 import {useDispatch} from 'react-redux';
 import {fetchHint} from '../../state/applicationState';
 import {useAppSelector} from '../../state/common/hooks';
-import {Task} from '../../src-gen/mathgrass-api';
+import {TaskDTO} from '../../src-gen/mathgrass-api';
 
 const IncrementalHints = () => {
     const dispatch = useDispatch();
     const currentHintLevel: number = useAppSelector((state) => state.applicationStateManagement.hintLevel);
-    const currentTask: Task | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
+    const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
     const feedbackHistory: string[] = useAppSelector((state) => state.applicationStateManagement.feedbackHistory);
 
     return (<div>
