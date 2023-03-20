@@ -35,7 +35,7 @@ const Assessment = () => {
     }
 
     function showWaitingForEvaluationNotice() {
-        return <div>Your request is being processed. Please hang on.</div>
+        return  <div className="spinner-border m-2" role="status"/>;
     }
 
     return (<div>
