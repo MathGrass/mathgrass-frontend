@@ -1,10 +1,11 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
-import { fetchAssessment, JsonFormTuple, propagateCurrentAnswer, propagateCurrentAssessmentResponse } from '../../state/applicationState';
+import { JsonFormTuple, propagateCurrentAnswer, propagateCurrentAssessmentResponse } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 import {WebsocketService} from "../../websockets/websocketService";
 import {QuestionDTO, TaskDTO} from '../../src-gen/mathgrass-api';
+
 const getWebsocketChannel = (taskId: number) => `/topic/assessmentResult/${taskId}`;
 
 const Assessment = () => {
@@ -46,7 +47,7 @@ const Assessment = () => {
     // wait for assessment response and update current state
     function subscribeToAssessmentResponse(taskId: number) {
         // subscribe to websocket channel for current task
-        websocketService.subscribe(getWebsocketChannel(taskId))
+        websocketService.subscribe(getWebsocketChannel(taskId));
 
         // handle incoming messages
         websocketService.receive(getWebsocketChannel(taskId))
@@ -66,19 +67,9 @@ const Assessment = () => {
                   if (currentTask && currentTask.question) {
                       // create listener for backend response
                       subscribeToAssessmentResponse(currentTask.id);
-                      if (currentTask.question.isDynamicQuestion) {
-                          // send assessment to backend
-                          websocketService.send("/app/evaluateDynamicAssessment",
-                              {taskId: currentTask.id, answer: submittedAnswer});
-                      } else {
-                          // send assessment to backend
-                          websocketService.send("/app/evaluateStaticAssessment",
-                              {taskId: currentTask.id, answer: submittedAnswer});
-                      }
-                      // dispatch(fetchAssessment({
-                      //     taskId: currentTask.id,
-                      //     answer: submittedAnswer
-                      // }));
+                      // send assessment to backend
+                      websocketService.send("/app/fetchAssessment",
+                          {taskId: currentTask.id, answer: submittedAnswer});
                       dispatch(propagateCurrentAnswer(submittedAnswer));
                   }
               }

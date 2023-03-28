@@ -51,6 +51,7 @@ export const applicationState = createSlice({
         },
         propagateCurrentAssessmentResponse: (state, action: PayloadAction<boolean>) => {
             state.currentAssessmentResponse = action.payload;
+            state.showWaitingForEvaluation = false;
         }
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
