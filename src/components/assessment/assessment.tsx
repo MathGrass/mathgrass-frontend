@@ -6,7 +6,10 @@ import {useDispatch} from 'react-redux';
 import {WebsocketService} from "../../websockets/websocketService";
 import {QuestionDTO, TaskDTO} from '../../src-gen/mathgrass-api';
 
-const getWebsocketChannel = (taskId: number) => `/topic/assessmentResult/${taskId}`;
+// websocket channel to receive result of assessment
+const getWebsocketChannelForAssessmentResult = (taskId: number) => `/topic/assessmentResult/${taskId}`;
+// websocket channel to receive task result id
+const getWebsocketChannelForTaskResultId = (taskResultId: number) => `/topic/taskResultId/${taskResultId}`;
 
 const Assessment = () => {
     const dispatch = useDispatch();
@@ -44,18 +47,33 @@ const Assessment = () => {
         return  <div className="spinner-border m-2" role="status"/>;
     }
 
-    // wait for assessment response and update current state
-    function subscribeToAssessmentResponse(taskId: number) {
+    // subscribe to websocket channel to receive assessment result
+    function subscribeToAssessmentResponse(taskResultId: number) {
         // subscribe to websocket channel for current task
-        websocketService.subscribe(getWebsocketChannel(taskId));
+        websocketService.subscribe(getWebsocketChannelForAssessmentResult(taskResultId));
 
         // handle incoming messages
-        websocketService.receive(getWebsocketChannel(taskId))
+        websocketService.receive(getWebsocketChannelForAssessmentResult(taskResultId))
             .subscribe((result: boolean) => {
                 // update current state
                 dispatch(propagateCurrentAssessmentResponse(result));
+                // unsubscribe this subscription again
+                websocketService.unsubscribe(getWebsocketChannelForAssessmentResult(taskResultId));
+            })
+    }
+
+    // subscribe to websocket channel to receive task result id
+    function subscribeToTaskResultId(taskResultId: number) {
+        // subscribe to websocket channel for task result id
+        websocketService.subscribe(getWebsocketChannelForTaskResultId(taskResultId));
+
+        // handle incoming messages
+        websocketService.receive(getWebsocketChannelForTaskResultId(taskResultId))
+            .subscribe((result: number) => {
+                // subscribe to websocket channel for task result id
+                subscribeToAssessmentResponse(result);
                 // unsubscribe again
-                websocketService.unsubscribe(getWebsocketChannel(taskId));
+                websocketService.unsubscribe(getWebsocketChannelForTaskResultId(taskResultId));
             })
     }
 
@@ -66,7 +84,7 @@ const Assessment = () => {
                   const submittedAnswer: string = e.formData as string;
                   if (currentTask && currentTask.question) {
                       // create listener for backend response
-                      subscribeToAssessmentResponse(currentTask.id);
+                      subscribeToTaskResultId(currentTask.id);
                       // send assessment to backend
                       websocketService.send("/app/fetchAssessment",
                           {taskId: currentTask.id, answer: submittedAnswer});
