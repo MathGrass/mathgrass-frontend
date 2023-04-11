@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
 import { JsonFormTuple, propagateCurrentAnswer, propagateCurrentAssessmentResponse } from '../../state/applicationState';
@@ -76,6 +76,15 @@ const Assessment = () => {
                 websocketService.unsubscribe(getWebsocketChannelForTaskResultId(taskResultId));
             })
     }
+
+    // unmount component
+    useEffect(() => {
+        return () => {
+            // close websocket connection
+            websocketService.onDestroy();
+            console.log('Assessment component unmounted');
+        };
+    }, []);
 
     return (<div>
         <Form schema={questionSchema.schema}
