@@ -52,6 +52,9 @@ export const applicationState = createSlice({
         propagateCurrentAssessmentResponse: (state, action: PayloadAction<boolean>) => {
             state.currentAssessmentResponse = action.payload;
             state.showWaitingForEvaluation = false;
+        },
+        setCurrentTask: (state, action: PayloadAction<TaskDTO>) => {
+            state.currentTask = action.payload;
         }
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
@@ -122,5 +125,6 @@ export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (pa
 export const {
     propagateGraphState,
     propagateCurrentAnswer,
-    propagateCurrentAssessmentResponse
+    propagateCurrentAssessmentResponse,
+    setCurrentTask
 } = applicationState.actions;

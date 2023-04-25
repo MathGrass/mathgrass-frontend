@@ -100,7 +100,9 @@ const Assessment = () => {
                       dispatch(propagateCurrentAnswer(submittedAnswer));
                   }
               }
-              }/>
+              }>
+            <button type="submit" className="btn btn-info" data-testid="submitAnswerButton">Submit</button>
+        </Form>
 
         {currentlyWaitingForEvaluation ? showWaitingForEvaluationNotice() : renderCurrentAssessment()}
     </div>);
