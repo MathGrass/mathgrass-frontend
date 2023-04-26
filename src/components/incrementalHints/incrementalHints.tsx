@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch} from 'react-redux';
 import {useAppSelector} from '../../state/common/hooks';
 import {TaskDTO} from '../../src-gen/mathgrass-api';
-import {fetchHint} from '../../state/asyncThunks';
+import {fetchHint} from '../../state/requestThunks';
 
 const IncrementalHints = () => {
     const dispatch = useDispatch();

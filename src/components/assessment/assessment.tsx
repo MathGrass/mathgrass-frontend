@@ -4,7 +4,7 @@ import {useAppSelector} from '../../state/common/hooks';
 import { JsonFormTuple, propagateCurrentAnswer } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 import {QuestionDTO, TaskDTO} from '../../src-gen/mathgrass-api';
-import {fetchAssessment} from '../../state/asyncThunks';
+import {fetchAssessment} from '../../state/requestThunks';
 
 
 const Assessment = () => {

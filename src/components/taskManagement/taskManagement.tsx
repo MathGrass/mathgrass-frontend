@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
 
-import {fetchTaskById} from '../../state/asyncThunks';
+import {fetchTaskById} from '../../state/requestThunks';
 
 const TaskManagement = () => {
     const availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);

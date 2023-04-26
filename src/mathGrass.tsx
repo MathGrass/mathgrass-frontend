@@ -7,7 +7,7 @@ import TaskManagement from './components/taskManagement/taskManagement';
 import {useAppSelector} from './state/common/hooks';
 import {useDispatch} from 'react-redux';
 import {TaskDTO} from './src-gen/mathgrass-api';
-import {fetchAvailableTasks} from './state/asyncThunks';
+import {fetchAvailableTasks} from './state/requestThunks';
 
 const MathGrass = () => {
     const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
