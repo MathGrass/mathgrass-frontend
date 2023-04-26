@@ -59,13 +59,13 @@ export const applicationState = createSlice({
                 // state.availableTasks = action.payload as number[];
             }
         });
-/*        builder.addCase(fetchHint.fulfilled, (state, action) => {
+        builder.addCase(fetchHint.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
-                state.feedbackHistory.push(action.payload.content as string);
+                state.feedbackHistory.push(action.payload.content);
                 state.hintLevel = state.hintLevel + 1;
             }
-        });*/
+        });
         builder.addCase(fetchAssessment.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
@@ -100,7 +100,10 @@ export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', a
 export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
     taskId: number, hintLevel: number
 }) => {
-    // TODO
+    return api.getHintForTask({
+        taskId: params.taskId,
+        hintLevel: params.hintLevel
+    });
 });
 
 export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (params: {
@@ -119,4 +122,3 @@ export const {
     propagateGraphState,
     propagateCurrentAnswer
 } = applicationState.actions;
-// export default applicationState.reducer;

@@ -13,9 +13,9 @@ const IncrementalHints = () => {
     return (<div>
             <button className="btn btn-info" onClick={() => {
                 if (currentTask !== null) {
-                   /* dispatch(fetchHint({
+                    dispatch(fetchHint({
                         hintLevel: currentHintLevel, taskId: currentTask?.id
-                    }));*/
+                    }));
                 }
             }}>Request Hint
             </button>
