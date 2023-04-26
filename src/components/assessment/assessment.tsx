@@ -1,9 +1,8 @@
-import React from 'react';
-import Form from '@rjsf/core';
+import React, {useState} from 'react';
 import {useAppSelector} from '../../state/common/hooks';
-import { JsonFormTuple, propagateCurrentAnswer } from '../../state/applicationState';
+import {propagateCurrentAnswer} from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
-import {QuestionDTO, TaskDTO} from '../../src-gen/mathgrass-api';
+import {TaskDTO} from '../../src-gen/mathgrass-api';
 import {fetchAssessment} from '../../state/requestThunks';
 
 
@@ -14,13 +13,9 @@ const Assessment = () => {
     const currentAssessmentResponse: boolean | null = useAppSelector((state) => state.applicationStateManagement.currentAssessmentResponse);
     const currentlyWaitingForEvaluation: boolean = useAppSelector((state) => state.applicationStateManagement.showWaitingForEvaluation);
 
-    const question: QuestionDTO | null | undefined = currentTask?.question;
+    const question: string | undefined = currentTask?.question.question;
+    const [userAnswerTemporaryState, setUserAnswerTemporaryState] = useState('');
 
-    const questionSchema: JsonFormTuple | null = transformQuestionToSchema(question);
-
-    if (questionSchema === null) {
-        return <div/>;
-    }
 
     function renderCurrentAssessment() {
         if (typeof currentAssessmentResponse === 'boolean') {
@@ -36,41 +31,34 @@ const Assessment = () => {
     }
 
     function showWaitingForEvaluationNotice() {
-        return  <div className="spinner-border m-2" role="status"/>;
+        return <div className="spinner-border m-2" role="status"/>;
     }
 
-    return (<div>
-        <Form schema={questionSchema.schema}
-              uiSchema={questionSchema.uiSchema}
-              onSubmit={(e) => {
-                  const submittedAnswer: string = e.formData as string;
-                  if (currentTask && currentTask.question) {
-                      dispatch(fetchAssessment({
-                          taskId: currentTask.id,
-                          answer: submittedAnswer
-                      }));
-                      dispatch(propagateCurrentAnswer(submittedAnswer));
-                  }
-              }
-              }/>
+    const userAnswerInputField = <input type="text" className="form-control" id="userAnswerInputField"
+                                        placeholder="Your answer"
+                                        onChange={(event) => setUserAnswerTemporaryState(event.target.value)}/>;
 
+    return (<div>
+        <form>
+            <div className="form-group">
+                {question}
+                {userAnswerInputField}
+            </div>
+            <button type="button" className="btn btn-primary" onClick={() => {
+                if (currentTask && currentTask.question) {
+                    dispatch(fetchAssessment({
+                        taskId: currentTask.id,
+                        answer: userAnswerTemporaryState
+                    }));
+                    dispatch(propagateCurrentAnswer(userAnswerTemporaryState));
+                }
+            }
+            }>Submit
+            </button>
+        </form>
         {currentlyWaitingForEvaluation ? showWaitingForEvaluationNotice() : renderCurrentAssessment()}
     </div>);
 };
 
-
-function transformQuestionToSchema(question: QuestionDTO | null | undefined): JsonFormTuple | null {
-    if (question === null || question === undefined) {
-        return null;
-    }
-
-    return {
-        schema: {
-            title: question.question,
-            type: 'string'
-        },
-        uiSchema: {}
-    };
-}
 
 export default Assessment;
