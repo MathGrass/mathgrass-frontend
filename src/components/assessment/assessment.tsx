@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import {useAppSelector} from '../../state/common/hooks';
 import {propagateCurrentAnswer} from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
@@ -12,10 +12,9 @@ const Assessment = () => {
     const currentAnswer: string | undefined = useAppSelector((state) => state.applicationStateManagement.currentAnswer);
     const currentAssessmentResponse: boolean | null = useAppSelector((state) => state.applicationStateManagement.currentAssessmentResponse);
     const currentlyWaitingForEvaluation: boolean = useAppSelector((state) => state.applicationStateManagement.showWaitingForEvaluation);
-
     const question: string | undefined = currentTask?.question.question;
-    const [userAnswerTemporaryState, setUserAnswerTemporaryState] = useState('');
 
+    const inputRef = useRef<HTMLInputElement>(null);
 
     function renderCurrentAssessment() {
         if (typeof currentAssessmentResponse === 'boolean') {
@@ -36,7 +35,7 @@ const Assessment = () => {
 
     const userAnswerInputField = <input type="text" className="form-control" id="userAnswerInputField"
                                         placeholder="Your answer"
-                                        onChange={(event) => setUserAnswerTemporaryState(event.target.value)}/>;
+                                        ref={inputRef} />;
 
     return (<div>
         <form>
@@ -45,12 +44,12 @@ const Assessment = () => {
                 {userAnswerInputField}
             </div>
             <button type="button" className="btn btn-primary" onClick={() => {
-                if (currentTask && currentTask.question) {
+                if (inputRef.current && currentTask) {
                     dispatch(fetchAssessment({
                         taskId: currentTask.id,
-                        answer: userAnswerTemporaryState
+                        answer: inputRef.current.value
                     }));
-                    dispatch(propagateCurrentAnswer(userAnswerTemporaryState));
+                    dispatch(propagateCurrentAnswer(inputRef.current.value));
                 }
             }
             }>Submit

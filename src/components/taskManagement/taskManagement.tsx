@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef} from 'react';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
 
 import {fetchTaskById} from '../../state/requestThunks';
@@ -7,14 +7,10 @@ const TaskManagement = () => {
     const availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);
 
     const dispatch = useAppDispatch();
-    const NO_VALID_TASK_ID = -1;
-    const initialTaskIdSelection: number = availableTasks.length > 0 ? availableTasks[0].id : NO_VALID_TASK_ID;
-    const [selectedTaskId, setSelectedTaskId] = useState(initialTaskIdSelection);
-
-
-    const selectTaskIdsWithOptionsElements = <select className="form-control"
-                                                     onChange={(s) => setSelectedTaskId(+s.target.value)}>
-        <option disabled selected>Select a Task</option>
+    const taskIdRef = useRef<HTMLSelectElement>(null);
+    const INVALID_TASK_ID = -1;
+    const selectTaskIdsWithOptionsElements = <select className="form-control" ref={taskIdRef}>
+        <option disabled selected value={INVALID_TASK_ID}>Select a Task</option>
         {
             availableTasks.map((taskIdLabelTuple) => <option key={taskIdLabelTuple.id}
                                                              value={taskIdLabelTuple.id}>{taskIdLabelTuple.label}</option>)
@@ -28,10 +24,8 @@ const TaskManagement = () => {
                     {selectTaskIdsWithOptionsElements}
                 </div>
                 <button type="button" className="btn btn-primary" onClick={() => {
-                    if (isNaN(selectedTaskId) || selectedTaskId === NO_VALID_TASK_ID) {
-                        return;
-                    } else {
-                        dispatch(fetchTaskById(selectedTaskId));
+                    if (taskIdRef.current && +taskIdRef.current.value !== INVALID_TASK_ID) {
+                        dispatch(fetchTaskById(+taskIdRef.current.value));
                     }
                 }
                 }>Submit
