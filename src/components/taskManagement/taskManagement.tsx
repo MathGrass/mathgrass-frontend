@@ -9,8 +9,8 @@ const TaskManagement = () => {
     const dispatch = useAppDispatch();
     const taskIdRef = useRef<HTMLSelectElement>(null);
     const INVALID_TASK_ID = -1;
-    const selectTaskIdsWithOptionsElements = <select className="form-control" ref={taskIdRef}>
-        <option disabled selected value={INVALID_TASK_ID}>Select a Task</option>
+    const selectTaskIdsWithOptionsElements = <select className="form-control" ref={taskIdRef} defaultValue={INVALID_TASK_ID}>
+        <option disabled value={INVALID_TASK_ID}>Select a Task</option>
         {
             availableTasks.map((taskIdLabelTuple) => <option key={taskIdLabelTuple.id}
                                                              value={taskIdLabelTuple.id}>{taskIdLabelTuple.label}</option>)
