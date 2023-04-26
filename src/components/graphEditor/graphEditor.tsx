@@ -91,7 +91,7 @@ const GraphEditor = () => {
                     {}
                 </div>
                 <div className="align-self-end ml-auto">
-                    <button className="btn btn-info"
+                    <button type="button" className="btn btn-primary"
                             onClick={() => generateAndDownloadFile(JSON.stringify(graphEditorModel), 'MathGrass-graph.json')}>Export
                         the current graph
                     </button>

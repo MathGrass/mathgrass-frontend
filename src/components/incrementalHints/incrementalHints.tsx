@@ -11,7 +11,7 @@ const IncrementalHints = () => {
     const feedbackHistory: string[] = useAppSelector((state) => state.applicationStateManagement.feedbackHistory);
 
     return (<div>
-            <button className="btn btn-info" onClick={() => {
+            <button type="button" className="btn btn-primary" onClick={() => {
                 if (currentTask !== null) {
                     dispatch(fetchHint({
                         hintLevel: currentHintLevel, taskId: currentTask?.id
