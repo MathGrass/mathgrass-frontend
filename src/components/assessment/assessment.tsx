@@ -1,9 +1,10 @@
 import React from 'react';
 import Form from '@rjsf/core';
 import {useAppSelector} from '../../state/common/hooks';
-import { fetchAssessment, JsonFormTuple, propagateCurrentAnswer } from '../../state/applicationState';
+import { JsonFormTuple, propagateCurrentAnswer } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 import {QuestionDTO, TaskDTO} from '../../src-gen/mathgrass-api';
+import {fetchAssessment} from '../../state/asyncThunks';
 
 
 const Assessment = () => {

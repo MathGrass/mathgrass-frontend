@@ -1,36 +1,43 @@
-import React from 'react';
-import Form, {IChangeEvent} from '@rjsf/core';
-import {JSONSchema7} from 'json-schema';
+import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
-import {fetchTaskById} from '../../state/applicationState';
-import {TaskDTO, TaskIdLabelTupleDTO} from '../../src-gen/mathgrass-api';
+
+import {fetchTaskById} from '../../state/asyncThunks';
 
 const TaskManagement = () => {
     const availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);
-    const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
 
     const dispatch = useAppDispatch();
+    const NO_VALID_TASK_ID = -1;
+    const initialTaskIdSelection: number = availableTasks.length > 0 ? availableTasks[0].id : NO_VALID_TASK_ID;
+    const [selectedTaskId, setSelectedTaskId] = useState(initialTaskIdSelection);
 
-    const availableTaskTypesEnum: JSONSchema7[] = availableTasksToTaskTypesEnum(availableTasks);
 
-    const schema: JSONSchema7 = {
-        'type': 'number',
-        'anyOf': availableTaskTypesEnum,
-        ... (currentTask !== null ? {'default' : currentTask.id} : {} )
-    };
-
-    const uiSchema = {};
+    const selectTaskIdsWithOptionsElements = <select className="form-control"
+                                                     onChange={(s) => setSelectedTaskId(+s.target.value)}>
+        <option disabled selected>Select a Task</option>
+        {
+            availableTasks.map((taskIdLabelTuple) => <option key={taskIdLabelTuple.id}
+                                                             value={taskIdLabelTuple.id}>{taskIdLabelTuple.label}</option>)
+        }
+    </select>;
 
     function renderTaskSelectionForm() {
-        return <Form schema={schema} uiSchema={uiSchema} onSubmit={(e: IChangeEvent) => {
-            // upon initial rendering of the form, onchange event is emitted
-            // therefore, check for set task type and act accordingly
-            if (e.formData === undefined) {
-                return;
-            }else {
-                dispatch(fetchTaskById(e.formData));
-            }
-        }}/>;
+        return <div>
+            <form>
+                <div className="form-group">
+                    {selectTaskIdsWithOptionsElements}
+                </div>
+                <button type="button" className="btn btn-primary" onClick={() => {
+                    if (isNaN(selectedTaskId) || selectedTaskId === NO_VALID_TASK_ID) {
+                        return;
+                    } else {
+                        dispatch(fetchTaskById(selectedTaskId));
+                    }
+                }
+                }>Submit
+                </button>
+            </form>
+        </div>;
     }
 
     return (
@@ -39,23 +46,5 @@ const TaskManagement = () => {
         </>
     );
 };
-
-function availableTasksToTaskTypesEnum(availableTaskTypes: TaskIdLabelTupleDTO[]): JSONSchema7[] {
-    const availableTaskTypesEnum: JSONSchema7[] = [];
-
-    if (availableTaskTypes !== undefined) {
-        availableTaskTypes.forEach((tt) => {
-            availableTaskTypesEnum.push({
-                'type': 'number',
-                'title': tt.label,
-                'enum': [
-                    tt.id
-                ]
-            });
-        });
-    }
-
-    return availableTaskTypesEnum;
-}
 
 export default TaskManagement;
