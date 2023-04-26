@@ -1,6 +1,4 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {JSONSchema7} from 'json-schema';
-import {UiSchema} from '@rjsf/core';
 import {FetchError, TaskDTO, TaskIdLabelTupleDTO} from '../src-gen/mathgrass-api';
 import {fetchAssessment, fetchAvailableTasks, fetchHint, fetchTaskById} from './requestThunks';
 
@@ -16,11 +14,6 @@ interface ApplicationState {
     assessmentFeedback: string | undefined;
     currentAnswer: string | undefined;
     feedbackHistory: string [];
-}
-
-export interface JsonFormTuple {
-    schema: JSONSchema7;
-    uiSchema: UiSchema;
 }
 
 function getInitialApplicationState(): ApplicationState {
