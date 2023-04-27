@@ -89,7 +89,7 @@ export class WebsocketService implements IWebsocketService {
 
     private alreadyConnectedOnce = false;
     private shouldReconnect = false;
-    private readonly connectionStateInternal: BehaviorSubject<ConnectionState>;
+    protected readonly connectionStateInternal: BehaviorSubject<ConnectionState>;
     private consecutiveFailedAttempts = 0;
     private connecting = false;
     private socket: any = undefined;
