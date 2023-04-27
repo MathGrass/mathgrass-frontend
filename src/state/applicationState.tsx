@@ -13,7 +13,7 @@ interface ApplicationState {
     showWaitingForEvaluation: boolean;
     assessmentFeedback: string | undefined;
     currentAnswer: string | undefined;
-    feedbackHistory: string [];
+    hintHistory: string [];
 }
 
 function getInitialApplicationState(): ApplicationState {
@@ -25,7 +25,7 @@ function getInitialApplicationState(): ApplicationState {
         showFeedbackSection: false,
         showWaitingForEvaluation: false,
         assessmentFeedback: undefined,
-        feedbackHistory: [] as string[],
+        hintHistory: [] as string[],
         availableTasks: [] as TaskIdLabelTupleDTO[],
         currentAnswer: undefined
     };
@@ -47,14 +47,15 @@ export const applicationState = createSlice({
             if (!isFetchErrorOrUndefined(action)) {
                 state.currentTask = action.payload as TaskDTO;
                 state.currentAssessmentResponse = null;
-                // Handle fetch by id logic
-                // state.availableTasks = action.payload as number[];
+                state.hintHistory = [];
+                state.hintLevel = 0;
+                state.assessmentFeedback = undefined;
             }
         });
         builder.addCase(fetchHint.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
-                state.feedbackHistory.push(action.payload.content);
+                state.hintHistory.push(action.payload.content);
                 state.hintLevel = state.hintLevel + 1;
             }
         });
