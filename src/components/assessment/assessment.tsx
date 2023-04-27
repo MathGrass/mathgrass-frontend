@@ -14,10 +14,14 @@ const Assessment = () => {
     const currentlyWaitingForEvaluation: boolean = useAppSelector((state) => state.applicationStateManagement.showWaitingForEvaluation);
     const question: string | undefined = currentTask?.question.question;
 
+    // reference to the input field with the user answer
     const inputRef = useRef<HTMLInputElement>(null);
 
     function renderCurrentAssessment() {
         if (typeof currentAssessmentResponse === 'boolean') {
+            // clear input field
+            inputRef.current!.value = '';
+
             return <div><br/>
                 <div className="alert alert-secondary" role="alert">
                     You submitted the following answer: '{currentAnswer}'
@@ -35,7 +39,7 @@ const Assessment = () => {
 
     const userAnswerInputField = <input type="text" className="form-control" id="userAnswerInputField"
                                         placeholder="Your answer"
-                                        ref={inputRef} />;
+                                        ref={inputRef}/>;
 
     return (<div>
         <form>
@@ -45,10 +49,13 @@ const Assessment = () => {
             </div>
             <button type="button" className="btn btn-primary" onClick={() => {
                 if (inputRef.current && currentTask) {
+                    // fetch the server response
                     dispatch(fetchAssessment({
                         taskId: currentTask.id,
                         answer: inputRef.current.value
                     }));
+                    // propagate the current answer to the other components to notify them
+                    // that we are waiting for the result
                     dispatch(propagateCurrentAnswer(inputRef.current.value));
                 }
             }
