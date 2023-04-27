@@ -14,8 +14,12 @@ const HintHistorySlider = () => {
 
     return (
         <div>
-            {hintHistory.map((hint) => {
-                return <div key={hint}>{hint}</div>;
+            {hintHistory.map((hint, index) => {
+                return (
+                    <div key={hint}>
+                        {hint}
+                        { hintHistory.length !== (index + 1) ? <hr className="dashed"/> : null}
+                    </div>);
             })}
         </div>
     );
