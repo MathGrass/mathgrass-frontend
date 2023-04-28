@@ -1,25 +1,26 @@
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import {fetchHint} from '../../state/applicationState';
 import {useAppSelector} from '../../state/common/hooks';
 import {TaskDTO} from '../../src-gen/mathgrass-api';
+import {fetchHint} from '../../state/requestThunks';
+import HintHistorySlider from './hintHistorySlider';
 
 const IncrementalHints = () => {
     const dispatch = useDispatch();
     const currentHintLevel: number = useAppSelector((state) => state.applicationStateManagement.hintLevel);
     const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
-    const feedbackHistory: string[] = useAppSelector((state) => state.applicationStateManagement.feedbackHistory);
+    const hintHistory: string[] = useAppSelector((state) => state.applicationStateManagement.hintHistory);
 
     return (<div>
-            <button className="btn btn-info" onClick={() => {
+            <button type="button" className="btn btn-primary" onClick={() => {
                 if (currentTask !== null) {
-                   /* dispatch(fetchHint({
+                    dispatch(fetchHint({
                         hintLevel: currentHintLevel, taskId: currentTask?.id
-                    }));*/
+                    }));
                 }
             }}>Request Hint
             </button>
-            {feedbackHistory.length !== 0 ? <div>{feedbackHistory[feedbackHistory.length-1]}</div> : null}
+            {hintHistory.length !== 0 ? <HintHistorySlider/> : null}
             {/*// implement e.g. a carousel with the hint history*/}
         </div>);
 };

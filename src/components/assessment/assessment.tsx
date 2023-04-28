@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
-import Form from '@rjsf/core';
+import React, {useEffect, useRef} from 'react';
 import {useAppSelector} from '../../state/common/hooks';
-import { JsonFormTuple, propagateCurrentAnswer, propagateCurrentAssessmentResponse } from '../../state/applicationState';
+import { propagateCurrentAnswer, propagateCurrentAssessmentResponse } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
 import {WebsocketService} from "../../websockets/websocketService";
-import {QuestionDTO, TaskDTO} from '../../src-gen/mathgrass-api';
+import {TaskDTO} from '../../src-gen/mathgrass-api';
 
 // websocket channel to receive result of assessment
 export const getWebsocketChannelForAssessmentResult = (taskId: number) => `/topic/assessmentResult/${taskId}`;
@@ -17,21 +16,20 @@ const Assessment = () => {
     const currentAnswer: string | undefined = useAppSelector((state) => state.applicationStateManagement.currentAnswer);
     const currentAssessmentResponse: boolean | null = useAppSelector((state) => state.applicationStateManagement.currentAssessmentResponse);
     const currentlyWaitingForEvaluation: boolean = useAppSelector((state) => state.applicationStateManagement.showWaitingForEvaluation);
+    const question: string | undefined = currentTask?.question.question;
 
-    const question: QuestionDTO | null | undefined = currentTask?.question;
-
-    const questionSchema: JsonFormTuple | null = transformQuestionToSchema(question);
+    // reference to the input field with the user answer
+    const inputRef = useRef<HTMLInputElement>(null);
 
     // initialize websocket connection to backend
     const websocketService = new WebsocketService();
     websocketService.connect();
 
-    if (questionSchema === null) {
-        return <div/>;
-    }
-
     function renderCurrentAssessment() {
         if (typeof currentAssessmentResponse === 'boolean') {
+            // clear input field
+            inputRef.current!.value = '';
+
             return <div><br/>
                 <div className="alert alert-secondary" role="alert">
                     You submitted the following answer: '{currentAnswer}'
@@ -44,8 +42,12 @@ const Assessment = () => {
     }
 
     function showWaitingForEvaluationNotice() {
-        return  <div className="spinner-border m-2" role="status"/>;
+        return <div className="spinner-border m-2" role="status"/>;
     }
+
+    const userAnswerInputField = <input type="text" className="form-control" id="userAnswerInputField"
+                                        placeholder="Your answer"
+                                        ref={inputRef}/>;
 
     // subscribe to websocket channel to receive assessment result
     function subscribeToAssessmentResponse(taskResultId: number) {
@@ -87,39 +89,29 @@ const Assessment = () => {
     }, []);
 
     return (<div>
-        <Form schema={questionSchema.schema}
-              uiSchema={questionSchema.uiSchema}
-              onSubmit={(e) => {
-                  const submittedAnswer: string = e.formData as string;
-                  if (currentTask && currentTask.question) {
-                      // create listener for backend response
-                      subscribeToTaskResultId(currentTask.id);
-                      // send assessment to backend
-                      websocketService.send("/app/fetchAssessment",
-                          {taskId: currentTask.id, answer: submittedAnswer});
-                      dispatch(propagateCurrentAnswer(submittedAnswer));
-                  }
-              }
-              }>
-            <button type="submit" className="btn btn-info" data-testid="submitAnswerButton">Submit</button>
-        </Form>
-
+        <form>
+            <div className="form-group">
+                {question}
+                {userAnswerInputField}
+            </div>
+            <button type="button" className="btn btn-primary" data-testid="submitAnswerButton" onClick={() => {
+                if (inputRef.current && currentTask) {
+                    // create listener for backend response
+                    subscribeToTaskResultId(currentTask.id);
+                    // send assessment to backend
+                    websocketService.send("/app/fetchAssessment",
+                        {taskId: currentTask.id, answer: inputRef.current.value});
+                    // propagate the current answer to the other components to notify them
+                    // that we are waiting for the result
+                    dispatch(propagateCurrentAnswer(inputRef.current.value));
+                }
+            }
+            }>Submit
+            </button>
+        </form>
         {currentlyWaitingForEvaluation ? showWaitingForEvaluationNotice() : renderCurrentAssessment()}
     </div>);
 };
 
-function transformQuestionToSchema(question: QuestionDTO | null | undefined): JsonFormTuple | null {
-    if (question === null || question === undefined) {
-        return null;
-    }
-
-    return {
-        schema: {
-            title: question.question,
-            type: 'string'
-        },
-        uiSchema: {}
-    };
-}
 
 export default Assessment;

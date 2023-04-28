@@ -1,10 +1,7 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {JSONSchema7} from 'json-schema';
-import {UiSchema} from '@rjsf/core';
-import {devServerConfig} from '../config/serverConfig';
-import {DefaultApi, FetchError, TaskDTO, TaskIdLabelTupleDTO} from '../src-gen/mathgrass-api';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {FetchError, TaskDTO, TaskIdLabelTupleDTO} from '../src-gen/mathgrass-api';
+import {fetchAssessment, fetchAvailableTasks, fetchHint, fetchTaskById} from './requestThunks';
 
-const api = new DefaultApi(devServerConfig.apiConfig);
 
 interface ApplicationState {
     graphInEditor: any;
@@ -16,12 +13,7 @@ interface ApplicationState {
     showWaitingForEvaluation: boolean;
     assessmentFeedback: string | undefined;
     currentAnswer: string | undefined;
-    feedbackHistory: string [];
-}
-
-export interface JsonFormTuple {
-    schema: JSONSchema7;
-    uiSchema: UiSchema;
+    hintHistory: string [];
 }
 
 function getInitialApplicationState(): ApplicationState {
@@ -33,7 +25,7 @@ function getInitialApplicationState(): ApplicationState {
         showFeedbackSection: false,
         showWaitingForEvaluation: false,
         assessmentFeedback: undefined,
-        feedbackHistory: [] as string[],
+        hintHistory: [] as string[],
         availableTasks: [] as TaskIdLabelTupleDTO[],
         currentAnswer: undefined
     };
@@ -62,17 +54,18 @@ export const applicationState = createSlice({
             if (!isFetchErrorOrUndefined(action)) {
                 state.currentTask = action.payload as TaskDTO;
                 state.currentAssessmentResponse = null;
-                // Handle fetch by id logic
-                // state.availableTasks = action.payload as number[];
+                state.hintHistory = [];
+                state.hintLevel = 0;
+                state.assessmentFeedback = undefined;
             }
         });
-/*        builder.addCase(fetchHint.fulfilled, (state, action) => {
+        builder.addCase(fetchHint.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
-                state.feedbackHistory.push(action.payload.content as string);
+                state.hintHistory.push(action.payload.content);
                 state.hintLevel = state.hintLevel + 1;
             }
-        });*/
+        });
         builder.addCase(fetchAssessment.fulfilled, (state, action) => {
             // check whether action is void or not
             if (!isFetchErrorOrUndefined(action)) {
@@ -94,32 +87,6 @@ function isFetchErrorOrUndefined(action: PayloadAction<any>){
     const fetchErrorName = FetchError.name;
     return action === undefined || ('name' in action.payload && action.payload.name === fetchErrorName);
 }
-
-// create async thunk for fetching task types. Can be dispatched like a regular reducer. Results are processed in extraReducers
-export const fetchTaskById = createAsyncThunk('api/fetchTaskById', async (id: number) => {
-    return api.getTaskById({taskId: id}).then((value) => value).catch((reason) => reason);
-});
-
-export const fetchAvailableTasks = createAsyncThunk('api/fetchAvailableTasks', async () => {
-    return api.getIdsOfAllTasks().then((value) => value).catch((reason) => reason);
-});
-
-export const fetchHint = createAsyncThunk('api/fetchHint', async (params: {
-    taskId: number, hintLevel: number
-}) => {
-    // TODO
-});
-
-export const fetchAssessment = createAsyncThunk('api/fetchAssessment', async (params: {
-    taskId: number, answer: string
-}) => {
-    return api.evaluateAnswer({
-        taskId: params.taskId,
-        evaluateAnswerRequest: {
-            answer: params.answer
-        }
-    }).then((result) => result).catch((reason) => reason);
-});
 
 
 export const {
