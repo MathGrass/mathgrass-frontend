@@ -7,9 +7,9 @@ import {WebsocketService} from "../../websockets/websocketService";
 import {QuestionDTO, TaskDTO} from '../../src-gen/mathgrass-api';
 
 // websocket channel to receive result of assessment
-const getWebsocketChannelForAssessmentResult = (taskId: number) => `/topic/assessmentResult/${taskId}`;
+export const getWebsocketChannelForAssessmentResult = (taskId: number) => `/topic/assessmentResult/${taskId}`;
 // websocket channel to receive task result id
-const getWebsocketChannelForTaskResultId = (taskResultId: number) => `/topic/taskResultId/${taskResultId}`;
+export const getWebsocketChannelForTaskResultId = (taskResultId: number) => `/topic/taskResultId/${taskResultId}`;
 
 const Assessment = () => {
     const dispatch = useDispatch();
@@ -37,8 +37,8 @@ const Assessment = () => {
                     You submitted the following answer: '{currentAnswer}'
                 </div>
                 {currentAssessmentResponse ?
-                    <div className="alert alert-success" role="alert">Your assessment is correct</div> :
-                    <div className="alert alert-danger" role="alert">Your assessment is wrong</div>}
+                    <div className="alert alert-success" role="alert">Your answer is correct!</div> :
+                    <div className="alert alert-danger" role="alert">Your answer is wrong!</div>}
             </div>;
         }
     }
