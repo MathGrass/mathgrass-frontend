@@ -65,17 +65,17 @@ const Assessment = () => {
     }
 
     // subscribe to websocket channel to receive task result id
-    function subscribeToTaskResultId(taskResultId: number) {
+    function subscribeToTaskResultId(taskId: number) {
         // subscribe to websocket channel for task result id
-        websocketService.subscribe(getWebsocketChannelForTaskResultId(taskResultId));
+        websocketService.subscribe(getWebsocketChannelForTaskResultId(taskId));
 
         // handle incoming messages
-        websocketService.receive(getWebsocketChannelForTaskResultId(taskResultId))
+        websocketService.receive(getWebsocketChannelForTaskResultId(taskId))
             .subscribe((result: number) => {
                 // subscribe to websocket channel for task result id
                 subscribeToAssessmentResponse(result);
                 // unsubscribe again
-                websocketService.unsubscribe(getWebsocketChannelForTaskResultId(taskResultId));
+                websocketService.unsubscribe(getWebsocketChannelForTaskResultId(taskId));
             })
     }
 
