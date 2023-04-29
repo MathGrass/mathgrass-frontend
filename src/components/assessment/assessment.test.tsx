@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, screen, waitFor} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import Assessment, {getWebsocketChannelForTaskResultId} from './assessment';
+import Assessment, {getWebsocketChannelForAssessmentResult, getWebsocketChannelForTaskResultId} from './assessment';
 import websocketService from '../../websockets/websocketService';
 import {WebsocketService} from '../../websockets/websocketService';
 import {GraphDTO, QuestionDTO, TaskDTO} from "../../src-gen/mathgrass-api";
@@ -155,7 +155,7 @@ describe('Assessment Component', () => {
         // trigger form submit
         submitFormWithInput();
 
-        // wait for the Observable to complete
+        // wait for the observable to complete
         await act(async () => {
             await new Promise((resolve) => setTimeout(resolve, 50));
         });
@@ -169,5 +169,58 @@ describe('Assessment Component', () => {
         // check if the subscribeToAssessmentResponse method was called with the correct task result id
         // simulate by checking if websocketService.subscribe() was called with task result id channel
         expect(subscribeSpy).toHaveBeenCalledWith(getWebsocketChannelForTaskResultId(mockTaskResultId));
+    });
+
+    it('receiving assessment result dispatches assessment response', async () => {
+        // set current task
+        store.dispatch(setCurrentTask(sampleTask));
+
+        // render component with real store
+        render(
+            <Provider store={store}>
+                <Assessment />
+            </Provider>
+        );
+
+        // example task result id and assessment response
+        const mockTaskResultId = 1;
+        const mockAssessmentResponse = true;
+
+        // mock receive function to return correct observable for different channels
+        receiveSpy = jest.spyOn(websocketService, 'receive').mockImplementation((channel) => {
+            if (channel === getWebsocketChannelForTaskResultId(mockTaskResultId)) {
+                return new Observable((subscriber) => {
+                    setTimeout(() => {
+                        subscriber.next(mockTaskResultId);
+                        subscriber.complete();
+                    }, 10);
+                });
+            } else if (channel === getWebsocketChannelForAssessmentResult(mockTaskResultId)) {
+                return new Observable((subscriber) => {
+                    setTimeout(() => {
+                        subscriber.next(mockAssessmentResponse);
+                        subscriber.complete();
+                    }, 10);
+                });
+            }
+            return new Observable();
+        });
+
+        // trigger form submit
+        submitFormWithInput();
+
+        // wait for the observables to complete
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 50));
+        });
+
+        // check if the subscribe, receive, and unsubscribe methods were called with the correct channel
+        const expectedChannel = getWebsocketChannelForAssessmentResult(mockTaskResultId);
+        expect(subscribeSpy).toHaveBeenCalledWith(expectedChannel);
+        expect(receiveSpy).toHaveBeenCalledWith(expectedChannel);
+        expect(unsubscribeSpy).toHaveBeenCalledWith(expectedChannel);
+
+        // check if store was updated with correct assessment response
+        expect(store.getState().applicationStateManagement.currentAssessmentResponse).toEqual(mockAssessmentResponse);
     });
 });
