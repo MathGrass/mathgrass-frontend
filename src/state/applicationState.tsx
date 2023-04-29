@@ -47,6 +47,9 @@ export const applicationState = createSlice({
         },
         setCurrentTask: (state, action: PayloadAction<TaskDTO>) => {
             state.currentTask = action.payload;
+        },
+        resetStore: () => {
+            return getInitialApplicationState();
         }
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
@@ -93,5 +96,6 @@ export const {
     propagateGraphState,
     propagateCurrentAnswer,
     propagateCurrentAssessmentResponse,
-    setCurrentTask
+    setCurrentTask,
+    resetStore
 } = applicationState.actions;

@@ -333,3 +333,7 @@ export class WebsocketService implements IWebsocketService {
         }
     }
 }
+
+// create a singleton instance of the websocket service
+const websocketService = new WebsocketService();
+export default websocketService;

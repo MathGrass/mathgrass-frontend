@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {useAppSelector} from '../../state/common/hooks';
 import { propagateCurrentAnswer, propagateCurrentAssessmentResponse } from '../../state/applicationState';
 import {useDispatch} from 'react-redux';
-import {WebsocketService} from "../../websockets/websocketService";
+import websocketService from "../../websockets/websocketService";
 import {TaskDTO} from '../../src-gen/mathgrass-api';
 
 // websocket channel to receive result of assessment
@@ -22,7 +22,6 @@ const Assessment = () => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     // initialize websocket connection to backend
-    const websocketService = new WebsocketService();
     websocketService.connect();
 
     function renderCurrentAssessment() {
