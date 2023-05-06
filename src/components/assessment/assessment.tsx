@@ -6,9 +6,9 @@ import websocketService from "../../websockets/websocketService";
 import {TaskDTO} from '../../src-gen/mathgrass-api';
 
 // websocket channel to receive result of assessment
-export const getWebsocketChannelForAssessmentResult = (taskId: number) => `/topic/assessmentResult/${taskId}`;
+export const getWebsocketChannelForAssessmentResult = (taskResultId: number) => `/topic/assessmentResult/${taskResultId}`;
 // websocket channel to receive task result id
-export const getWebsocketChannelForTaskResultId = (taskResultId: number) => `/topic/taskResultId/${taskResultId}`;
+export const getWebsocketChannelForTaskResultId = (taskId: number) => `/topic/taskResultId/${taskId}`;
 
 const Assessment = () => {
     const dispatch = useDispatch();
