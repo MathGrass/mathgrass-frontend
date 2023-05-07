@@ -41,6 +41,16 @@ export const applicationState = createSlice({
             state.currentAnswer = action.payload;
             state.showWaitingForEvaluation = true;
         },
+        propagateCurrentAssessmentResponse: (state, action: PayloadAction<boolean>) => {
+            state.currentAssessmentResponse = action.payload;
+            state.showWaitingForEvaluation = false;
+        },
+        setCurrentTask: (state, action: PayloadAction<TaskDTO>) => {
+            state.currentTask = action.payload;
+        },
+        resetStore: () => {
+            return getInitialApplicationState();
+        }
     }, extraReducers: (builder) => {
         builder.addCase(fetchTaskById.fulfilled, (state, action) => {
             // check whether action is void or not
@@ -84,5 +94,8 @@ function isFetchErrorOrUndefined(action: PayloadAction<any>){
 
 export const {
     propagateGraphState,
-    propagateCurrentAnswer
+    propagateCurrentAnswer,
+    propagateCurrentAssessmentResponse,
+    setCurrentTask,
+    resetStore
 } = applicationState.actions;

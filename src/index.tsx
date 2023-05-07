@@ -22,7 +22,3 @@ export function MathGrassApplication(config: MathGrassConfig){
 }
 
 renderApp();
-
-
-
-
