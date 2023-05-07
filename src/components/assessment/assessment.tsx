@@ -93,7 +93,7 @@ const Assessment = () => {
                 {question}
                 {userAnswerInputField}
             </div>
-            <button type="button" className="btn btn-primary" data-testid="submitAnswerButton" onClick={() => {
+            <button type="button" className="btn btn-primary" data-testid="submitAnswerButton" disabled={currentlyWaitingForEvaluation} onClick={() => {
                 if (inputRef.current && currentTask) {
                     // create listener for backend response
                     subscribeToTaskResultId(currentTask.id);
