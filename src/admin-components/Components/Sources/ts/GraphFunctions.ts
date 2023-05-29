@@ -1,4 +1,4 @@
-import * as iden from '../js/dom-identifiers';
+import * as iden from '../../Sources/js/dom-identifiers';
 import * as d from '../../Sources/ts/GraphData';
 
 

@@ -44,18 +44,17 @@ const MultipleChoice = () => {
       optionD: inputOptions.optionD,
       finalAnswer: corrAnswer,
     });
-    // Change for REdux call - starts
+    
     choiceOption.push(inputOptions.optionA,inputOptions.optionB,inputOptions.optionC,inputOptions.optionD);
     const filteredChoice: (string | null)[] =choiceOption.filter(choice=>choice!="");
     dispatch(setOptions(filteredChoice));
     dispatch(setFinalAnswer(corrAnswer));
-    // Change for REdux call - Ends
+    
     dispatch(saveQuesModal(true));
   };
 
   const addClickHandler = (event: any) => {
     event.preventDefault();
-    
     if (openInputOption === "1") {
       if (inputOptions.optionA !== "") {
         inputOptions.optionB = "";

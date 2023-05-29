@@ -7,6 +7,10 @@ import hintsWithOrderSlice from "../../admin-components/store/slices/hintsWithOr
 import loginAuthenticationSlice from "../../admin-components/store/slices/loginAuthenticationSlice";
 import quesMultipleChoiceSlice from "../../admin-components/store/slices/quesMultipleChoiceSlice";
 import textHintSlice from "../../admin-components/store/slices/textHintSlice";
+import sessionValidationSlice from '../../admin-components/store/slices/sessionValidationSlice';
+import saveHintsCollectionSlice from '../../admin-components/store/slices/saveHintsCollectionSlice';
+import  saveQuestionAnswerSlice  from '../../admin-components/store/slices/questionAndAnswerSlice';
+import  saveGraphJSONSlice  from '../../admin-components/store/slices/saveGraphSlice';
 // Change for Admin Interface - Ends
 export const store = configureStore({
     reducer: {
@@ -17,7 +21,11 @@ export const store = configureStore({
         quesMultipleChoiceSlice,
         hintsWithOrderSlice,
         adminAppJSONFormation,
-        loginAuthenticationSlice
+        loginAuthenticationSlice,
+        sessionValidationSlice,
+        saveHintsCollectionSlice,
+        saveQuestionAnswerSlice,
+        saveGraphJSONSlice
         // Change for Admin Interface - Ends
     },
 });

@@ -40,14 +40,14 @@ const HintsOrderModal = (props: any) => {
           dispatch(
             addTextHintsWithOrder({
               hint: textHintsArr.textHintValue[i],
-              order: 0,
+              hintsOrder: 0,
             })
           );
         } else {
           dispatch(
             addTextHintsWithOrder({
               hint: textHintsArr.textHintValue[i],
-              order: Number(inputValues[`input-${i}`]),
+              hintsOrder: Number(inputValues[`input-${i}`]),
             })
           );
         }
@@ -58,7 +58,7 @@ const HintsOrderModal = (props: any) => {
       dispatch(
         addScriptHintsWithOrder({
           hint: appOperations.scriptHintValue,
-          order: scriptHintOrder,
+          hintsOrder: scriptHintOrder,
         })
       );
       props.onHide();
@@ -67,7 +67,7 @@ const HintsOrderModal = (props: any) => {
       dispatch(
         addGraphicalHintsWithOrder({
           hint: appOperations.graphicalHintValue,
-          order: graphicalHintOrder,
+          hintsOrder: graphicalHintOrder,
         })
       );
       props.onHide();

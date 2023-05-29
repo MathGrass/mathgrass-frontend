@@ -3,13 +3,8 @@ import axios from "axios";
 import { RootState } from "../config/store";
 
 interface Authentication {
-  createdOn: Date|null;
-  email: string;
-  firstName: string;
-  lastName:string;
-  seq_id:Number;
-  password:string;
-  updatedOn: Date|null;
+  token: string;
+  userType: string;
 }
 
 interface InitialState{
@@ -20,7 +15,8 @@ const initialState:InitialState={
     authenticateUser:[]    
 };
 export const fetchUserDetails = createAsyncThunk('users/fetch', async ({email,password}:{email?:string,password?:string}) => {
-    const response = await axios.get(`http://localhost:8080/authentication/get-auth?email=${email}&password=${password}`);
+    // const response = await axios.post(`http://localhost:8080/authentication/get-auth?email=${email}&password=${password}`);
+    const response = await axios.post(`http://localhost:8080/api/admin/userAuthentication`,{email,password});
     console.log("From the redux fetch - ",response.data);
     return response.data;
   });

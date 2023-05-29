@@ -3,15 +3,15 @@ import { RootState } from "../config/store";
 
 interface TextHintsOrder {
   hint: string;
-  order: number;
+  hintsOrder: number;
 }
 interface ScriptHintOrder {
   hint: string;
-  order: number;
+  hintsOrder: number;
 }
 interface GraphicalHintOrder {
   hint: string;
-  order: number;
+  hintsOrder: number;
 }
 
 interface InitialState {

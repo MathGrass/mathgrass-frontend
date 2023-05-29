@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useEffect, useRef, useState } from "react";
-import "../../Sources/css/Question.css";
+import "./Question.css";
 import MultipleChoice from "./MultipleChoice";
 
 import { useAppDispatch, useAppSelector } from "../../../store/config/hooks";

@@ -31,6 +31,9 @@ import {
 } from "../../store/adminAppJSONFormation";
 import { hintsWithOrder } from "../../store/slices/hintsWithOrderSlice";
 import { useNavigate } from "react-router-dom";
+import { saveHintsFromUser } from "../../store/slices/saveHintsCollectionSlice";
+import { saveQuestionAnswer } from "../../store/slices/questionAndAnswerSlice";
+import { saveGraph } from "../../store/slices/saveGraphSlice";
 const GraphEditor = () => {
   const appOperations = useAppSelector(appCommonSliceRes);
   const adminAppJson = useAppSelector(adminAppJSON);
@@ -98,11 +101,23 @@ const GraphEditor = () => {
     };
   }, []);
   // Clear LocalStorage on reload - Ends
-  const adminAppJSONFormation = (event: any) => {
+  const adminAppJSONFormation = async (event: any) => {
     event.preventDefault();
+    let hintsString = JSON.stringify(hints);
+    let questionAnswerString = JSON.stringify(adminAppJson);
+
+    console.log("Hints with Order -", hintsString);
+    console.log("Admin App Json -", questionAnswerString);
+    const saveHintsCollection = await dispatch(saveHintsFromUser(hintsString));
+    console.log("saveHintsCollection Result - ", saveHintsCollection.payload);
+    const saveQuestionAndAnswer = await dispatch(
+      saveQuestionAnswer(questionAnswerString)
+    );
+    console.log(
+      "saveQuestionAndAnswer Result - ",
+      saveQuestionAndAnswer.payload
+    );
     $("#" + iden.SaveGraph).click();
-    console.log("Hints with Order -", hints);
-    console.log("Admin App Json -", adminAppJson);
   };
 
   useEffect(() => {
@@ -116,7 +131,7 @@ const GraphEditor = () => {
       gridSize: 30,
       height: $("#diagramCanvas").height(),
       width: $("#diagramCanvas").width(),
-    });
+      });
 
     let contextMenuX = 240;
     let contextMenuY = 30;
@@ -257,30 +272,23 @@ const GraphEditor = () => {
       });
     }
     // Check for the directed to undirected links - Ends
-
-    // Extra code for Deleting the Links - Starts
+    //  code for Deleting the Links - Starts
     paper.on("link:pointerdblclick", (linkView: any) => {
       let link = linkView.model;
       console.log("the cid of the thing is like - ", link);
       link.remove();
     });
-    // Extra code for Deleting the Links - Ends
+    //  code for Deleting the Links - Ends
 
-    $("#" + iden.SaveGraph).click(() => {
+    $("#" + iden.SaveGraph).click(async () => {
       let json = JSON.stringify(graph.toJSON());
-      const graphJson = graph.toJSON();
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: json,
-      };
-      fetch(
-        "http://localhost:8080/api/v1/userAccounts/graphJson",
-        requestOptions
-      )
-        .then((response) => response.text())
-        .then((data) => console.log(data))
-        .catch((error) => console.error(error));
+      const saveGraphJSON = await dispatch(
+        saveGraph(json)
+      );
+      console.log(
+        "saveGraphJSON Result - ",
+        saveGraphJSON.payload
+      );
       console.log("Graph JSON - ", graph.toJSON());
       setShowNameEdit(false);
       dispatch(saveGraphBtn(false));
@@ -288,6 +296,7 @@ const GraphEditor = () => {
       dispatch(toggleAddQues(false));
       dispatch(toggleAddHints(false));
       graph.clear();
+      // localStorage.clear();
       window.location.reload();
     });
 
@@ -313,15 +322,12 @@ const GraphEditor = () => {
     });
     return () => console.log("Component unmounted");
   }, []);
-
   useEffect(() => {
     $("#" + iden.graphChange).click();
-    console.log("button triggered for reduxdf");
   }, [appOperations.linkDirection]);
 
   useEffect(() => {
     $("#" + iden.closeGraphicalHint).click();
-    console.log("button triggered");
   }, [appOperations.graphicalHint !== true]);
 
   return (
@@ -383,7 +389,8 @@ const GraphEditor = () => {
                 id="logout"
                 onClick={() => {
                   console.log("logout triggered");
-                  localStorage.setItem("UserLogin", "false");
+                  localStorage.removeItem("admin");
+                  window.location.reload();
                   navigate("/");
                 }}
                 style={{ float: "right" }}

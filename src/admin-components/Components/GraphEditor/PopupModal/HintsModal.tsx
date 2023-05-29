@@ -10,6 +10,8 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../store/config/hooks";
 import HintsOrderModal from "./HintsOrderModal";
 import { setTextHintArray } from "../../../store/slices/textHintSlice";
+import { adminAppJSON } from "../../../store/adminAppJSONFormation";
+
 const HintsModal = (props: any) => {
   const dispatch = useAppDispatch();
   const appOperatins = useAppSelector(appCommonSliceRes);
@@ -25,7 +27,7 @@ const HintsModal = (props: any) => {
   const [checkTextHint, setCheckTextHint] = useState(false);
   const [checkScriptHint, setCheckScriptHint] = useState(false);
 
-  // Check click outside - starts
+  
   useEffect(() => {
     setCheckTextHint(false);
     setCheckScriptHint(false);
@@ -33,7 +35,7 @@ const HintsModal = (props: any) => {
     setInputFields([{ value: "" }]);
   }, [appOperatins.hintsFlush]);
 
-  // Check click outside - Ends
+  
   const hintSaveHandler = (event: any) => {
     event.preventDefault();
 
@@ -132,7 +134,7 @@ const HintsModal = (props: any) => {
     newInputFields[index].value = e.target.value;
     setInputFields(newInputFields);
   }
-  return (
+return (
     <Fragment>
       <Modal
         {...props}

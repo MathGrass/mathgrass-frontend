@@ -60,7 +60,6 @@ const ToolsView = () => {
           <h6 className="card-subtitle mb-2 text-muted text-center">
             Directed/Undirected
           </h6>
-          {/* Toggle button  -- Start*/}
           <div
             className="form-check form-switch"
             style={{ marginLeft: "4rem" }}
@@ -76,7 +75,6 @@ const ToolsView = () => {
               {isDirected ? "Directed" : "Undirected"}
             </label>
           </div>
-          {/* Toggle button  -- Ends*/}
         </div>
       </div>
       <br />
@@ -110,13 +108,7 @@ const ToolsView = () => {
               <h5 className="card-title text-center">QUESTIONS</h5>
               {!appOperations.toggleAddQues && (
                 <h6 className="card-subtitle mb-2 text-muted text-center">
-                  <a
-                    href="#"
-                    onClick={() => {
-                      setQuesModalShow(true);
-                      dispatch(questionFlushCall(true));
-                    }}
-                  >
+                  <a href="#" onClick={() => {setQuesModalShow(true);dispatch(questionFlushCall(true))}}>
                     Add Ques
                   </a>
                 </h6>
@@ -143,7 +135,6 @@ const ToolsView = () => {
             <div className="card" style={{ width: "18rem" }}>
               <div className="card-body">
                 <h5 className="card-title text-center">HINTS</h5>
-                {/* Toggle button for Graphical Hints  -- Start*/}
                 {!appOperations.toggleAddHints && (
                   <Fragment>
                     <div
@@ -155,7 +146,7 @@ const ToolsView = () => {
                         type="checkbox"
                         id="toggleSwitch"
                         checked={appOperations.graphicalHint}
-                        disabled={appOperations.graphicalHint === true}
+                        disabled={appOperations.graphicalHint===true}
                         onChange={(e) => {
                           setGraphicalHints(!graphicalHints);
                           dispatch(passGraphicalHintsOpen(!graphicalHints));
@@ -180,19 +171,18 @@ const ToolsView = () => {
                     <h6 className="card-title text-center">
                       Textual and Script Hints
                     </h6>
-                    {appOperations.openTextualAndScriptHints === false && (
-                      <h6 className="card-subtitle mb-2 text-muted text-center">
-                        <a
-                          href="#"
-                          onClick={() => {
-                            setHintModalShow(true);
-                            dispatch(hintsFlushCall(true));
-                          }}
-                        >
-                          Add Hints
-                        </a>
-                      </h6>
-                    )}
+                    {appOperations.openTextualAndScriptHints===false && 
+                    <h6 className="card-subtitle mb-2 text-muted text-center">
+                      <a
+                        href="#"
+                        onClick={() => {
+                          setHintModalShow(true);
+                          dispatch(hintsFlushCall(true));
+                        }}
+                      >
+                        Add Hints
+                      </a>
+                    </h6>}
                   </Fragment>
                 )}
                 <HintsModal

@@ -26,7 +26,7 @@ const GraphicalHints = (props: any) => {
       dispatch(
         addGraphicalHintsWithOrder({
           hint: inputGraphicalHint.current.value,
-          order: 0
+          hintsOrder: 0
         })
       );
       dispatch(passGraphicalHintvalue(inputGraphicalHint.current.value));

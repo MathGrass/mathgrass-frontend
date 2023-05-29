@@ -22,12 +22,12 @@ const UserLogin = () => {
     else if(email===""){
       setFieldErrors("Please enter your email");
     }
-    else if(results.payload.userType==="admin"){
-        localStorage.setItem("UserLogin","true");
+    else if(results.payload.userType==="ADMIN"){
+        localStorage.setItem("admin",results.payload.token);
         navigate("/user");
 
       }
-    else if(results.payload.userType==="student"){
+    else if(results.payload.userType==="STUDENT"){
         navigate("/student");
       }
     
