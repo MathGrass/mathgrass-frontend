@@ -11,13 +11,14 @@ interface GraphJSON {
 
   export const saveGraph = createAsyncThunk(
     "users/saveGraph",
-    async (getGraphJSON: string) => {
-      const graphJSON = JSON.parse(getGraphJSON);
+    async ({getGraphJSON,studentLogin}:{getGraphJSON:string,studentLogin:string}) => {
+      // const graphJSON = JSON.parse(getGraphJSON);
+      const graphJSON = getGraphJSON;
       const response = await axios.post(
         `http://localhost:8080/api/admin/saveGraph`,
-        graphJSON
+        {graphJSON,studentLogin}
       );
-      console.log("Save Graph from redux - ", response.data);
+      console.log("Save Graph from redux response - ", response.data);
       return response.data;
     }
   );

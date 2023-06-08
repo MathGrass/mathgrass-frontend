@@ -18,12 +18,14 @@ interface InitialState {
   textHints: TextHintsOrder[];
   scriptHints: ScriptHintOrder[];
   graphicalHints: GraphicalHintOrder[];
+  graphMapId:string;
 }
 
 const initialState: InitialState = {
   textHints: [],
   scriptHints: [],
   graphicalHints: [],
+  graphMapId:""
 };
 
 export const hintsWithOrderSlice = createSlice({
@@ -45,6 +47,9 @@ export const hintsWithOrderSlice = createSlice({
     ) => {
       state.graphicalHints.push(action.payload);
     },
+    saveGraphMapIdForHints: (state, action) => {
+      state.graphMapId = action.payload;
+    },
     clearArray(state) {
       state.textHints = [];
       state.scriptHints = [];
@@ -57,6 +62,7 @@ export const {
   addTextHintsWithOrder,
   addScriptHintsWithOrder,
   addGraphicalHintsWithOrder,
+  saveGraphMapIdForHints,
   clearArray
 } = hintsWithOrderSlice.actions;
 export const hintsWithOrder = (state: RootState) =>

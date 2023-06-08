@@ -18,6 +18,7 @@ export interface AppState {
   openTextualAndScriptHints:boolean;
   arrayOfElements: string[];
   arrayOfLinks: string[];
+  saveMapId:string;
   
 }
 
@@ -37,7 +38,8 @@ const initialState: AppState = {
   scriptHintValue:"",
   graphicalLinkLen:"",
   arrayOfElements:[],
-  arrayOfLinks:[]
+  arrayOfLinks:[],
+  saveMapId:""
 };
 
 const appCommonSlice = createSlice({
@@ -76,6 +78,9 @@ const appCommonSlice = createSlice({
     },
     passGraphicalHintvalue: (state, action) => {
       state.graphicalHintValue = action.payload;
+    },
+    passSaveMapId: (state, action) => {
+      state.saveMapId = action.payload;
     },
     passScriptHintvalue: (state, action) => {
       state.scriptHintValue = action.payload;
@@ -118,7 +123,8 @@ export const {
   removeElementFromGraph,
   addLinksFromGraph,
   removeLinksFromGraph,
-  openTextualAndScriptHints
+  openTextualAndScriptHints,
+  passSaveMapId
 } = appCommonSlice.actions;
 export const appCommonSliceRes = (state: RootState) => state.appCommonSlice;
 export default appCommonSlice.reducer;

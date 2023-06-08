@@ -27,7 +27,16 @@ const MultipleChoice = () => {
       [event.target.name]: value,
     });
     setShowBlankAlert(false);
-    
+    // if (
+    //   inputOptions.optionA !== "" &&
+    //   inputOptions.optionB !== "" &&
+    //   inputOptions.optionC !== "" &&
+    //   inputOptions.optionD !== ""
+    // ) {
+    //   setCheckBlankInput(false);
+    // } else {
+    //   setCheckBlankInput(true);
+    // }
   };
   const optionsEditHandler = (event: any) => {
     event.preventDefault();
@@ -44,17 +53,28 @@ const MultipleChoice = () => {
       optionD: inputOptions.optionD,
       finalAnswer: corrAnswer,
     });
-    
+    // Change for REdux call - starts
     choiceOption.push(inputOptions.optionA,inputOptions.optionB,inputOptions.optionC,inputOptions.optionD);
     const filteredChoice: (string | null)[] =choiceOption.filter(choice=>choice!="");
     dispatch(setOptions(filteredChoice));
     dispatch(setFinalAnswer(corrAnswer));
-    
+    // Change for REdux call - Ends
     dispatch(saveQuesModal(true));
   };
 
   const addClickHandler = (event: any) => {
     event.preventDefault();
+    // if (
+    //   inputOptions.optionA !== "" &&
+    //   inputOptions.optionB !== "" &&
+    //   inputOptions.optionC !== "" &&
+    //   inputOptions.optionD !== ""
+    // ) {
+    //   setOpenRadioAnswer(true);
+    //   setShowBlankAlert(false);
+    // } else {
+    //   setShowBlankAlert(true);
+    // }
     if (openInputOption === "1") {
       if (inputOptions.optionA !== "") {
         inputOptions.optionB = "";

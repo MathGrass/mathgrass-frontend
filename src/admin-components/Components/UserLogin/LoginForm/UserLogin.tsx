@@ -9,6 +9,8 @@ const UserLogin = () => {
   const [password, setPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  // const loginAuth = useAppSelector((state) => state.loginAuthenticationSlice);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -22,12 +24,21 @@ const UserLogin = () => {
     else if(email===""){
       setFieldErrors("Please enter your email");
     }
+    // else if (email === "sreesumi007@gmail.com" && password === "sathyadev") {
+    //   localStorage.setItem("UserLogin", "true");
+    //   navigate("/user");
+    // }
+    // else if (email === "eeswaranstudent@gmail.com" && password === "vikram") {
+    //       navigate("/student");
+      
+    // }
     else if(results.payload.userType==="ADMIN"){
         localStorage.setItem("admin",results.payload.token);
         navigate("/user");
 
       }
     else if(results.payload.userType==="STUDENT"){
+        // window.location.href = "http://localhost:3000/"
         navigate("/student");
       }
     

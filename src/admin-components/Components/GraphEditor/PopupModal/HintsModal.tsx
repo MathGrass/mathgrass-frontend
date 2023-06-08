@@ -27,7 +27,7 @@ const HintsModal = (props: any) => {
   const [checkTextHint, setCheckTextHint] = useState(false);
   const [checkScriptHint, setCheckScriptHint] = useState(false);
 
-  
+  // Check click outside - starts
   useEffect(() => {
     setCheckTextHint(false);
     setCheckScriptHint(false);
@@ -35,7 +35,7 @@ const HintsModal = (props: any) => {
     setInputFields([{ value: "" }]);
   }, [appOperatins.hintsFlush]);
 
-  
+  // Check click outside - Ends
   const hintSaveHandler = (event: any) => {
     event.preventDefault();
 
@@ -134,13 +134,27 @@ const HintsModal = (props: any) => {
     newInputFields[index].value = e.target.value;
     setInputFields(newInputFields);
   }
-return (
+
+  // const changeOfTextualHints = (event: any) => {
+  //   // const check = checkBoxArray.indexOf(event.target.value);
+  //   // if (check > -1) {
+  //   //   checkBoxArray.splice(check, 1);
+  //   // } else {
+  //   //   checkBoxArray.push(event.target.value);
+  //   // }
+  //   // console.log("Final value of the input checks - ",checkTextHint,checkScriptHint);
+  //   // console.log("check box triggered - ", checkBoxArray);
+  // };
+
+  return (
     <Fragment>
       <Modal
         {...props}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered
+        backdrop="static"
+        keyboard={false}
       >
         <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">HINTS</Modal.Title>
