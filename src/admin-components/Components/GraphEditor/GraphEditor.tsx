@@ -67,7 +67,6 @@ const GraphEditor = () => {
   };
 
   function getNameForNode(cellView: any) {
-    // setShowNameEdit(true);
     const nameValue = nameInputRef.current.value;
     nameAlreadyExists = func.alreadyNameExists(nameValue);
     if (nameAlreadyExists === false) {
@@ -100,7 +99,6 @@ const GraphEditor = () => {
     }
   };
 
-  // Clear LocalStorage on reload - Starts
   useEffect(() => {
     localStorage.setItem("StudentLogin", "false");
     window.addEventListener("beforeunload", func.clearLocalStorage);
@@ -109,43 +107,6 @@ const GraphEditor = () => {
       window.removeEventListener("beforeunload", func.clearLocalStorage);
     };
   }, []);
-  // Clear LocalStorage on reload - Ends
-  const adminAppJSONFormation = async (event: any) => {
-    event.preventDefault();
-    let hintsString = JSON.stringify(hints);
-    let questionAnswerString = JSON.stringify(adminAppJson);
-
-    console.log("Hints with Order -", hintsString);
-    console.log("Admin App Json -", questionAnswerString);
-    const saveHintsCollection = await dispatch(saveHintsFromUser(hintsString));
-    console.log("saveHintsCollection Result - ", saveHintsCollection.payload);
-    const saveQuestionAndAnswer = await dispatch(
-      saveQuestionAnswer(questionAnswerString)
-    );
-    console.log(
-      "saveQuestionAndAnswer Result - ",
-      saveQuestionAndAnswer.payload
-    );
-    // const saveHints = {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(hints)
-    // };
-    // const saveQuesAndAns = {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(adminAppJson)
-    // };
-    // fetch(
-    //   "http://localhost:8080/api/admin/saveHints",
-    //   saveHints
-    // )
-    //   .then((response) => response.text())
-    //   .then((data) => console.log(data))
-    //   .catch((error) => console.error(error));
-    $("#" + iden.SaveGraph).click();
-  };
-
   useEffect(() => {
     const graph = new joint.dia.Graph({}, { cellNamespace: joint.shapes });
     const paper = new joint.dia.Paper({
@@ -155,14 +116,8 @@ const GraphEditor = () => {
         color: "#F8F9FA",
       },
       gridSize: 30,
-      // If anything not working please uncomment this and comment the el tag alone and uncomment at the end of the use effect - starts
       height: $("#diagramCanvas").height(),
       width: $("#diagramCanvas").width(),
-      // frozen: true,
-      // async: true,
-      // sorting: joint.dia.Paper.sorting.APPROX,
-      // cellViewNamespace: joint.shapes,
-      // If anything not working please uncomment this and comment the el tag alone and uncomment at the end of the use effect - Ends
     });
     let contextMenuX = 240;
     let contextMenuY = 30;
@@ -206,26 +161,22 @@ const GraphEditor = () => {
         );
       }
     );
-    // Change for link click -- Starts
+
     paper.on("element:pointerdblclick", (elementView: any) => {
-      console.log("Enter into the element DBClick");
       const graphMode = localStorage.getItem("GraphMode");
-      if(graphMode === "true"){
+      if (graphMode === "true") {
         const elem = elementView.model;
         elem.remove();
-        console.log("Delete Mode on",graphMode);
-      }
-      else{
+      } else {
         const graphLinks = graph.getLinks();
-      for (const link of graphLinks) {
-        link.attr("line/stroke", "black");
+        for (const link of graphLinks) {
+          link.attr("line/stroke", "black");
+        }
+        getNameForNode(elementView);
       }
-      getNameForNode(elementView);
-      }
-     });
+    });
     paper.on("link:pointerclick", (linkView: any) => {
       const isGraphicalHint = localStorage.getItem("GraphicalHint");
-      console.log("Link id -", linkView.model.attributes.id);
       if (isGraphicalHint === "true") {
         if (
           linkView.model.attributes.attrs.line.stroke === "#333333" ||
@@ -241,7 +192,6 @@ const GraphEditor = () => {
     });
     paper.on("element:pointerclick", (element: any) => {
       const isGraphicalHint = localStorage.getItem("GraphicalHint");
-      console.log("Graphical Hints Called", isGraphicalHint);
       if (isGraphicalHint === "true") {
         if (
           element.model.attributes.attrs.body.stroke === "black" ||
@@ -256,9 +206,7 @@ const GraphEditor = () => {
       }
     });
 
-    // Check for the directed to undirected links - starts
     $("#" + iden.graphChange).click(() => {
-      console.log("graph change called - ");
       let linkDirection: any = localStorage.getItem("LinkDirection");
       if (linkDirection === "true") {
         convertLinksToDirected();
@@ -267,7 +215,6 @@ const GraphEditor = () => {
       }
     });
     function convertLinksToUndirected() {
-      console.log("came into convertLinksToUndirected");
       graph.getLinks().forEach((link) => {
         link.attr({
           line: {
@@ -291,7 +238,6 @@ const GraphEditor = () => {
       });
     }
     function convertLinksToDirected() {
-      console.log("came into convertLinksToDirected");
       graph.getLinks().forEach((link) => {
         link.attr({
           line: {
@@ -313,17 +259,14 @@ const GraphEditor = () => {
         });
       });
     }
-    // Check for the directed to undirected links - Ends
-    // Extra code for Deleting the Links - Starts
+
     paper.on("link:pointerdblclick", (linkView: any) => {
       const graphMode = localStorage.getItem("GraphMode");
-      if(graphMode==="true"){
-      let link = linkView.model;
-      console.log("the cid of the thing is like - ", link);
-      link.remove();
+      if (graphMode === "true") {
+        let link = linkView.model;
+        link.remove();
       }
     });
-    // Extra code for Deleting the Links - Ends
 
     $("#" + iden.SaveGraph).click(async () => {
       let json = JSON.stringify(graph.toJSON());
@@ -333,36 +276,11 @@ const GraphEditor = () => {
       const saveGraphJSON = await dispatch(
         saveGraph({ getGraphJSON: json, studentLogin: isStudentLogin })
       );
-      console.log("saveGraphJSON Result - ", saveGraphJSON.payload);
 
-      console.log("Student Login from Local Storage - ", isStudentLogin);
       dispatch(passSaveMapId(saveGraphJSON.payload));
       dispatch(saveGraphMapIdForHints(saveGraphJSON.payload));
       dispatch(saveGraphMapIdForQuesAns(saveGraphJSON.payload));
       setSaveConfirmationShow(true);
-
-      // const requestOptions = {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: json,
-      // };
-      // fetch(
-      //   "http://localhost:8080/api/admin/saveGraph",
-      //   requestOptions
-      // )
-      //   .then((response) => response.text())
-      //   .then((data) => console.log(data))
-      //   .catch((error) => console.error(error));
-      console.log("Graph JSON - ", graph.toJSON());
-      // setShowNameEdit(false);
-      // dispatch(saveGraphBtn(false));
-      // dispatch(passGraphicalHintsOpen(false));
-      // dispatch(toggleAddQues(false));
-      // dispatch(toggleAddHints(false));
-      // graph.clear();
-      console.log("save Confirmation - ", saveConfirmationShow);
-      // localStorage.clear();
-      // window.location.reload();
     });
 
     $("#" + iden.ClearGraph).click(() => {
@@ -385,110 +303,15 @@ const GraphEditor = () => {
           },
         });
       });
-
-      // const arry:any = [];
-      // graph.getElements().forEach((elem) => {
-      //   console.log("Graph elements -",elem.attr("body/stroke"));
-      //   if(elem.attr("body/stroke") === "blue"){
-      //     arry.push(elem.attributes.id);
-      //   }
-
-      // });
-      // console.log("Graph elements Array final-",arry);
-      // setArrayElement([]);
-      // arrOfIdBlue = [];
     });
-    // paper.on("link:pointerdblclick", (linkView) => {
-    //   // setLinkClick(elementView.model.isElement());
-    //   console.log("Came into the link doubleClick block");
-    //   const currentLink = linkView.model;
-    //   const elementCheck = graph.getElements();
-    //   const linklabel = currentLink.label(0).attrs;
-    //   const linkJson = JSON.stringify(linklabel);
-    //   for (const elem of elementCheck) {
-    //     elem.attr("body/stroke", "black");
-    //   }
-    //   if (linkJson[17].startsWith("U") === true) {
-    //     setShowNameEdit(false);
-    //     console.log("came into directed block- ");
-    //     currentLink.attr("line/stroke", "orange");
-    //     currentLink.label(0, {
-    //       attrs: {
-    //         text: {
-    //           text: "Directed",
-    //         },
-    //       },
-    //     });
-    //   } else if (linkJson[17].startsWith("D") === true) {
-    //     setShowNameEdit(false);
-    //     console.log("came into undirected block- ");
-    //     currentLink.attr("line/stroke", "black");
-    //     currentLink.label(0, {
-    //       attrs: {
-    //         text: {
-    //           text: "Undirected",
-    //         },
-    //       },
-    //     });
-    //   }
-    // });
-    // Change for link click -- Ends
-
-    // paper.on("link:pointerdblclick", (cellView) => {
-    //   console.log("came into link change block");
-    //   graph.getLinks()
-    //   // Undirected Graph
-    //   // cellView.model.attr({
-    //   //   line: {
-    //   //     width: 1,
-    //   //     targetMarker: {
-    //   //       type: "circle",
-    //   //       size: 5,
-    //   //       attrs: {
-    //   //         fill: "black",
-    //   //       },
-    //   //     },
-    //   //   },
-    //   // });
-    //   // DirectedGraph
-    //   // cellView.model.attr({
-    //   //   line: {
-    //   //     width: 1,
-    //   //     targetMarker: {
-    //   //       type: "path",
-    //   //       attrs: {
-    //   //         fill: "black",
-    //   //       },
-    //   //     },
-    //   //   },
-    //   // });
-    // });
-    // If anything not working please uncomment this and comment on the paper mentioned - starts
-    // const scroller = new ui.PaperScroller({
-    //   paper: paper,
-    //   autoResizePaper: false,
-    //   cursor: "grab",
-    // });
-
-    // canvas.current.appendChild(scroller.el);
-    // scroller.render().center();
-    // paper.unfreeze();
-
-    // return () => {
-    //   scroller.remove();
-    //   paper.remove();
-    // };
-    // If anything not working please uncomment this and comment on the paper mentioned - Ends
     return () => console.log("Component unmounted");
   }, []);
   useEffect(() => {
     $("#" + iden.graphChange).click();
-    console.log("button triggered for reduxdf");
   }, [appOperations.linkDirection]);
 
   useEffect(() => {
     $("#" + iden.closeGraphicalHint).click();
-    console.log("button triggered");
   }, [appOperations.graphicalHint !== true]);
 
   return (
@@ -507,27 +330,28 @@ const GraphEditor = () => {
           >
             <header className="d-block p-2 bg-secondary text-white text-center rounded blockquote">
               GRAPH
-              {/* Toggle button  -- Start*/}
-          <div
-            className="form-check form-switch"
-            style={{ float: "right" }}
-          >
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="toggleSwitch"
-              checked={changeMode}
-              onChange={()=>{
-                setChangeMode(!changeMode);
-                setShowNameEdit(false);
-              localStorage.setItem("GraphMode",JSON.stringify(!changeMode));
-              }}
-            />
-            <label className="form-check-label" htmlFor="toggleSwitch">
-              {changeMode ? "Del Mode" : "Edit Mode"}
-            </label>
-          </div>
-          {/* Toggle button  -- Ends*/}
+              <div
+                className="form-check form-switch"
+                style={{ float: "right" }}
+              >
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="toggleSwitch"
+                  checked={changeMode}
+                  onChange={() => {
+                    setChangeMode(!changeMode);
+                    setShowNameEdit(false);
+                    localStorage.setItem(
+                      "GraphMode",
+                      JSON.stringify(!changeMode)
+                    );
+                  }}
+                />
+                <label className="form-check-label" htmlFor="toggleSwitch">
+                  {changeMode ? "Del Mode" : "Edit Mode"}
+                </label>
+              </div>
             </header>
             <div
               className="canvas"
@@ -548,7 +372,6 @@ const GraphEditor = () => {
                 type="button"
                 id="saveGraphJson"
                 className="btn btn-success btn-rounded me-2"
-                // onClick={adminAppJSONFormation}
                 disabled={!appOperations.saveGraphToggle}
               >
                 Save Graph
@@ -575,7 +398,6 @@ const GraphEditor = () => {
                 className="btn"
                 id="logout"
                 onClick={() => {
-                  console.log("logout triggered");
                   localStorage.removeItem("admin");
                   localStorage.removeItem("StudentLogin");
                   window.location.reload();
@@ -638,7 +460,7 @@ const GraphEditor = () => {
                         onClick={() => {
                           setShowNameEdit(true);
                           setChangeMode(false);
-                          localStorage.setItem("GraphMode","false");
+                          localStorage.setItem("GraphMode", "false");
                         }}
                       >
                         Edit Name

@@ -32,7 +32,6 @@ const HintsOrderModal = (props: any) => {
 
   const saveOrderOfHints = (event: any) => {
     event.preventDefault();
-    console.log("Saved Successfully");
     dispatch(clearArray());
     if (textHintsArr.textHintValue.length !== 0) {
       for (let i = 0; i < textHintsArr.textHintValue.length; i++) {

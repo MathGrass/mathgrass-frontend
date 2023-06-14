@@ -18,27 +18,18 @@ const SaveConfirmation = (props: any) => {
     event.preventDefault();
     let hintsString = JSON.stringify(hints);
     let questionAnswerString = JSON.stringify(adminAppJson);
-
-    console.log("Hints with Order -", hintsString);
-    console.log("Admin App Json -", questionAnswerString);
-    if (hints.textHints.length > 0||hints.scriptHints.length>0||hints.graphicalHints.length>0) {
+    if (
+      hints.textHints.length > 0 ||
+      hints.scriptHints.length > 0 ||
+      hints.graphicalHints.length > 0
+    ) {
       const saveHintsCollection = await dispatch(
         saveHintsFromUser(hintsString)
-      );
-      console.log(
-        "saveHintsCollection Result save map id- ",
-        saveHintsCollection.payload,
-        appOperations.saveMapId
       );
     }
     if (adminAppJson.question !== "") {
       const saveQuestionAndAnswer = await dispatch(
         saveQuestionAnswer(questionAnswerString)
-      );
-      console.log(
-        "saveQuestionAndAnswer Result save map id- ",
-        saveQuestionAndAnswer.payload,
-        appOperations.saveMapId
       );
     } else {
       console.log(
@@ -50,23 +41,24 @@ const SaveConfirmation = (props: any) => {
   };
   const cancelSaveConfirmation = async (event: any) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/admin/deleteGraphById/${appOperations.saveMapId}`, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/admin/deleteGraphById/${appOperations.saveMapId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (response.ok) {
         props.onHide();
-        console.log('Deleted Successfully');
+        console.log("Deleted Successfully");
       } else {
-        console.log('Failed to delete the example in backend');
+        console.log("Failed to delete the example in backend");
       }
     } catch (error) {
-      console.log('An error occurred while deleting the example.');
+      console.log("An error occurred while deleting the example.");
     }
     props.onHide();
   };
-
-  
 
   return (
     <Fragment>
@@ -94,19 +86,6 @@ const SaveConfirmation = (props: any) => {
             </button>
           </div>
         </Modal.Body>
-        {/* <Modal.Footer className="justify-content-center">
-          <button
-            className="btn btn-outline-primary"
-            // onClick={saveOrderOfHints}
-          >
-            Save
-          </button>
-          <button className="btn btn-outline-primary" 
-          onClick={()=>{props.onHide();}}
-          >
-            Close
-          </button>
-        </Modal.Footer> */}
       </Modal>
     </Fragment>
   );

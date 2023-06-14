@@ -27,7 +27,6 @@ function App() {
       } else {
         navigate("/");
       }
-      // navigate("/");
     };
     sessionValidation();
   }, []);
@@ -38,7 +37,6 @@ function App() {
         <Route path="/user" element={<GraphEditor />} />
         <Route path="/" element={<UserLogin />} />
       </Routes>
-      {/* <GraphEditor /> */}
     </Fragment>
   );
 }

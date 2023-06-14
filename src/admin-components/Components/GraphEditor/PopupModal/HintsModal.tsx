@@ -26,8 +26,6 @@ const HintsModal = (props: any) => {
   const [counterAdd, setCounterAdd] = useState(0);
   const [checkTextHint, setCheckTextHint] = useState(false);
   const [checkScriptHint, setCheckScriptHint] = useState(false);
-
-  // Check click outside - starts
   useEffect(() => {
     setCheckTextHint(false);
     setCheckScriptHint(false);
@@ -81,7 +79,6 @@ const HintsModal = (props: any) => {
     }
 
     if (checkScriptHint === true && checkScriptHint === true) {
-      console.log("came into both true block");
       if (inputFields[0].value === "" && inputScriptHint.current.value === "") {
         setAlertMessage("Please enter the hints or Unselect the checkbox");
         setShowAlert(true);
@@ -134,18 +131,6 @@ const HintsModal = (props: any) => {
     newInputFields[index].value = e.target.value;
     setInputFields(newInputFields);
   }
-
-  // const changeOfTextualHints = (event: any) => {
-  //   // const check = checkBoxArray.indexOf(event.target.value);
-  //   // if (check > -1) {
-  //   //   checkBoxArray.splice(check, 1);
-  //   // } else {
-  //   //   checkBoxArray.push(event.target.value);
-  //   // }
-  //   // console.log("Final value of the input checks - ",checkTextHint,checkScriptHint);
-  //   // console.log("check box triggered - ", checkBoxArray);
-  // };
-
   return (
     <Fragment>
       <Modal
@@ -162,7 +147,6 @@ const HintsModal = (props: any) => {
         <Modal.Body>
           <h5>HINT TYPE</h5>
           <br />
-          {/* New Change for Hints - Starts */}
           <form>
             <div className="form-check form-check-inline">
               <input

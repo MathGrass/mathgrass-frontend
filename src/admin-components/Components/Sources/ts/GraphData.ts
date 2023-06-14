@@ -9,8 +9,6 @@ export const getCircle = () => {
 export const getLink = (toggleDir:any) => {
   
   if(toggleDir === "true"){
-    console.log("the link Direction Inside True block - ",toggleDir);
-    
     let shapeLink = new joint.shapes.standard.Link();
     return shapeLink;
   }else{
@@ -32,14 +30,6 @@ export const getLink = (toggleDir:any) => {
   return shapeLink;
   // Undirected Links -- Ends
 }
-  // let shapeLink = new joint.dia.Link({
-  //   attrs:{
-  //     '.marker-target': {
-  //       d: 'M 10 0 L 0 5 L 10 10 z',
-  //       fill: '#34495E'
-  //     }
-  //   }
-  // });
 };
 export const getRect = () => {
   let shapeRect = new joint.shapes.standard.Rectangle();

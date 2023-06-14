@@ -2,12 +2,15 @@ import { Fragment, useState } from "react";
 
 import { saveQuesModal } from "../../../store/adminAppCommonOperations";
 import { useAppDispatch } from "../../../store/config/hooks";
-import { setFinalAnswer, setOptions } from "../../../store/slices/quesMultipleChoiceSlice";
+import {
+  setFinalAnswer,
+  setOptions,
+} from "../../../store/slices/quesMultipleChoiceSlice";
 
 const MultipleChoice = () => {
   const dispatch = useAppDispatch();
   const multipleChoiceArr: any = [];
-  const choiceOption : (string | null)[]=[];
+  const choiceOption: (string | null)[] = [];
   const [inputOptions, setInputOptions] = useState({
     optionA: "",
     optionB: "",
@@ -21,22 +24,12 @@ const MultipleChoice = () => {
   const [showHideAdd, setShowHideAdd] = useState("1");
 
   const inputChangeHandle = (event: any) => {
-    const value:any = event.target.value;
+    const value: any = event.target.value;
     setInputOptions({
       ...inputOptions,
       [event.target.name]: value,
     });
     setShowBlankAlert(false);
-    // if (
-    //   inputOptions.optionA !== "" &&
-    //   inputOptions.optionB !== "" &&
-    //   inputOptions.optionC !== "" &&
-    //   inputOptions.optionD !== ""
-    // ) {
-    //   setCheckBlankInput(false);
-    // } else {
-    //   setCheckBlankInput(true);
-    // }
   };
   const optionsEditHandler = (event: any) => {
     event.preventDefault();
@@ -53,28 +46,23 @@ const MultipleChoice = () => {
       optionD: inputOptions.optionD,
       finalAnswer: corrAnswer,
     });
-    // Change for REdux call - starts
-    choiceOption.push(inputOptions.optionA,inputOptions.optionB,inputOptions.optionC,inputOptions.optionD);
-    const filteredChoice: (string | null)[] =choiceOption.filter(choice=>choice!="");
+
+    choiceOption.push(
+      inputOptions.optionA,
+      inputOptions.optionB,
+      inputOptions.optionC,
+      inputOptions.optionD
+    );
+    const filteredChoice: (string | null)[] = choiceOption.filter(
+      (choice) => choice != ""
+    );
     dispatch(setOptions(filteredChoice));
     dispatch(setFinalAnswer(corrAnswer));
-    // Change for REdux call - Ends
     dispatch(saveQuesModal(true));
   };
 
   const addClickHandler = (event: any) => {
     event.preventDefault();
-    // if (
-    //   inputOptions.optionA !== "" &&
-    //   inputOptions.optionB !== "" &&
-    //   inputOptions.optionC !== "" &&
-    //   inputOptions.optionD !== ""
-    // ) {
-    //   setOpenRadioAnswer(true);
-    //   setShowBlankAlert(false);
-    // } else {
-    //   setShowBlankAlert(true);
-    // }
     if (openInputOption === "1") {
       if (inputOptions.optionA !== "") {
         inputOptions.optionB = "";
@@ -113,8 +101,7 @@ const MultipleChoice = () => {
         setOpenRadioAnswer(true);
         setShowBlankAlert(false);
       }
-    }
-    else {
+    } else {
       setShowBlankAlert(true);
     }
   };
@@ -297,46 +284,51 @@ const MultipleChoice = () => {
               {inputOptions.optionA}
             </label>
           </div>
-          {openInputOption >="2" && 
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioAnswer"
-              id="inlineRadioB"
-              value={inputOptions.optionB}
-              onChange={correctAnswerHandler}
-            />
-            <label className="form-check-label" htmlFor="inlineRadioB">
-              {inputOptions.optionB}
-            </label>
-          </div> }
-          {openInputOption >="3" && <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioAnswer"
-              id="inlineRadioC"
-              value={inputOptions.optionC}
-              onChange={correctAnswerHandler}
-            />
-            <label className="form-check-label" htmlFor="inlineRadioC">
-              {inputOptions.optionC}
-            </label>
-          </div>}
-          {openInputOption ==="4" &&<div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioAnswer"
-              id="inlineRadioD"
-              value={inputOptions.optionD}
-              onChange={correctAnswerHandler}
-            />
-            <label className="form-check-label" htmlFor="inlineRadioD">
-              {inputOptions.optionD}
-            </label>
-          </div> }
+          {openInputOption >= "2" && (
+            <div className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="inlineRadioAnswer"
+                id="inlineRadioB"
+                value={inputOptions.optionB}
+                onChange={correctAnswerHandler}
+              />
+              <label className="form-check-label" htmlFor="inlineRadioB">
+                {inputOptions.optionB}
+              </label>
+            </div>
+          )}
+          {openInputOption >= "3" && (
+            <div className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="inlineRadioAnswer"
+                id="inlineRadioC"
+                value={inputOptions.optionC}
+                onChange={correctAnswerHandler}
+              />
+              <label className="form-check-label" htmlFor="inlineRadioC">
+                {inputOptions.optionC}
+              </label>
+            </div>
+          )}
+          {openInputOption === "4" && (
+            <div className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="inlineRadioAnswer"
+                id="inlineRadioD"
+                value={inputOptions.optionD}
+                onChange={correctAnswerHandler}
+              />
+              <label className="form-check-label" htmlFor="inlineRadioD">
+                {inputOptions.optionD}
+              </label>
+            </div>
+          )}
         </Fragment>
       )}
     </Fragment>

@@ -9,46 +9,28 @@ const UserLogin = () => {
   const [password, setPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  // const loginAuth = useAppSelector((state) => state.loginAuthenticationSlice);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const handleLoginSubmit = async (event: any) => {
     event.preventDefault();
-    const results = await dispatch(fetchUserDetails({email:email,password:password}));
-    console.log("Results - ",results.payload);
+    const results = await dispatch(
+      fetchUserDetails({ email: email, password: password })
+    );
     if (password === "") {
       setFieldErrors("Please enter your password");
-    } 
-    else if(email===""){
+    } else if (email === "") {
       setFieldErrors("Please enter your email");
-    }
-    // else if (email === "sreesumi007@gmail.com" && password === "sathyadev") {
-    //   localStorage.setItem("UserLogin", "true");
-    //   navigate("/user");
-    // }
-    // else if (email === "eeswaranstudent@gmail.com" && password === "vikram") {
-    //       navigate("/student");
-      
-    // }
-    else if(results.payload.userType==="ADMIN"){
-        localStorage.setItem("admin",results.payload.token);
-        navigate("/user");
-
-      }
-    else if(results.payload.userType==="STUDENT"){
-        // window.location.href = "http://localhost:3000/"
-        navigate("/student");
-      }
-    
-    else {
+    } else if (results.payload.userType === "ADMIN") {
+      localStorage.setItem("admin", results.payload.token);
+      navigate("/user");
+    } else if (results.payload.userType === "STUDENT") {
+      navigate("/student");
+    } else {
       setFieldErrors(
         "Email or Password is incorrect. Contact Supervisor for onboarding..."
       );
     }
-
-    console.log("The Email - " + email + " and the password is -" + password);
   };
   return (
     <Fragment>

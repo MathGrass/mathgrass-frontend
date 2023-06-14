@@ -17,7 +17,6 @@ export const saveQuestionAnswer = createAsyncThunk(
       `http://localhost:8080/api/admin/saveQuestionAnswer`,
       questionAnswer
     );
-    console.log("Save Question And Answer from redux - ", response.data);
     return response.data;
   }
 );

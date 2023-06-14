@@ -12,7 +12,6 @@ const initialState:Validation={
 };
 export const sessionValidationFetch = createAsyncThunk('users/Validation', async ({token}:{token:string|null}) => {
     const response = await axios.post(`http://localhost:8080/api/admin/tokenValidity`,{token});
-    console.log("For Token validity from redux - ",response.data);
     return response.data;
   });
 export const sessionValidationSlice = createSlice({

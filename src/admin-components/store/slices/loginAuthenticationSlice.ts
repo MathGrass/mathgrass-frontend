@@ -15,9 +15,7 @@ const initialState:InitialState={
     authenticateUser:[]    
 };
 export const fetchUserDetails = createAsyncThunk('users/fetch', async ({email,password}:{email?:string,password?:string}) => {
-    // const response = await axios.post(`http://localhost:8080/authentication/get-auth?email=${email}&password=${password}`);
     const response = await axios.post(`http://localhost:8080/api/admin/userAuthentication`,{email,password});
-    console.log("From the redux fetch - ",response.data);
     return response.data;
   });
 export const loginAuthenticationSlice = createSlice({

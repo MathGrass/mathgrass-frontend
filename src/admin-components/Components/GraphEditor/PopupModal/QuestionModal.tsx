@@ -37,9 +37,8 @@ function QuestionModal(props: any) {
   let sageScript: any;
   let quesType: any;
   const questionModalArr: any = [];
-  
-  useEffect(()=>{
-    console.log("Use Effect for question modal created");
+
+  useEffect(() => {
     dispatch(saveQuesModal(false));
     setShowQues("");
     dispatch(clearArray());
@@ -51,7 +50,7 @@ function QuestionModal(props: any) {
     setRadioBtn(false);
     setCheckBlankInput(true);
     setRadioClick("");
-  },[appOperations.questionFlush===true]);
+  }, [appOperations.questionFlush === true]);
 
   const [addQues, setAddQues] = useState(true);
   const [showQues, setShowQues] = useState("");
@@ -101,7 +100,6 @@ function QuestionModal(props: any) {
   };
   const onRadioChange = (event: any) => {
     quesType = event.target.value;
-    console.log("Check it -", quesType);
     setRadioClick(quesType);
     dispatch(saveQuesModal(false));
     dispatch(clearArray());
@@ -114,7 +112,6 @@ function QuestionModal(props: any) {
     dispatch(setQuestion(showQues));
     dispatch(setAnswerType(radioClick));
     dispatch(questionFlushCall(false));
-    console.log("Quesitons Modal Saved Successfully");
     if (radioClick === "MultipleChoice") {
       dispatch(setMultipleChoice(optionsAnswer.options));
       dispatch(setMultipleChoiceAnswer(optionsAnswer.finalAnswer));
@@ -131,49 +128,6 @@ function QuestionModal(props: any) {
       dispatch(toggleAddQues(true));
       props.onHide();
     }
-
-    // if (radioClick === "MultipleChoice") {
-    //   questionModalArr.push({
-    //     Question: showQues,
-    //     AnswerType: radioClick,
-    //     OptionsAndAnswer: optionsAnswer,
-    //   });
-    //   localStorage.setItem("QuestionModal", JSON.stringify(questionModalArr));
-    //   dispatch(toggleAddQues(true));
-    //   props.onHide();
-    // }
-    // if (radioClick === "WrittenAnswer") {
-    //   if (showAnswer === "") {
-    //     setShowAlertWrittenAns(true);
-    //   } else {
-    //     setShowAlertWrittenAns(false);
-    //     questionModalArr.push({
-    //       Question: showQues,
-    //       AnswerType: radioClick,
-    //       Answer: showAnswer,
-    //     });
-    //     localStorage.removeItem("QuestionModal");
-    //     localStorage.setItem("QuestionModal", JSON.stringify(questionModalArr));
-    //     dispatch(toggleAddQues(true));
-    //     props.onHide();
-    //   }
-    // }
-    // if (radioClick === "SageMath") {
-    //   if (showScript === "") {
-    //     setShowAlertSageMath(true);
-    //   } else {
-    //     setShowAlertSageMath(false);
-    //     questionModalArr.push({
-    //       Question: showQues,
-    //       AnswerType: radioClick,
-    //       script: showScript,
-    //     });
-    //     localStorage.removeItem("QuestionModal");
-    //     localStorage.setItem("QuestionModal", JSON.stringify(questionModalArr));
-    //     dispatch(toggleAddQues(true));
-    //     props.onHide();
-    //   }
-    // }
   };
   const clickCloseBtn = (event: any) => {
     event.preventDefault();
@@ -220,15 +174,6 @@ function QuestionModal(props: any) {
                 defaultValue={showQues}
                 onChange={questionInputChange}
               ></textarea>
-              {/* <input
-                type="text"
-                className="form-control"
-                ref={inputQues}
-                defaultValue={showQues}
-                onChange={questionInputChange}
-                placeholder="Question goes here"
-                aria-label="Question goes here"
-              /> */}
               <div className="input-group-append">
                 <button
                   className="btn btn-outline-secondary"
@@ -299,15 +244,6 @@ function QuestionModal(props: any) {
                   placeholder="Your Answer goes here"
                   aria-label="Your Answer goes here"
                 ></textarea>
-                {/* <input
-                  type="text"
-                  className="form-control"
-                  ref={inputAnswer}
-                  defaultValue={showAnswer}
-                  onChange={inputAnswerHandler}
-                  placeholder="Your Answer goes here"
-                  aria-label="Your Answer goes here"
-                /> */}
               </div>
               {showAlertWrittenAns && (
                 <p className="text-danger">

@@ -26,7 +26,7 @@ const GraphicalHints = (props: any) => {
       dispatch(
         addGraphicalHintsWithOrder({
           hint: inputGraphicalHint.current.value,
-          hintsOrder: 0
+          hintsOrder: 0,
         })
       );
       dispatch(passGraphicalHintvalue(inputGraphicalHint.current.value));
@@ -36,7 +36,6 @@ const GraphicalHints = (props: any) => {
         graphicalHint: inputGraphicalHint.current.value,
         elementId: appAdminJson.graphElemetId,
       });
-      console.log("graphical Hint modal - ", graphicalHintArray);
       props.onHide();
     }
   };

@@ -12,7 +12,6 @@ const initialState:HintsSave={
 export const saveHintsFromUser = createAsyncThunk('users/hints', async (getHints:string) => {
     const hints = JSON.parse(getHints);
     const response = await axios.post(`http://localhost:8080/api/admin/saveHints`,hints);
-    console.log("Save Hints from redux - ",response.data);
     return response.data;
   });
 export const saveHintsCollectionSlice = createSlice({
