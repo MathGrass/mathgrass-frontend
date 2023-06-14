@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     const sessionValidation = async () => {
       const adminToken = localStorage.getItem("admin");
+      localStorage.removeItem("GraphMode");
       localStorage.setItem("GraphicalHint", JSON.stringify(false));
       const results = await dispatch(
         sessionValidationFetch({ token: adminToken })

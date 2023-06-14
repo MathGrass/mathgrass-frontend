@@ -55,6 +55,7 @@ const GraphEditor = () => {
   let nameAlreadyExists: boolean;
   const canvas: any = useRef(null);
 
+  const [changeMode, setChangeMode] = useState(false);
   const [nameExists, setNameExists] = useState(false);
   const [showNameEdit, setShowNameEdit] = useState(false);
   const [showGraphicalHintAlert, setShowGraphicalHintAlert] = useState(false);
@@ -66,7 +67,7 @@ const GraphEditor = () => {
   };
 
   function getNameForNode(cellView: any) {
-    setShowNameEdit(true);
+    // setShowNameEdit(true);
     const nameValue = nameInputRef.current.value;
     nameAlreadyExists = func.alreadyNameExists(nameValue);
     if (nameAlreadyExists === false) {
@@ -208,17 +209,28 @@ const GraphEditor = () => {
     // Change for link click -- Starts
     paper.on("element:pointerdblclick", (elementView: any) => {
       console.log("Enter into the element DBClick");
-      const graphLinks = graph.getLinks();
+      const graphMode = localStorage.getItem("GraphMode");
+      if(graphMode === "true"){
+        const elem = elementView.model;
+        elem.remove();
+        console.log("Delete Mode on",graphMode);
+      }
+      else{
+        const graphLinks = graph.getLinks();
       for (const link of graphLinks) {
         link.attr("line/stroke", "black");
       }
       getNameForNode(elementView);
-    });
+      }
+     });
     paper.on("link:pointerclick", (linkView: any) => {
       const isGraphicalHint = localStorage.getItem("GraphicalHint");
       console.log("Link id -", linkView.model.attributes.id);
       if (isGraphicalHint === "true") {
-        if (linkView.model.attributes.attrs.line.stroke === "#333333" || linkView.model.attributes.attrs.line.stroke === "black") {
+        if (
+          linkView.model.attributes.attrs.line.stroke === "#333333" ||
+          linkView.model.attributes.attrs.line.stroke === "black"
+        ) {
           linkView.model.attr("line/stroke", "blue");
           dispatch(addLinksFromGraph(linkView.model.attributes.id));
         } else {
@@ -304,9 +316,12 @@ const GraphEditor = () => {
     // Check for the directed to undirected links - Ends
     // Extra code for Deleting the Links - Starts
     paper.on("link:pointerdblclick", (linkView: any) => {
+      const graphMode = localStorage.getItem("GraphMode");
+      if(graphMode==="true"){
       let link = linkView.model;
       console.log("the cid of the thing is like - ", link);
       link.remove();
+      }
     });
     // Extra code for Deleting the Links - Ends
 
@@ -354,6 +369,7 @@ const GraphEditor = () => {
       func.onClearGraphCall();
       disableSaveGraphBtn();
       setShowNameEdit(false);
+      setChangeMode(false);
       dispatch(toggleAddQues(false));
       dispatch(toggleAddHints(false));
       dispatch(passGraphicalHintsOpen(false));
@@ -491,6 +507,27 @@ const GraphEditor = () => {
           >
             <header className="d-block p-2 bg-secondary text-white text-center rounded blockquote">
               GRAPH
+              {/* Toggle button  -- Start*/}
+          <div
+            className="form-check form-switch"
+            style={{ float: "right" }}
+          >
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="toggleSwitch"
+              checked={changeMode}
+              onChange={()=>{
+                setChangeMode(!changeMode);
+                setShowNameEdit(false);
+              localStorage.setItem("GraphMode",JSON.stringify(!changeMode));
+              }}
+            />
+            <label className="form-check-label" htmlFor="toggleSwitch">
+              {changeMode ? "Del Mode" : "Edit Mode"}
+            </label>
+          </div>
+          {/* Toggle button  -- Ends*/}
             </header>
             <div
               className="canvas"
@@ -553,40 +590,65 @@ const GraphEditor = () => {
                 ></i>
               </button>
             </header>
-            {showNameEdit && (
-              <div className="card" style={{ width: "18rem" }}>
-                <div className="card-body">
-                  <h5 className="card-title text-center">NODE NAME</h5>
-                  <h6 className="card-subtitle mb-2 text-muted text-center">
-                    Enter & Double click on the node
-                  </h6>
-                  <form className="form-inline">
-                    <div className="form-group mx-sm-3 mb-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="inputNameGive"
-                        ref={nameInputRef}
-                        placeholder="Name"
-                      />
-                      {nameExists && (
-                        <span className="text-danger">
-                          <i>The Name Already Exists</i>
-                        </span>
-                      )}
+
+            <div className="card" style={{ width: "18rem" }}>
+              <div className="card-body">
+                <h5 className="card-title text-center">NODE NAME</h5>
+                {showNameEdit && (
+                  <Fragment>
+                    <h6 className="card-subtitle mb-2 text-muted text-center">
+                      Enter & Double click on the node
+                    </h6>
+                    <form className="form-inline">
+                      <div className="form-group mx-sm-3 mb-2">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="inputNameGive"
+                          ref={nameInputRef}
+                          placeholder="Name"
+                        />
+                        {nameExists && (
+                          <span className="text-danger">
+                            <i>The Name Already Exists</i>
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-outline-info mb-2"
+                        style={{ float: "right" }}
+                        onClick={closeNameEditHandler}
+                      >
+                        Close
+                      </button>
+                    </form>
+                  </Fragment>
+                )}
+                {!showNameEdit && (
+                  <Fragment>
+                    <h6 className="card-subtitle mb-2 text-muted text-center">
+                      Click edit button to for editing
+                    </h6>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <button
+                        type="button"
+                        className="btn btn-outline-info mb-2"
+                        style={{ float: "right" }}
+                        onClick={() => {
+                          setShowNameEdit(true);
+                          setChangeMode(false);
+                          localStorage.setItem("GraphMode","false");
+                        }}
+                      >
+                        Edit Name
+                      </button>
                     </div>
-                    <button
-                      type="button"
-                      className="btn btn-outline-info mb-2"
-                      style={{ float: "right" }}
-                      onClick={closeNameEditHandler}
-                    >
-                      Close
-                    </button>
-                  </form>
-                </div>
+                  </Fragment>
+                )}
               </div>
-            )}
+            </div>
+
             <br />
             {appOperations.graphicalHint === true && (
               <div className="card" style={{ width: "18rem" }}>
