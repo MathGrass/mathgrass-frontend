@@ -419,7 +419,7 @@ const GraphEditor = () => {
                 {showNameEdit && (
                   <Fragment>
                     <h6 className="card-subtitle mb-2 text-muted text-center">
-                      Enter & Double click on the node
+                      Type & Double click on the node
                     </h6>
                     <form className="form-inline">
                       <div className="form-group mx-sm-3 mb-2">
@@ -450,7 +450,7 @@ const GraphEditor = () => {
                 {!showNameEdit && (
                   <Fragment>
                     <h6 className="card-subtitle mb-2 text-muted text-center">
-                      Click edit button to for editing
+                      Click edit button for editing
                     </h6>
                     <div style={{ display: "flex", justifyContent: "center" }}>
                       <button

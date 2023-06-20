@@ -7,11 +7,20 @@ import MathGrass from "../mathGrass";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "./store/config/store";
 import { sessionValidationFetch } from "./store/slices/sessionValidationSlice";
+import { event } from "jquery";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     const sessionValidation = async () => {
+
+      const handleKeyDown = (event:any) => {
+        if(event.keyCode == 13){
+        event.preventDefault(); 
+        }
+      };
+  
+      window.addEventListener('keydown', handleKeyDown);
       const adminToken = localStorage.getItem("admin");
       localStorage.removeItem("GraphMode");
       localStorage.setItem("GraphicalHint", JSON.stringify(false));
