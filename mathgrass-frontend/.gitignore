@@ -335,24 +335,3 @@ modules.xml
 .idea/sonarlint
 
 # End of https://www.toptal.com/developers/gitignore/api/node,webstorm+all,eclipse,visualstudiocode
-
-.idea/
-.nyc_output/
-coverage
-
-node_modules/
-lib/
-artifacts/
-
-examples/workflow-standalone/app
-
-*.ttf
-*.log
-*.jar
-
-!packages/client/src/lib
-tsconfig.tsbuildinfo
-eslint.xml
-report.xml
-
-examples/workflow-standalone/server

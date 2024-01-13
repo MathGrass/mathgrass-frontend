@@ -8,6 +8,7 @@ import {useAppSelector} from './state/common/hooks';
 import {useDispatch} from 'react-redux';
 import {TaskDTO} from './src-gen/mathgrass-api';
 import {fetchAvailableTasks} from './state/requestThunks';
+import GlspView from './components/glsp/glspView';
 
 const MathGrass = () => {
     const currentTask: TaskDTO | null = useAppSelector((state) => state.applicationStateManagement.currentTask);
@@ -31,7 +32,8 @@ const MathGrass = () => {
                                 <h2>Graph</h2>
                             </div>
                             <div className="card-body">
-                                <GraphEditor/>
+                                {/* <GraphEditor/> */}
+                                <GlspView/>
                             </div>
                         </div>
                     </div>

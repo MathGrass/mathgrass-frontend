@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux';
 import {propagateGraphState} from '../../state/applicationState';
 import GraphFeedback from './graphFeedback';
 import {generateAndDownloadFile} from '../../util/fileDownloadUtils';
-import {abstractGraphToJointJsGraph} from './graphConverter';
+import {abstractGraphToJointJsGraph, createCircle, getVertexToolsView} from './graphConverter';
 import {TaskDTO} from '../../src-gen/mathgrass-api';
 
 const GRAPH_CONTAINER_ID = 'mathGrassEditor';
@@ -38,6 +38,7 @@ const GraphEditor = () => {
                     height: paperHeight,
                     gridSize: 1,
                     cellViewNamespace: joint.shapes,
+                    defaultLink: () => new joint.shapes.standard.Link(),
                     restrictTranslate: true
                 }
             );
@@ -48,6 +49,20 @@ const GraphEditor = () => {
             paper.on('element:pointerdblclick', (elementView) => {
                 const newColor = elementView.model.attr('body/stroke') === colorDefault ? colorMarked : colorDefault;
                 elementView.model.attr('body/stroke', newColor);
+            });
+
+            paper.on('blank:pointerclick', (event, x, y) => {
+                const vertex = createCircle(x - 20, y - 20, "Test");
+                graphEditorModel.addCell(vertex);
+                vertex.findView(paper).addTools(getVertexToolsView());
+            });
+
+            paper.on('element:mouseenter', function(elementView) {
+                elementView.showTools();
+            });
+            
+            paper.on('element:mouseleave', function(elementView) {
+                elementView.hideTools();
             });
 
             paper.on('link:pointerdblclick', (linkView) => {
