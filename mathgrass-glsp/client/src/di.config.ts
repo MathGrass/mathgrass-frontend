@@ -13,7 +13,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0
  ********************************************************************************/
-import { createWorkflowDiagramContainer } from '@mathgrass-glsp/diagram-definition';
 import {
     ConsoleLogger,
     IDiagramOptions,
@@ -25,6 +24,7 @@ import {
     createDiagramOptionsModule,
     toolPaletteModule
 } from '@eclipse-glsp/client';
+import { createWorkflowDiagramContainer } from '@mathgrass-glsp/diagram-definition';
 import { Container } from 'inversify';
 import '../css/diagram.css';
 export default function createContainer(options: IDiagramOptions): Container {

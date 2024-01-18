@@ -1,8 +1,0 @@
-{
-  "extends": "@eclipse-glsp/ts-config",
-  "compilerOptions": {
-    "outDir": "lib",
-    "reactNamespace": "JSX"
-  },
-  "include": ["src"]
-}
