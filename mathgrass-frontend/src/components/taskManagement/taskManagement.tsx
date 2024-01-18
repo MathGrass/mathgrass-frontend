@@ -4,7 +4,10 @@ import {useAppDispatch, useAppSelector} from '../../state/common/hooks';
 import {fetchTaskById} from '../../state/requestThunks';
 
 const TaskManagement = () => {
-    const availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);
+    let availableTasks = useAppSelector((state) => state.applicationStateManagement.availableTasks);
+    if (!Array.isArray(availableTasks)){
+        availableTasks = [];
+    }
 
     const dispatch = useAppDispatch();
     const taskIdRef = useRef<HTMLSelectElement>(null);

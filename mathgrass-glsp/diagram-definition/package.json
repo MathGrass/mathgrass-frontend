@@ -1,0 +1,36 @@
+{
+  "name": "@mathgrass-glsp/diagram-definition",
+  "version": "2.1.0-next",
+  "description": "GLSP diagrams for the Workflow DSL",
+  "keywords": [
+    "glsp",
+    "workflow",
+    "diagram",
+    "example"
+  ],
+  "main": "lib/index",
+  "types": "lib/index",
+  "files": [
+    "lib",
+    "src",
+    "build",
+    "css",
+    "scripts"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf tsconfig.tsbuildinfo  lib",
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "lint:ci": "yarn lint -o eslint.xml -f checkstyle",
+    "prepare": "yarn clean && yarn build",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "@eclipse-glsp/client": "2.1.0-next",
+    "@eclipse-glsp/ts-config": "^2.0.0",
+    "balloon-css": "^0.5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "@eclipse-glsp/protocol",
+  "version": "2.1.0-next",
+  "description": "The protocol definition for client-server communication in GLSP",
+  "keywords": [
+    "eclipse",
+    "graphics",
+    "diagram",
+    "modeling",
+    "visualization",
+    "glsp",
+    "diagram editor"
+  ],
+  "homepage": "https://www.eclipse.org/glsp/",
+  "bugs": "https://github.com/eclipse-glsp/glsp/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-glsp/glsp-client.git"
+  },
+  "license": "(EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0)",
+  "author": {
+    "name": "Eclipse GLSP"
+  },
+  "contributors": [
+    {
+      "name": "Eclipse GLSP Project",
+      "email": "glsp-dev@eclipse.org",
+      "url": "https://projects.eclipse.org/projects/ecd.glsp"
+    }
+  ],
+  "main": "lib/index",
+  "types": "lib/index",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf lib tsconfig.tsbuildinfo  coverage .nyc_output ",
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "lint:ci": "yarn lint -o eslint.xml -f checkstyle",
+    "prepare": "yarn clean && yarn build",
+    "test": "mocha --config ../../.mocharc \"./src/**/*.spec.?(ts|tsx)\"",
+    "test:ci": "export JUNIT_REPORT_PATH=./report.xml && yarn test --reporter mocha-jenkins-reporter",
+    "test:coverage": "nyc yarn test",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "sprotty-protocol": "0.15.0-next.044bba2.13",
+    "uuid": "7.0.3",
+    "vscode-jsonrpc": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/uuid": "3.4.5"
+  },
+  "peerDependencies": {
+    "inversify": "^6.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

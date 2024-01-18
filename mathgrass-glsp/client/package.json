@@ -1,0 +1,40 @@
+{
+  "name": "@mathgrass-glsp/client",
+  "version": "2.1.0-next",
+  "private": true,
+  "main": "bundle/bundle",
+  "types": "lib",
+  "files": [
+    "lib",
+    "css",
+    "bundle"
+  ],
+  "scripts": {
+    "build": "tsc -b && webpack",
+    "clean": "rimraf lib tsconfig.tsbuildinfo app/bundle.js app/bundle.js.map app/css",
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "lint:ci": "yarn lint -o eslint.xml -f checkstyle",
+    "prepare": "yarn clean && yarn build",
+    "start:exampleServer": "yarn ts-node ./scripts/start-example-server.ts",
+    "watch": "tsc -w -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "@mathgrass-glsp/diagram-definition": "2.1.0-next",
+    "@eclipse-glsp/client": "2.1.0-next"
+  },
+  "devDependencies": {
+    "@types/shelljs": "0.8.12",
+    "@types/tar": "6.1.5",
+    "circular-dependency-plugin": "^5.2.2",
+    "css-loader": "^6.7.1",
+    "inversify": "^6.0.1",
+    "path-browserify": "^1.0.1",
+    "source-map-loader": "^4.0.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -5,7 +7,6 @@ import MathGrass from './mathGrass';
 import {store} from './state/common/store';
 import * as serverConfig from './config/serverConfig';
 import {MathGrassConfig} from './config/serverConfig';
-
 
 function renderApp() {
     ReactDOM.render(

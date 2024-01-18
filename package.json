@@ -8,17 +8,25 @@
   "license": "MIT",
   "workspaces": [
     "mathgrass-frontend",
-    "mathgrass-glsp-frontend"
+    "mathgrass-glsp/client",
+    "mathgrass-glsp/diagram-definition",
+    "mathgrass-glsp/packages/*"
   ],
   "dependencies": {
     "lerna": "^8.0.2"
   },
   "scripts": {
     "start": "lerna run --parallel watch",
-    "build": "lerna run build",
+    "build": "lerna run build --stream",
+    "prepare": "lerna run prepare",
     "serve": "lerna run serve",
     "lint": "lerna run lint:ts && lerna run lint",
     "generate-fetch-api": "lerna run generate-fetch-api",
     "test": "lerna run test"
+  },
+  "devDependencies": {
+    "@eclipse-glsp/dev": "~2.0.0",
+    "@types/lodash": "4.14.191",
+    "@types/node": "16.x"
   }
 }

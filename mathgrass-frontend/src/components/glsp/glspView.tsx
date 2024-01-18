@@ -1,18 +1,28 @@
-import { useEffect } from "react";
-import { mountGlspClient, unmountGlspClient } from "./glspClientWrapper";
+import React, { useEffect } from "react";
+import { GLSPModelClient } from '@mathgrass-glsp/client';
+import '@vscode/codicons/dist/codicon.css';
+import "./glspView.css";
+
+const port = 8081;
+const id = 'workflow';
+const diagramType = 'workflow-diagram';
 
 const GlspView = () => {
 
     useEffect(() => {
+
         // Mount
-        mountGlspClient();
+        const client = new GLSPModelClient(port, id, diagramType, './examples/workflow-standalone/app/example1.wf');
+        client.bindGLSPModelClient("sprotty");
         // Unmount
         return () => {
-            unmountGlspClient();
+            client.unbindGLSPModelClient();
         }
     });
 
-    return (<div id="sprotty"></div>);
+    return <div className="sprotty_wrapper">
+        <div id="sprotty"></div>
+    </div>;
 }
 
 export default GlspView;

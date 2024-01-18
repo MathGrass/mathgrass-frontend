@@ -1,0 +1,8 @@
+{
+  "extends": "@eclipse-glsp/ts-config/mocha",
+  "compilerOptions": {
+    "outDir": "lib",
+    "reactNamespace": "JSX"
+  },
+  "include": ["src"]
+}
