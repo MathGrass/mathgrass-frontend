@@ -31,7 +31,7 @@
 }
 
 .sprotty-edge.arrow {
-    fill: black;
+    fill: none;
 }
 
 .sprotty-edge.selected {

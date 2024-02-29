@@ -54,7 +54,7 @@ export const workflowDiagramModule = new ContainerModule((bind, unbind, isBound,
 
     bindOrRebind(context, TYPES.ILogger).to(ConsoleLogger).inSingletonScope();
     bindOrRebind(context, TYPES.LogLevel).toConstantValue(LogLevel.warn);
-    bind(TYPES.ISnapper).to(GridSnapper);
+    // bind(TYPES.ISnapper).to(GridSnapper);
     bindAsService(context, TYPES.ICommandPaletteActionProvider, RevealNamedElementActionProvider);
     bindAsService(context, TYPES.IContextMenuItemProvider, DeleteElementContextMenuItemProvider);
 

@@ -5,7 +5,7 @@ import "./glspView.css";
 
 const port = 8081;
 const id = 'workflow';
-const diagramType = 'workflow-diagram';
+const diagramType = 'simple-diagram';
 
 const GlspView = () => {
 
